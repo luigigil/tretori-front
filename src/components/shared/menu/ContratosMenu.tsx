@@ -1,13 +1,7 @@
-import { ExpandLess, ExpandMore, StarBorder } from "@mui/icons-material"
-import {
-  Collapse,
-  List,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-} from "@mui/material"
-import { useState } from "react"
-import InboxIcon from "@mui/icons-material/MoveToInbox"
+import { ExpandLess, ExpandMore, StarBorder } from '@mui/icons-material'
+import { Collapse, List, ListItemButton, ListItemIcon, ListItemText } from '@mui/material'
+import { useState } from 'react'
+import InboxIcon from '@mui/icons-material/MoveToInbox'
 
 const ContratosMenu = () => {
   const [open, setOpen] = useState(true)
@@ -22,7 +16,7 @@ const ContratosMenu = () => {
         <ListItemIcon>
           <InboxIcon />
         </ListItemIcon>
-        <ListItemText primary="Clientes" />
+        <ListItemText primary="Contratos" />
         {open ? <ExpandLess /> : <ExpandMore />}
       </ListItemButton>
       <Collapse in={open} timeout="auto" unmountOnExit>

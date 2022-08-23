@@ -1,0 +1,8 @@
+data/websites/templates
+package.json
+.logger.example
+node_modules
+coverage
+uploads
+dist
+tmp

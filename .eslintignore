@@ -1,0 +1,6 @@
+# CONFIG FILES
+jest.config.js
+
+# MISC
+src/types/
+dist/

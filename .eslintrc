@@ -1,0 +1,86 @@
+{
+  "parserOptions": { "project": "./tsconfig.json" },
+  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended", "prettier"],
+  "rules": {
+    // Base
+    "no-undef": ["off"],
+    "curly": ["error", "all"],
+    "no-console": ["error"],
+    "eqeqeq": ["error", "allow-null"],
+    "spaced-comment": ["error", "always", { "markers": ["/"] }], // Require space after comment; markers allows triple slash
+    "no-nested-ternary": ["error"],
+    "prefer-template": ["error"],
+
+    // Import
+    "no-restricted-imports": [
+      "error",
+      {
+        "paths": [
+          {
+            "name": "moment",
+            "message": "Use 'luxon' instead"
+          },
+          {
+            "name": "formik",
+            "message": "Use 'react-hook-form' instead"
+          },
+          {
+            "name": "clsx",
+            "message": "Use the cx export from the 'useStyles' hook on 'tss-react/mui' instead"
+          }
+        ],
+        "patterns": [
+          {
+            "group": ["@mui/styles", "@mui/styles/*"],
+            "message": "Use 'tss-react/mui' instead"
+          },
+          {
+            "group": ["lodash", "lodash/*"],
+            "message": "Use native ES6 functions instead. If you MUST use this, import directly from the sub-module."
+          }
+        ]
+      }
+    ],
+    "import/order": [
+      "error",
+      {
+        "pathGroups": [
+          {
+            "pattern": "react",
+            "position": "before",
+            "group": "external"
+          }
+        ],
+        "pathGroupsExcludedImportTypes": ["builtin"],
+        "groups": ["builtin", "external", "internal", "parent", "sibling", ["unknown"]],
+        "alphabetize": {
+          "order": "asc"
+        }
+      }
+    ],
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "devDependencies": ["**/test/**"]
+      }
+    ],
+    "import/no-cycle": ["error"],
+
+    // TypeScript
+    "@typescript-eslint/no-explicit-any": ["error"],
+    "@typescript-eslint/no-unused-vars": ["error"],
+    "@typescript-eslint/no-floating-promises": ["error"],
+    "@typescript-eslint/no-non-null-assertion": ["error"],
+    "@typescript-eslint/explicit-function-return-type": [
+      "error",
+      {
+        "allowExpressions": true,
+        "allowTypedFunctionExpressions": true
+      }
+    ],
+
+    // React
+    "react/forbid-prop-types": ["error"],
+    "react/jsx-fragments": ["error", "syntax"]
+  }
+}
