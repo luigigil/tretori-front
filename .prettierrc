@@ -1,13 +1,9 @@
 {
   "semi": false,
-  "singleQuote": true,
+  "tabWidth": 2,
   "printWidth": 100,
-  "overrides": [
-    {
-      "files": ["*.yaml", "*.yml"],
-      "options": {
-        "singleQuote": false
-      }
-    }
-  ]
+  "singleQuote": true,
+  "trailingComma": "all",
+  "jsxSingleQuote": true,
+  "bracketSpacing": true
 }

@@ -34,7 +34,8 @@
     "lint:prettier": "prettier --check -u .",
     "lint:errors": "yarn lint:eslint --quiet",
     "lint:fix": "yarn lint:eslint --fix",
-    "verify": "yarn tsc && yarn lint && yarn build:test && yarn test"
+    "verify": "yarn tsc && yarn lint && yarn build:test && yarn test",
+    "verify:quick": "yarn tsc && yarn fmt && yarn lint:fix"
   },
   "eslintConfig": {
     "extends": [
@@ -55,10 +56,15 @@
     ]
   },
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.34.0",
+    "@typescript-eslint/parser": "^5.34.0",
     "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-react": "^7.30.1",
+    "eslint-plugin-react-hooks": "^4.6.0",
     "husky": "^8.0.1",
     "pinst": "^3.0.0",
-    "prettier": "2.7.1"
+    "prettier": "^2.7.1"
   },
   "main": "index.js",
   "repository": "https://github.com/luigifsl/tretori-front.git",
