@@ -28,7 +28,13 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "postinstall": "husky install"
+    "postinstall": "husky install",
+    "lint": "yarn lint:eslint && yarn lint:prettier",
+    "lint:eslint": "eslint --ignore-pattern=coverage .",
+    "lint:prettier": "prettier --check -u .",
+    "lint:errors": "yarn lint:eslint --quiet",
+    "lint:fix": "yarn lint:eslint --fix",
+    "verify": "yarn tsc && yarn lint && yarn build:test && yarn test"
   },
   "eslintConfig": {
     "extends": [
@@ -49,6 +55,7 @@
     ]
   },
   "devDependencies": {
+    "eslint-config-prettier": "^8.5.0",
     "husky": "^8.0.1",
     "pinst": "^3.0.0",
     "prettier": "2.7.1"
