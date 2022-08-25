@@ -165,7 +165,7 @@ export default function App() {
           >
             <Toolbar />
             <Container maxWidth='lg' sx={{ mt: 4, mb: 4 }}>
-              <Grid container spacing={3}>
+              <Grid>
                 <Routes>
                   <Route path='/signin' element={<SignIn />} />
                   <Route path='/signup' element={<SignUp />} />

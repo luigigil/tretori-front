@@ -1,30 +1,11 @@
-import * as React from 'react'
-import {
-  Breadcrumbs,
-  Button,
-  Link,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TablePagination,
-  TableRow,
-  Tooltip,
-  Typography,
-} from '@mui/material'
-import DeleteIcon from '@mui/icons-material/Delete'
-import EditIcon from '@mui/icons-material/Edit'
+import { Button, Divider, Grid, Link, Typography } from '@mui/material'
+import { Box } from '@mui/system'
+import { Column } from '../../../shared/types/types'
+import Breadcrumb from '../../../shared/UI/breadcrumbs/Breadcrumbs'
+import TableMain from '../../../shared/UI/table/TableMain'
+import { Data } from './types'
 
-interface Column {
-  id: 'name' | 'code' | 'population' | 'size' | 'density'
-  label: string
-  minWidth?: number
-  align?: 'right'
-  format?: (value: number) => string
-}
-
-const columns: readonly Column[] = [
+const columns: Column[] = [
   { id: 'name', label: 'Name', minWidth: 170 },
   { id: 'code', label: 'ISO\u00a0Code', minWidth: 100 },
   {
@@ -50,14 +31,6 @@ const columns: readonly Column[] = [
   },
 ]
 
-interface Data {
-  name: string
-  code: string
-  population: number
-  size: number
-  density: number
-}
-
 function createData(name: string, code: string, population: number, size: number): Data {
   const density = population / size
   return { name, code, population, size, density }
@@ -81,92 +54,44 @@ const rows = [
   createData('Brazil', 'BR', 210147125, 8515767),
 ]
 
+const breadcrumbs = [
+  <Link underline='hover' key='1' color='inherit' href='/dashboard'>
+    Dashboard
+  </Link>,
+  <Link underline='none' key='2' color='inherit'>
+    Pessoa
+  </Link>,
+  <Typography key='3' color='text.primary'>
+    Consulta
+  </Typography>,
+]
+
 const ConsultarPessoaFisica = () => {
-  // Breadcrumb
-  const breadcrumbs = [
-    <Link underline="hover" key="1" color="inherit" href="/dashboard">
-      MUI
-    </Link>,
-    <Link underline="none" key="2" color="inherit">
-      Pessoa
-    </Link>,
-    <Typography key="3" color="text.primary">
-      Consulta
-    </Typography>,
-  ]
-
-  // Table
-  const [page, setPage] = React.useState(0)
-  const [rowsPerPage, setRowsPerPage] = React.useState(10)
-
-  const handleChangePage = (event: unknown, newPage: number) => {
-    setPage(newPage)
-  }
-
-  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setRowsPerPage(+event.target.value)
-    setPage(0)
-  }
-
   return (
     <section>
-      <Breadcrumbs separator="›" aria-label="breadcrumb">
-        {breadcrumbs}
-      </Breadcrumbs>
-      <Typography color="text.primary">Consulta Pessoa</Typography>
-      <Button variant="contained">Novo</Button>
+      <Breadcrumb breadcrumbs={breadcrumbs}></Breadcrumb>
+      <Box my={4}>
+        <Grid
+          container
+          rowSpacing={1}
+          columnSpacing={{ xs: 1, sm: 2 }}
+          direction='row'
+          justifyContent='space-between'
+          alignItems='center'
+        >
+          <Grid item>
+            <Typography variant='h4' color='text.primary'>
+              Consultar Pessoa
+            </Typography>
+          </Grid>
+          <Grid>
+            <Button variant='contained'>Novo</Button>
+          </Grid>
+        </Grid>
+        <Divider />
+      </Box>
 
-      <TableContainer sx={{ maxHeight: 600 }}>
-        <Table stickyHeader aria-label="sticky table">
-          <TableHead>
-            <TableRow>
-              {columns.map((column) => (
-                <TableCell
-                  key={column.id}
-                  align={column.align}
-                  style={{ minWidth: column.minWidth }}
-                >
-                  {column.label}
-                </TableCell>
-              ))}
-              <TableCell>Ações</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-              return (
-                <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
-                  {columns.map((column) => {
-                    const value = row[column.id]
-                    return (
-                      <TableCell key={column.id} align={column.align}>
-                        {column.format && typeof value === 'number' ? column.format(value) : value}
-                      </TableCell>
-                    )
-                  })}
-                  <TableCell align="left">
-                    <Tooltip title="Deletar">
-                      <DeleteIcon />
-                    </Tooltip>
-                    <Tooltip title="Editar">
-                      <EditIcon />
-                    </Tooltip>
-                  </TableCell>
-                </TableRow>
-              )
-            })}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
-        component="div"
-        count={rows.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
+      <TableMain columns={columns} rows={rows}></TableMain>
     </section>
   )
 }
