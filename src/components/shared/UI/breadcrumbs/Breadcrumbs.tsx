@@ -1,6 +1,4 @@
 import { Breadcrumbs } from '@mui/material'
-import React from 'react'
-import { JsxElement } from 'typescript'
 
 const Breadcrumb = (props: { breadcrumbs: JSX.Element[] }) => {
   return (

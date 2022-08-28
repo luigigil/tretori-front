@@ -1,0 +1,7 @@
+export const PHYSICAL_PERSON_TITLE = 'Consultar Pessoa Física'
+export const PHYSICAL_PERSON_NEW_TITLE = 'Cadastrar nova Pessoa Física'
+export const PHYSICAL_PERSON_NEW_CANCEL_MESSAGE = 'Tem certeza que deseja cancelar?'
+export const PHYSICAL_PERSON_DELETE_TITLE = 'Deletar Pessoa'
+export const PHYSICAL_PERSON_DELETE_MESSAGE = 'Deseja realmente deletar essa pessoa?'
+export const PHYSICAL_PERSON_DELETE_SUCCESS = 'Pessoa deletada com sucesso!'
+export const PHYSICAL_PERSON_NOT_IDENTIFIED = 'Desculpa não consegui identificar a pessoa'

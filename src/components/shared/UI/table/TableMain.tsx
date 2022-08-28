@@ -13,11 +13,13 @@ import {
   Tooltip,
 } from '@mui/material'
 import React from 'react'
-import { Column } from '../../types/types'
+import { Column } from '../../types/table'
 
 interface Data {
   columns: Column[]
   rows: any[]
+  onDelete?: any
+  onEdit?: any
 }
 
 const TableMain = (props: Data) => {
@@ -50,7 +52,7 @@ const TableMain = (props: Data) => {
     <React.Fragment>
       <Card>
         <TableContainer sx={{ maxHeight: 600 }}>
-          <Table stickyHeader aria-label='sticky table'>
+          <Table stickyHeader size='small' aria-label='sticky table'>
             <TableHead>
               <TableRow>
                 {props.columns?.map((column: Column) => (
@@ -83,12 +85,22 @@ const TableMain = (props: Data) => {
                       })}
                       <TableCell align='left'>
                         <Tooltip title='Deletar'>
-                          <IconButton color='primary' aria-label='delete' component='label'>
+                          <IconButton
+                            color='primary'
+                            aria-label='delete'
+                            component='label'
+                            onClick={props.onDelete}
+                          >
                             <DeleteIcon />
                           </IconButton>
                         </Tooltip>
                         <Tooltip title='Editar'>
-                          <IconButton color='primary' aria-label='edit' component='label'>
+                          <IconButton
+                            color='primary'
+                            aria-label='edit'
+                            component='label'
+                            onClick={props.onEdit}
+                          >
                             <EditIcon />
                           </IconButton>
                         </Tooltip>
