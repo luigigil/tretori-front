@@ -8,7 +8,7 @@ export interface PhysicalPersonRow {
 }
 
 export interface PhysicalPersonType {
-  id?: number
+  id?: number | null
   name: string
   birthdate: DateTime | string | null
   cpf: string
@@ -24,5 +24,5 @@ export interface PhysicalPersonType {
   city?: string
   neighborhood?: string
   uf?: string
-  contracts?: Contracts[]
+  // contracts?: Contracts[]
 }

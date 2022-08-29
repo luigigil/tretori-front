@@ -22,24 +22,26 @@ interface FormPhysicalPersonType {
 }
 
 const defaultValues = {
-  phone: '',
-  phone_secondary: '',
-  address: '',
-  cep: '',
-  city: '',
-  neighborhood: '',
-  uf: '',
-  email: '',
+  id: null,
   name: '',
   birthdate: '',
   cpf: '',
   rg: '',
   rg_emissor: '',
   rg_emissor_uf: '',
-  contracts: [],
+  phone: '',
+  email: '',
+  phone_secondary: '',
+  cep: '',
+  address: '',
+  city: '',
+  neighborhood: '',
+  uf: '',
+  // contracts: [],
 }
 
 const schema = Joi.object({
+  id: Joi.number().allow(null),
   name: Joi.string().min(2).max(200).required(),
   birthdate: Joi.required(),
   cpf: Joi.string().required(),
@@ -48,18 +50,16 @@ const schema = Joi.object({
   rg_emissor_uf: Joi.string().required(),
   phone: Joi.string().required(),
   email: Joi.string().required(),
-  phone_secondary: Joi.string() || null,
-  cep: Joi.string(),
-  address: Joi.string(),
-  city: Joi.string(),
-  neighborhood: Joi.string(),
-  uf: Joi.string(),
+  phone_secondary: Joi.string().allow(null, ''),
+  cep: Joi.string().allow(null, ''),
+  address: Joi.string().allow(null, ''),
+  city: Joi.string().allow(null, ''),
+  neighborhood: Joi.string().allow(null, ''),
+  uf: Joi.string().allow(null, ''),
+  // contracts: Joi.array().allow(null, [])
 })
 
-const FormPhysicalPerson = ({
-  physicalPerson = defaultValues,
-  ...props
-}: FormPhysicalPersonType) => {
+const FormPhysicalPerson = (props: FormPhysicalPersonType) => {
   const [openCancelConfirm, setOpenCancelConfirm] = useState(false)
   const [birthdate, setBirthdate] = useState<DateTime | null>()
 
@@ -67,11 +67,12 @@ const FormPhysicalPerson = ({
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<PhysicalPersonType>({ defaultValues, resolver: joiResolver(schema) })
+  } = useForm<PhysicalPersonType>({ defaultValues: defaultValues, resolver: joiResolver(schema) })
 
   const onSubmit = (data: any) => {
+    console.log('vamo poura')
     console.log(data)
-    props.onConfirm(data)
+    // props.onConfirm(data)
   }
 
   const onCancelHandler = () => {
@@ -86,7 +87,6 @@ const FormPhysicalPerson = ({
     <>
       <Box
         component='form'
-        onSubmit={handleSubmit(onSubmit)}
         sx={{
           '& .MuiTextField-root': { m: 1, width: '25ch' },
         }}
@@ -99,7 +99,7 @@ const FormPhysicalPerson = ({
           error={!!errors.name}
           helperText={errors.name?.type === 'required' && REQUIRED_FIELD}
           {...register('name')}
-          defaultValue={physicalPerson?.name}
+          defaultValue={props.physicalPerson?.name}
         />
         <BirthDatePicker
           required
@@ -115,7 +115,7 @@ const FormPhysicalPerson = ({
           error={!!errors.cpf}
           helperText={errors.cpf?.type === 'required' && REQUIRED_FIELD}
           {...register('cpf')}
-          defaultValue={physicalPerson?.cpf}
+          defaultValue={props.physicalPerson?.cpf}
         />
         <TextField
           label='RG'
@@ -123,7 +123,7 @@ const FormPhysicalPerson = ({
           error={!!errors.rg}
           helperText={errors.rg?.type === 'required' && REQUIRED_FIELD}
           {...register('rg')}
-          defaultValue={physicalPerson?.rg}
+          defaultValue={props.physicalPerson?.rg}
         />
         <TextField
           label='Órgão Emissor'
@@ -131,7 +131,7 @@ const FormPhysicalPerson = ({
           error={!!errors.rg_emissor}
           helperText={errors.rg_emissor?.type === 'required' && REQUIRED_FIELD}
           {...register('rg_emissor')}
-          defaultValue={physicalPerson?.rg_emissor}
+          defaultValue={props.physicalPerson?.rg_emissor}
         />
         <TextField
           label='Órgão Emissor UF'
@@ -139,7 +139,7 @@ const FormPhysicalPerson = ({
           error={!!errors.rg_emissor_uf}
           helperText={errors.rg_emissor_uf?.type === 'required' && REQUIRED_FIELD}
           {...register('rg_emissor_uf')}
-          defaultValue={physicalPerson?.rg_emissor_uf}
+          defaultValue={props.physicalPerson?.rg_emissor_uf}
         />
         <TextField
           label='Telefone'
@@ -147,12 +147,13 @@ const FormPhysicalPerson = ({
           error={!!errors.phone}
           helperText={errors.phone?.type === 'required' && REQUIRED_FIELD}
           {...register('phone')}
-          defaultValue={physicalPerson?.phone}
+          defaultValue={props.physicalPerson?.phone}
         />
         <TextField
           label='Telefone Secundário'
+          helperText={`${errors.phone_secondary?.type}`}
           {...register('phone_secondary')}
-          defaultValue={physicalPerson?.phone_secondary}
+          defaultValue={props.physicalPerson?.phone_secondary}
         />
         <TextField
           label='Email'
@@ -160,27 +161,28 @@ const FormPhysicalPerson = ({
           error={!!errors.email}
           helperText={errors.email?.type === 'required' && REQUIRED_FIELD}
           {...register('email')}
-          defaultValue={physicalPerson?.email}
+          defaultValue={props.physicalPerson?.email}
         />
-        <TextField label='CEP' {...register('cep')} defaultValue={physicalPerson?.cep} />
+        <TextField label='CEP' {...register('cep')} defaultValue={props.physicalPerson?.cep} />
         <TextField
           label='Endereço'
           {...register('address')}
-          defaultValue={physicalPerson?.address}
+          defaultValue={props.physicalPerson?.address}
         />
-        <TextField label='Cidade' {...register('city')} defaultValue={physicalPerson?.city} />
+        <TextField label='Cidade' {...register('city')} defaultValue={props.physicalPerson?.city} />
         <TextField
           label='Bairro'
           {...register('neighborhood')}
-          defaultValue={physicalPerson?.neighborhood}
+          defaultValue={props.physicalPerson?.neighborhood}
         />
-        <TextField label='UF' {...register('uf')} defaultValue={physicalPerson?.uf} />
+        <TextField label='UF' {...register('uf')} defaultValue={props.physicalPerson?.uf} />
         {/* Contratos (Vinculação) */}
       </Box>
       <Box sx={{ float: 'right' }}>
         <Button onClick={onCancelHandler}>{props.labelButtonCancel || 'Cancelar'}</Button>
         <Button onClick={handleSubmit(onSubmit)}>{props.labelButtonConfirm || 'Salvar'}</Button>
       </Box>
+
       <DialogConfirm
         open={openCancelConfirm}
         onClose={onCloseHandler}

@@ -22,9 +22,9 @@ import TitlePage from '../../../shared/UI/title/TitlePage'
 import FormPhysicalPerson from './FormPhysicalPerson'
 
 const breadcrumbs = [
-  <Bread name='Dashboard' link={true} href='/dashboard' key='1' />,
-  <Bread name='Pessoa' key='2' />,
-  <Bread name='Consulta' color='text.primary' key='3' />,
+  <Bread key='1' name='Dashboard' link={true} href='/dashboard' />,
+  <Bread key='2' name='Pessoa' />,
+  <Bread key='3' name='Consulta' color='text.primary' />,
 ]
 
 const columns: Column[] = [
