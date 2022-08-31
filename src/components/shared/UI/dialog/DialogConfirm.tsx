@@ -1,4 +1,3 @@
-import * as React from 'react'
 import Button from '@mui/material/Button'
 import Dialog from '@mui/material/Dialog'
 import DialogActions from '@mui/material/DialogActions'
@@ -8,8 +7,8 @@ import DialogTitle from '@mui/material/DialogTitle'
 
 const DialogConfirm = (props: {
   open: boolean
-  onClose: any
-  onConfirm: any
+  onClose: () => void
+  onConfirm: () => void
   title: string
   message: string
   cancelMessage?: string

@@ -1,12 +1,11 @@
 import { ExpandLess, ExpandMore, Person, StarBorder } from '@mui/icons-material'
+import InboxIcon from '@mui/icons-material/MoveToInbox'
 import { Collapse, List, ListItemButton, ListItemIcon, ListItemText } from '@mui/material'
 import { useState } from 'react'
-import InboxIcon from '@mui/icons-material/MoveToInbox'
-import { Link as RouterLink, useNavigate } from 'react-router-dom'
+import { Link as RouterLink } from 'react-router-dom'
 
 const ClientesMenu = () => {
   const [open, setOpen] = useState(true)
-  const navigate = useNavigate()
 
   const handleClick = () => {
     setOpen(!open)
@@ -23,7 +22,7 @@ const ClientesMenu = () => {
       </ListItemButton>
       <Collapse in={open} timeout='auto' unmountOnExit>
         <List component='div' disablePadding>
-          <ListItemButton sx={{ pl: 4 }} component={RouterLink as any} to='/pessoa-fisica'>
+          <ListItemButton sx={{ pl: 4 }} component={RouterLink} to='/pessoa-fisica'>
             <ListItemIcon>
               <Person />
             </ListItemIcon>

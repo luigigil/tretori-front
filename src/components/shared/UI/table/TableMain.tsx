@@ -17,9 +17,10 @@ import { Column } from '../../types/table'
 
 interface Data {
   columns: Column[]
+  // eslint-disable-next-line
   rows: any[]
-  onDelete?: any
-  onEdit?: any
+  onDelete?: (id: number) => void
+  onEdit?: (id: number) => void
 }
 
 const TableMain = (props: Data) => {
@@ -70,6 +71,7 @@ const TableMain = (props: Data) => {
             <TableBody>
               {props.rows
                 ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                // eslint-disable-next-line
                 .map((row: any) => {
                   return (
                     <TableRow hover role='checkbox' tabIndex={-1} key={row.code}>
@@ -84,26 +86,32 @@ const TableMain = (props: Data) => {
                         )
                       })}
                       <TableCell align='left'>
-                        <Tooltip title='Deletar'>
-                          <IconButton
-                            color='primary'
-                            aria-label='delete'
-                            component='label'
-                            onClick={props.onDelete}
-                          >
-                            <DeleteIcon />
-                          </IconButton>
-                        </Tooltip>
-                        <Tooltip title='Editar'>
-                          <IconButton
-                            color='primary'
-                            aria-label='edit'
-                            component='label'
-                            onClick={props.onEdit}
-                          >
-                            <EditIcon />
-                          </IconButton>
-                        </Tooltip>
+                        {props.onDelete && (
+                          <Tooltip title='Deletar'>
+                            <IconButton
+                              color='primary'
+                              aria-label='delete'
+                              component='label'
+                              onClick={() => {
+                                props.onDelete && props.onDelete(row.id)
+                              }}
+                            >
+                              <DeleteIcon />
+                            </IconButton>
+                          </Tooltip>
+                        )}
+                        {props.onEdit && (
+                          <Tooltip title='Editar'>
+                            <IconButton
+                              color='primary'
+                              aria-label='edit'
+                              component='label'
+                              onClick={() => props.onEdit && props.onEdit(row.id)}
+                            >
+                              <EditIcon />
+                            </IconButton>
+                          </Tooltip>
+                        )}
                       </TableCell>
                     </TableRow>
                   )

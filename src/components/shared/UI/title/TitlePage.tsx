@@ -1,12 +1,12 @@
 import { Button, Divider, Grid, Typography } from '@mui/material'
 import { Box } from '@mui/system'
 
-interface TitlePageTypes {
+interface TitlePageProps {
   title: string
-  onNew: any
+  onNew: () => void
 }
 
-const TitlePage = (props: TitlePageTypes) => {
+const TitlePage = (props: TitlePageProps) => {
   return (
     <Box my={4}>
       <Grid

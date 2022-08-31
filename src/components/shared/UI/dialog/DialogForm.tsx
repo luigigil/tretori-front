@@ -6,7 +6,7 @@ import DialogTitle from '@mui/material/DialogTitle'
 interface DialogFormTypes {
   open: boolean
   title: string
-  children: any
+  children: React.ReactNode
   message?: string
   maxWidth?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
 }

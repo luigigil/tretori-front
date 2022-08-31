@@ -3,14 +3,14 @@ import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon'
 import { DateTime } from 'luxon'
 
-interface BirthDatePickerInterface {
-  value?: DateTime | string | null | undefined
+interface BirthDatePickerProps {
+  value: DateTime | string | null | undefined
   required?: boolean
   helperText?: boolean | string
-  onChange?: any
+  onChange: (dateTime: DateTime | null) => void
 }
 
-const BirthDatePicker = (props: BirthDatePickerInterface) => {
+const BirthDatePicker = (props: BirthDatePickerProps) => {
   return (
     <LocalizationProvider dateAdapter={AdapterLuxon} adapterLocale={'pt-br'}>
       <DatePicker

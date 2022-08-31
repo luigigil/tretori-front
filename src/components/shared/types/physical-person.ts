@@ -1,5 +1,4 @@
 import { DateTime } from 'luxon'
-import { Contracts } from './contracts'
 
 export interface PhysicalPersonRow {
   name: string
@@ -24,5 +23,5 @@ export interface PhysicalPersonType {
   city?: string
   neighborhood?: string
   uf?: string
-  // contracts?: Contracts[]
+  contracts?: string[]
 }

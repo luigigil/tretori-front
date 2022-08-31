@@ -6,7 +6,7 @@ const Notification = (props: {
   severity: Severity['types']
   duration?: number
   open: boolean
-  onClose: any
+  onClose: () => void
 }) => {
   return (
     <Snackbar

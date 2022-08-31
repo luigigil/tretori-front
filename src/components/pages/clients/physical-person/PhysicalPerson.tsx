@@ -1,3 +1,4 @@
+import { Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import client from '../../../../api/axios'
 import { NOTIFICATION } from '../../../shared/enums/notification'
@@ -5,8 +6,9 @@ import {
   PHYSICAL_PERSON_DELETE_MESSAGE,
   PHYSICAL_PERSON_DELETE_SUCCESS,
   PHYSICAL_PERSON_DELETE_TITLE,
+  PHYSICAL_PERSON_NEW_FAIL,
+  PHYSICAL_PERSON_NEW_SUCCESS,
   PHYSICAL_PERSON_NEW_TITLE,
-  PHYSICAL_PERSON_NOT_IDENTIFIED,
   PHYSICAL_PERSON_TITLE,
 } from '../../../shared/messages/physical-person'
 import { Severity } from '../../../shared/types/notification'
@@ -16,6 +18,7 @@ import Bread from '../../../shared/UI/breadcrumbs/Bread'
 import Breadcrumb from '../../../shared/UI/breadcrumbs/Breadcrumbs'
 import DialogConfirm from '../../../shared/UI/dialog/DialogConfirm'
 import DialogForm from '../../../shared/UI/dialog/DialogForm'
+import BackdropLoading from '../../../shared/UI/loading/BackdropLoading'
 import Notification from '../../../shared/UI/notification/Notification'
 import TableMain from '../../../shared/UI/table/TableMain'
 import TitlePage from '../../../shared/UI/title/TitlePage'
@@ -32,9 +35,10 @@ const columns: Column[] = [
   { id: 'cpf', label: 'CPF', minWidth: 100 },
   { id: 'rg', label: 'RG', minWidth: 100 },
 ]
-
+const baseUrl = '/physical-person'
 const PhysicalPerson = () => {
   const [selectedId, setSelectedId] = React.useState(0)
+  const [refreshKey, setRefreshKey] = React.useState(0)
   const [rows, setRows] = useState<PhysicalPersonRow[]>([])
   const [notifyMessage, setNotifyMessage] = React.useState('')
   const [notifyOpen, setNotifyOpen] = React.useState(false)
@@ -43,71 +47,69 @@ const PhysicalPerson = () => {
   const [dialogConfirmTitle, setDialogConfirmTitle] = React.useState('')
   const [dialogConfirmMessage, setDialogConfirmMessage] = React.useState('')
   const [dialogFormOpen, setDialogFormOpen] = React.useState(false)
+  const [loading, setLoading] = React.useState(false)
 
   useEffect((): void => {
+    setLoading(true)
     const getPhysicalPerson = async (): Promise<void> => {
-      const response = await client.get('/physical-person')
-      setRows(response.data)
+      try {
+        const response = await client.get(baseUrl)
+        setRows(response.data)
+        setLoading(false)
+      } catch (error) {
+        setLoading(false)
+      }
     }
     getPhysicalPerson()
-    return
-  }, [])
+  }, [refreshKey])
 
   const onNewHandler = (): void => {
     setDialogFormOpen(true)
   }
 
   const onEditHandler = async (id: number): Promise<void> => {
-    notifySuccess('Pessoa editada com sucesso ' + id)
+    setSelectedId(id)
+    setDialogFormOpen(true)
   }
 
   const onDeleteHandler = (id: number): void => {
-    setDialogConfirmOpen(true)
-    setDialogConfirmTitle(PHYSICAL_PERSON_DELETE_TITLE)
-    setDialogConfirmMessage(PHYSICAL_PERSON_DELETE_MESSAGE)
+    openDialogDeleteConfirm()
     setSelectedId(id)
   }
 
   const onSaveHandler = async (physicalPerson: PhysicalPersonType): Promise<void> => {
-    console.log('confirm save ', physicalPerson)
-    // {
-    //   "id": 0,
-    //   "code": "string",
-    //   "phone": "string",
-    //   "phone_secondary": "string",
-    //   "address": "string",
-    //   "cep": "string",
-    //   "city": "string",
-    //   "neighborhood": "string",
-    //   "uf": "string",
-    //   "email": "string",
-    //   "name": "string",
-    //   "birthdate": "string",
-    //   "cpf": "string",
-    //   "rg": "string",
-    //   "rg_emissor": "string",
-    //   "rg_emissor_uf": "string",
-    //   "contracts": [
-    //     "string"
-    //   ]
-    // }
+    setLoading(true)
+    try {
+      await client.post(baseUrl, physicalPerson)
+      setLoading(false)
+      notifySuccess(PHYSICAL_PERSON_NEW_SUCCESS)
+      updateRows()
+    } catch (error) {
+      setLoading(false)
+      notifyError(PHYSICAL_PERSON_NEW_FAIL)
+    }
+    onDialogFormCloseHandler()
   }
 
   const onDeleteConfirmHandler = async (): Promise<void> => {
     setDialogConfirmOpen(false)
-    if (selectedId === 0) {
-      notifyError(PHYSICAL_PERSON_NOT_IDENTIFIED)
-      return
-    }
+    setLoading(true)
     try {
       await client.delete(`/physical-person/${selectedId}`)
       notifySuccess(PHYSICAL_PERSON_DELETE_SUCCESS)
+      setLoading(false)
+      updateRows()
     } catch (error) {
       notifyError(PHYSICAL_PERSON_DELETE_SUCCESS)
+      setLoading(false)
     }
   }
 
+  const updateRows = () => {
+    setRefreshKey((oldKey) => oldKey + 1)
+  }
   const onDialogFormCloseHandler = (): void => {
+    setSelectedId(0)
     setDialogFormOpen(false)
   }
 
@@ -117,6 +119,12 @@ const PhysicalPerson = () => {
 
   const onCloseNotifyHandler = (): void => {
     setNotifyOpen(false)
+  }
+
+  const openDialogDeleteConfirm = (): void => {
+    setDialogConfirmOpen(true)
+    setDialogConfirmTitle(PHYSICAL_PERSON_DELETE_TITLE)
+    setDialogConfirmMessage(PHYSICAL_PERSON_DELETE_MESSAGE)
   }
 
   const notifySuccess = (message: string): void => {
@@ -135,6 +143,11 @@ const PhysicalPerson = () => {
     <section>
       <Breadcrumb breadcrumbs={breadcrumbs}></Breadcrumb>
       <TitlePage title={PHYSICAL_PERSON_TITLE} onNew={onNewHandler}></TitlePage>
+      {rows.length <= 0 && (
+        <Typography align='center' marginBottom='1em'>
+          Nada aqui para ser mostrado
+        </Typography>
+      )}
       <TableMain
         columns={columns}
         rows={rows}
@@ -143,6 +156,7 @@ const PhysicalPerson = () => {
       ></TableMain>
       <DialogForm title={PHYSICAL_PERSON_NEW_TITLE} open={dialogFormOpen}>
         <FormPhysicalPerson
+          physicalPersonId={selectedId}
           onClose={onDialogFormCloseHandler}
           onConfirm={(physicalPerson: PhysicalPersonType) => onSaveHandler(physicalPerson)}
         ></FormPhysicalPerson>
@@ -154,6 +168,7 @@ const PhysicalPerson = () => {
         onClose={onDialogCloseHandler}
         onConfirm={onDeleteConfirmHandler}
       ></DialogConfirm>
+      <BackdropLoading open={loading}></BackdropLoading>
       <Notification
         message={notifyMessage}
         severity={notifySeverity}
