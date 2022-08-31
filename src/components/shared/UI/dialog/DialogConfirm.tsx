@@ -5,7 +5,7 @@ import DialogContent from '@mui/material/DialogContent'
 import DialogContentText from '@mui/material/DialogContentText'
 import DialogTitle from '@mui/material/DialogTitle'
 
-const DialogConfirm = (props: {
+interface DialogConfirmProps {
   open: boolean
   onClose: () => void
   onConfirm: () => void
@@ -13,21 +13,31 @@ const DialogConfirm = (props: {
   message: string
   cancelMessage?: string
   confirmMessage?: string
-}) => {
+}
+
+const DialogConfirm = ({
+  open,
+  onClose,
+  onConfirm,
+  title,
+  message,
+  cancelMessage,
+  confirmMessage,
+}: DialogConfirmProps) => {
   return (
     <Dialog
-      open={props.open}
+      open={open}
       aria-labelledby='confirm-dialog-title'
       aria-describedby='confirm-dialog-description'
     >
-      <DialogTitle id='confirm-dialog-title'>{props.title}</DialogTitle>
+      <DialogTitle id='confirm-dialog-title'>{title}</DialogTitle>
       <DialogContent>
-        <DialogContentText id='confirm-dialog-description'>{props.message}</DialogContentText>
+        <DialogContentText id='confirm-dialog-description'>{message}</DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={props.onClose}>{props.cancelMessage || 'Cancelar'}</Button>
-        <Button onClick={props.onConfirm} autoFocus>
-          {props.confirmMessage || 'Confirmar'}
+        <Button onClick={onClose}>{cancelMessage || 'Cancelar'}</Button>
+        <Button onClick={onConfirm} autoFocus>
+          {confirmMessage || 'Confirmar'}
         </Button>
       </DialogActions>
     </Dialog>

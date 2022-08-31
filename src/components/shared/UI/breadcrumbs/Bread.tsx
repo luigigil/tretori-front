@@ -1,22 +1,22 @@
 import { Link, Typography } from '@mui/material'
 import React from 'react'
 
-interface BreadInterface {
+interface BreadProps {
   name: string
   link?: boolean
   href?: string
   color?: string
 }
 
-const Bread = (props: BreadInterface) => {
+const Bread = ({ name, link, href, color }: BreadProps) => {
   return (
     <React.Fragment>
-      {props.link && (
-        <Link underline='hover' color={props.color || 'inherit'} href={props.href}>
-          {props.name}
+      {link && (
+        <Link underline='hover' color={color || 'inherit'} href={href}>
+          {name}
         </Link>
       )}
-      {!props.link && <Typography color={props.color || 'inherit'}>{props.name}</Typography>}
+      {!link && <Typography color={color || 'inherit'}>{name}</Typography>}
     </React.Fragment>
   )
 }

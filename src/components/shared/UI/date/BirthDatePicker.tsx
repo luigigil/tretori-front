@@ -10,19 +10,19 @@ interface BirthDatePickerProps {
   onChange: (dateTime: DateTime | null) => void
 }
 
-const BirthDatePicker = (props: BirthDatePickerProps) => {
+const BirthDatePicker = ({ value, required, helperText, onChange }: BirthDatePickerProps) => {
   return (
     <LocalizationProvider dateAdapter={AdapterLuxon} adapterLocale={'pt-br'}>
       <DatePicker
         openTo='year'
         views={['year', 'month', 'day']}
         label='Data de Nascimento'
-        value={props.value}
+        value={value}
         onChange={(newValue: DateTime | null) => {
-          props.onChange(newValue)
+          onChange(newValue)
         }}
         renderInput={(params) => (
-          <TextField {...params} helperText={props.helperText} required={props.required} />
+          <TextField {...params} helperText={helperText} required={required} />
         )}
         maxDate={DateTime.now()}
       />

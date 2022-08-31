@@ -1,3 +1,3 @@
-export interface Contracts {
+export interface ContractsType {
   id: number
 }

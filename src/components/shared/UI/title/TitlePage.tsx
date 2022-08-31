@@ -6,7 +6,7 @@ interface TitlePageProps {
   onNew: () => void
 }
 
-const TitlePage = (props: TitlePageProps) => {
+const TitlePage = ({ title, onNew }: TitlePageProps) => {
   return (
     <Box my={4}>
       <Grid
@@ -19,11 +19,11 @@ const TitlePage = (props: TitlePageProps) => {
       >
         <Grid item>
           <Typography variant='h4' color='text.primary'>
-            {props.title}
+            {title}
           </Typography>
         </Grid>
         <Grid>
-          <Button variant='contained' onClick={props.onNew}>
+          <Button variant='contained' onClick={onNew}>
             Novo
           </Button>
         </Grid>

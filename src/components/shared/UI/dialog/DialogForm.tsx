@@ -11,14 +11,14 @@ interface DialogFormTypes {
   maxWidth?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
 }
 
-const DialogForm = (props: DialogFormTypes) => {
+const DialogForm = ({ open, title, children, message, maxWidth }: DialogFormTypes) => {
   return (
     <>
-      <Dialog open={props.open} fullWidth={true} maxWidth={props.maxWidth || 'md'}>
-        <DialogTitle>{props.title}</DialogTitle>
+      <Dialog open={open} fullWidth={true} maxWidth={maxWidth || 'md'}>
+        <DialogTitle>{title}</DialogTitle>
         <DialogContent>
-          <DialogContentText>{props.message}</DialogContentText>
-          {props.children}
+          <DialogContentText>{message}</DialogContentText>
+          {children}
         </DialogContent>
       </Dialog>
     </>

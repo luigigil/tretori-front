@@ -1,6 +1,6 @@
 import { Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
-import client from '../../../../api/axios'
+import physicalPersonService from '../../../../api/physicalPersonService'
 import { NOTIFICATION } from '../../../shared/enums/notification'
 import {
   PHYSICAL_PERSON_DELETE_MESSAGE,
@@ -9,6 +9,7 @@ import {
   PHYSICAL_PERSON_NEW_FAIL,
   PHYSICAL_PERSON_NEW_SUCCESS,
   PHYSICAL_PERSON_NEW_TITLE,
+  PHYSICAL_PERSON_ROWS_FAIL,
   PHYSICAL_PERSON_TITLE,
 } from '../../../shared/messages/physical-person'
 import { Severity } from '../../../shared/types/notification'
@@ -35,7 +36,7 @@ const columns: Column[] = [
   { id: 'cpf', label: 'CPF', minWidth: 100 },
   { id: 'rg', label: 'RG', minWidth: 100 },
 ]
-const baseUrl = '/physical-person'
+
 const PhysicalPerson = () => {
   const [selectedId, setSelectedId] = React.useState(0)
   const [refreshKey, setRefreshKey] = React.useState(0)
@@ -53,11 +54,12 @@ const PhysicalPerson = () => {
     setLoading(true)
     const getPhysicalPerson = async (): Promise<void> => {
       try {
-        const response = await client.get(baseUrl)
-        setRows(response.data)
+        const list = await physicalPersonService.findAll()
+        setRows(list)
         setLoading(false)
       } catch (error) {
         setLoading(false)
+        notifyError(PHYSICAL_PERSON_ROWS_FAIL)
       }
     }
     getPhysicalPerson()
@@ -80,13 +82,13 @@ const PhysicalPerson = () => {
   const onSaveHandler = async (physicalPerson: PhysicalPersonType): Promise<void> => {
     setLoading(true)
     try {
-      await client.post(baseUrl, physicalPerson)
+      await physicalPersonService.save(physicalPerson)
       setLoading(false)
       notifySuccess(PHYSICAL_PERSON_NEW_SUCCESS)
       updateRows()
     } catch (error) {
       setLoading(false)
-      notifyError(PHYSICAL_PERSON_NEW_FAIL)
+      notifySuccess(PHYSICAL_PERSON_NEW_FAIL)
     }
     onDialogFormCloseHandler()
   }
@@ -95,7 +97,7 @@ const PhysicalPerson = () => {
     setDialogConfirmOpen(false)
     setLoading(true)
     try {
-      await client.delete(`/physical-person/${selectedId}`)
+      await physicalPersonService.deleteOneById(selectedId)
       notifySuccess(PHYSICAL_PERSON_DELETE_SUCCESS)
       setLoading(false)
       updateRows()
@@ -148,12 +150,7 @@ const PhysicalPerson = () => {
           Nada aqui para ser mostrado
         </Typography>
       )}
-      <TableMain
-        columns={columns}
-        rows={rows}
-        onDelete={onDeleteHandler}
-        onEdit={onEditHandler}
-      ></TableMain>
+      <TableMain columns={columns} rows={rows} onDelete={onDeleteHandler}></TableMain>
       <DialogForm title={PHYSICAL_PERSON_NEW_TITLE} open={dialogFormOpen}>
         <FormPhysicalPerson
           physicalPersonId={selectedId}

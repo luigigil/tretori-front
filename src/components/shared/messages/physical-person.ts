@@ -1,4 +1,5 @@
 export const PHYSICAL_PERSON_TITLE = 'Consultar Pessoa Física'
+export const PHYSICAL_PERSON_ROWS_FAIL = 'Falha ao recuperar lista de Pessoas Físicas'
 export const PHYSICAL_PERSON_NEW_TITLE = 'Cadastrar nova Pessoa Física'
 export const PHYSICAL_PERSON_NEW_CANCEL_MESSAGE = 'Tem certeza que deseja cancelar?'
 export const PHYSICAL_PERSON_NEW_SUCCESS = 'Pessoa Física adicionada com sucesso'

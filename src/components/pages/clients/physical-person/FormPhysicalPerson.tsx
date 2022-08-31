@@ -4,12 +4,14 @@ import Joi from 'joi'
 import { DateTime } from 'luxon'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import client from '../../../../api/axios'
+import contractsService from '../../../../api/contractsService'
+import physicalPersonService from '../../../../api/physicalPersonService'
 import {
   PHYSICAL_PERSON_NEW_CANCEL_MESSAGE,
   PHYSICAL_PERSON_TITLE,
 } from '../../../shared/messages/physical-person'
 import { REQUIRED_FIELD } from '../../../shared/messages/system'
+import { ContractsType } from '../../../shared/types/contracts'
 import { ListItemType } from '../../../shared/types/list'
 import { PhysicalPersonType } from '../../../shared/types/physical-person'
 import BirthDatePicker from '../../../shared/UI/date/BirthDatePicker'
@@ -17,14 +19,6 @@ import DialogConfirm from '../../../shared/UI/dialog/DialogConfirm'
 import BackdropLoading from '../../../shared/UI/loading/BackdropLoading'
 import SubtitleDialog from '../../../shared/UI/title/SubtitleDialog'
 import TransferList from '../../../shared/UI/transfer-list/TransferList'
-
-interface FormPhysicalPersonProps {
-  onClose: () => void
-  onConfirm: (data: PhysicalPersonType) => void
-  physicalPersonId?: number
-  labelButtonCancel?: string
-  labelButtonConfirm?: string
-}
 
 const schema = Joi.object({
   id: Joi.number().allow(null),
@@ -49,12 +43,25 @@ const schema = Joi.object({
   contracts: Joi.array().items(Joi.string()),
 })
 
-const parseContracts = (list: ListItemType[]): ListItemType[] => {
+const parseContracts = (list: ContractsType[]): ListItemType[] => {
   return list.map((item) => ({ id: item.id, label: `Contrato ${item.id} ` }))
 }
 
-const baseUrl = '/physical-person'
-const FormPhysicalPerson = (props: FormPhysicalPersonProps) => {
+interface FormPhysicalPersonProps {
+  onClose: () => void
+  onConfirm: (data: PhysicalPersonType) => void
+  physicalPersonId?: number
+  labelButtonCancel?: string
+  labelButtonConfirm?: string
+}
+
+const FormPhysicalPerson = ({
+  onClose,
+  onConfirm,
+  physicalPersonId,
+  labelButtonCancel,
+  labelButtonConfirm,
+}: FormPhysicalPersonProps) => {
   const {
     register,
     handleSubmit,
@@ -88,8 +95,8 @@ const FormPhysicalPerson = (props: FormPhysicalPersonProps) => {
 
   const getContracts = async () => {
     try {
-      const result = await client.get('/contract')
-      const contractsList = parseContracts(result.data)
+      const contracts = await contractsService.getAll()
+      const contractsList = parseContracts(contracts)
       setContracts(
         contractsList.length > 0
           ? contractsList
@@ -105,9 +112,9 @@ const FormPhysicalPerson = (props: FormPhysicalPersonProps) => {
 
   const getPhysicalPerson = async () => {
     try {
-      if (!props.physicalPersonId) return
-      const result = await client.get(`${baseUrl}/${props.physicalPersonId}`)
-      setEditPhysicalPerson(result.data)
+      if (!physicalPersonId) return
+      const person = await physicalPersonService.findById(physicalPersonId)
+      setEditPhysicalPerson(person)
     } catch (error) {
       return {}
     }
@@ -115,7 +122,7 @@ const FormPhysicalPerson = (props: FormPhysicalPersonProps) => {
 
   const onSubmit = (data: PhysicalPersonType) => {
     data.contracts = selectedContracts.map((contract) => `${contract.id}`)
-    props.onConfirm(data)
+    onConfirm(data)
   }
 
   const onChangeSelectedContractsHandler = (selected: ListItemType[]): void => {
@@ -140,7 +147,6 @@ const FormPhysicalPerson = (props: FormPhysicalPersonProps) => {
         noValidate
         autoComplete='off'
       >
-        <span>{JSON.stringify(errors)}</span>
         <TextField
           label='Nome'
           required
@@ -216,8 +222,8 @@ const FormPhysicalPerson = (props: FormPhysicalPersonProps) => {
         )}
       </Box>
       <Box sx={{ float: 'right' }}>
-        <Button onClick={onCancelHandler}>{props.labelButtonCancel || 'Cancelar'}</Button>
-        <Button onClick={handleSubmit(onSubmit)}>{props.labelButtonConfirm || 'Salvar'}</Button>
+        <Button onClick={onCancelHandler}>{labelButtonCancel || 'Cancelar'}</Button>
+        <Button onClick={handleSubmit(onSubmit)}>{labelButtonConfirm || 'Salvar'}</Button>
       </Box>
 
       <DialogConfirm
@@ -225,7 +231,7 @@ const FormPhysicalPerson = (props: FormPhysicalPersonProps) => {
         onClose={onCloseHandler}
         onConfirm={() => {
           onCloseHandler()
-          props.onClose()
+          onClose()
         }}
         title={`Cancelar ${PHYSICAL_PERSON_TITLE}`}
         message={PHYSICAL_PERSON_NEW_CANCEL_MESSAGE}
