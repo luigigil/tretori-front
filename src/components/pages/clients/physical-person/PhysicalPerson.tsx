@@ -69,17 +69,13 @@ const PhysicalPerson = () => {
     setDialogFormOpen(true)
   }
 
-  const onEditHandler = async (id: number): Promise<void> => {
-    setSelectedId(id)
-    setDialogFormOpen(true)
-  }
-
   const onDeleteHandler = (id: number): void => {
     openDialogDeleteConfirm()
     setSelectedId(id)
   }
 
   const onSaveHandler = async (physicalPerson: PhysicalPersonType): Promise<void> => {
+    onDialogFormCloseHandler()
     setLoading(true)
     try {
       await physicalPersonService.save(physicalPerson)
@@ -90,7 +86,6 @@ const PhysicalPerson = () => {
       setLoading(false)
       notifySuccess(PHYSICAL_PERSON_NEW_FAIL)
     }
-    onDialogFormCloseHandler()
   }
 
   const onDeleteConfirmHandler = async (): Promise<void> => {

@@ -74,7 +74,7 @@ const TableMain = ({ columns, rows, onDelete, onEdit }: TableMainProps) => {
                 // eslint-disable-next-line
                 .map((row: any) => {
                   return (
-                    <TableRow hover role='checkbox' tabIndex={-1} key={row.code}>
+                    <TableRow hover role='checkbox' tabIndex={-1} key={row.id}>
                       {columns?.map((column: Column) => {
                         const value = row[column.id]
                         return (
