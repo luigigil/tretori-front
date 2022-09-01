@@ -204,15 +204,18 @@ const FormPhysicalPerson = ({
         <TextField label='Cidade' {...register('city')} />
         <TextField label='Bairro' {...register('neighborhood')} />
         <TextField label='UF' {...register('uf')} />
-        <Divider></Divider>
-        <SubtitleDialog subtitle='Contratos' />
         {contracts.length > 0 && (
-          <TransferList
-            list={contracts}
-            listSelected={[]}
-            onChange={onChangeSelectedContractsHandler}
-          ></TransferList>
+          <>
+            <Divider></Divider>
+            <SubtitleDialog subtitle='Contratos' />
+            <TransferList
+              list={contracts}
+              listSelected={[]}
+              onChange={onChangeSelectedContractsHandler}
+            ></TransferList>
+          </>
         )}
+        <Divider></Divider>
       </Box>
       <Box sx={{ float: 'right' }}>
         <Button onClick={onCancelHandler}>{labelButtonCancel || 'Cancelar'}</Button>
