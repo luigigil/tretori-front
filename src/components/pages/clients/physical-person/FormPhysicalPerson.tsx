@@ -24,7 +24,6 @@ const schema = Joi.object({
   id: Joi.number().allow(null),
   code: Joi.any(),
   name: Joi.string().min(2).max(200).required(),
-  birthdate: Joi.required(),
   cpf: Joi.string().min(11).max(11).required(),
   rg: Joi.string().max(20).required(),
   rg_emissor: Joi.string().max(20).required(),
@@ -69,7 +68,7 @@ const FormPhysicalPerson = ({
     reset,
   } = useForm<PhysicalPersonType>({ resolver: joiResolver(schema) })
   const [openCancelConfirm, setOpenCancelConfirm] = useState(false)
-  const [birthdate, setBirthdate] = useState<DateTime | null>()
+  const [birthdate, setBirthdate] = useState<DateTime | null>(DateTime.now())
   const [contracts, setContracts] = useState<ListItemType[]>([])
   const [selectedContracts, setSelectedContracts] = useState<ListItemType[]>([])
   const [loading, setLoading] = useState(false)
@@ -114,6 +113,8 @@ const FormPhysicalPerson = ({
   }
 
   const onSubmit = (data: PhysicalPersonType) => {
+    if (!birthdate) return
+    data.birthdate = birthdate
     data.contracts = selectedContracts.map((contract) => `${contract.id}`)
     onConfirm(data)
   }
