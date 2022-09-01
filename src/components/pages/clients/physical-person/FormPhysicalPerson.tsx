@@ -97,14 +97,7 @@ const FormPhysicalPerson = ({
     try {
       const contracts = await contractsService.getAll()
       const contractsList = parseContracts(contracts)
-      setContracts(
-        contractsList.length > 0
-          ? contractsList
-          : [
-              { id: 1, label: 'item 1' },
-              { id: 2, label: 'item 2' },
-            ],
-      )
+      setContracts(contractsList.length > 0 ? contractsList : [])
     } catch (error) {
       return []
     }
