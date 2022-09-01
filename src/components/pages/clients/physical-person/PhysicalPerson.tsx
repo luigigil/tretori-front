@@ -84,7 +84,7 @@ const PhysicalPerson = () => {
       updateRows()
     } catch (error) {
       setLoading(false)
-      notifySuccess(PHYSICAL_PERSON_NEW_FAIL)
+      notifyError(PHYSICAL_PERSON_NEW_FAIL)
     }
   }
 
@@ -97,8 +97,8 @@ const PhysicalPerson = () => {
       setLoading(false)
       updateRows()
     } catch (error) {
-      notifyError(PHYSICAL_PERSON_DELETE_SUCCESS)
       setLoading(false)
+      notifyError(PHYSICAL_PERSON_DELETE_SUCCESS)
     }
   }
 
