@@ -1,7 +1,6 @@
 import axios from 'axios'
 
 const client = axios.create({
-  baseURL: 'https://tretori-api.herokuapp.com',
+  baseURL: process.env.REACT_APP_AXIOS_BASE_URL,
 })
-
 export default client
