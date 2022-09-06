@@ -1,7 +1,7 @@
 import { Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import physicalPersonService from '../../../../api/physicalPersonService'
-import { NOTIFICATION } from '../../../shared/enums/notification'
+import { NotificationEnum } from '../../../shared/enums/notification'
 import {
   PHYSICAL_PERSON_DELETE_MESSAGE,
   PHYSICAL_PERSON_DELETE_SUCCESS,
@@ -130,13 +130,13 @@ const PhysicalPerson = () => {
 
   const notifySuccess = (message: string): void => {
     setNotifyOpen(true)
-    setNotifySeverity(NOTIFICATION.SUCCESS)
+    setNotifySeverity(NotificationEnum.SUCCESS)
     setNotifyMessage(message)
   }
 
   const notifyError = (message: string): void => {
     setNotifyOpen(true)
-    setNotifySeverity(NOTIFICATION.ERROR)
+    setNotifySeverity(NotificationEnum.ERROR)
     setNotifyMessage(message)
   }
 

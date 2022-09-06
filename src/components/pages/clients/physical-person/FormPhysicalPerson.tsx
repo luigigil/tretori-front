@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import contractsService from '../../../../api/contractsService'
 import physicalPersonService from '../../../../api/physicalPersonService'
-import { NOTIFICATION } from '../../../shared/enums/notification'
+import { NotificationEnum } from '../../../shared/enums/notification'
 import {
   PHYSICAL_PERSON_NEW_CANCEL_MESSAGE,
   PHYSICAL_PERSON_TITLE,
@@ -115,7 +115,7 @@ const FormPhysicalPerson = ({
 
   const notifyError = (message: string): void => {
     setNotifyOpen(true)
-    setNotifySeverity(NOTIFICATION.ERROR)
+    setNotifySeverity(NotificationEnum.ERROR)
     setNotifyMessage(message)
   }
 
