@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import contractsService from '../../../../api/contractsService'
 import physicalPersonService from '../../../../api/physicalPersonService'
+import { NOTIFICATION } from '../../../shared/enums/notification'
 import {
   PHYSICAL_PERSON_NEW_CANCEL_MESSAGE,
   PHYSICAL_PERSON_TITLE,
@@ -13,10 +14,12 @@ import {
 import { REQUIRED_FIELD } from '../../../shared/messages/system'
 import { ContractsType } from '../../../shared/types/contracts'
 import { ListItemType } from '../../../shared/types/list'
+import { Severity } from '../../../shared/types/notification'
 import { PhysicalPersonType } from '../../../shared/types/physical-person'
 import BirthDatePicker from '../../../shared/UI/date/BirthDatePicker'
 import DialogConfirm from '../../../shared/UI/dialog/DialogConfirm'
 import BackdropLoading from '../../../shared/UI/loading/BackdropLoading'
+import Notification from '../../../shared/UI/notification/Notification'
 import SubtitleDialog from '../../../shared/UI/title/SubtitleDialog'
 import TransferList from '../../../shared/UI/transfer-list/TransferList'
 
@@ -73,19 +76,22 @@ const FormPhysicalPerson = ({
   const [selectedContracts, setSelectedContracts] = useState<ListItemType[]>([])
   const [loading, setLoading] = useState(false)
   const [editPhysicalPerson, setEditPhysicalPerson] = useState<PhysicalPersonType>()
+  const [notifyMessage, setNotifyMessage] = useState('')
+  const [notifyOpen, setNotifyOpen] = useState(false)
+  const [notifySeverity, setNotifySeverity] = useState<Severity['types']>('info')
 
   useEffect((): void => {
-    const initFormData = async (): Promise<void> => {
-      setLoading(true)
-      try {
-        await getContracts()
-        await getPhysicalPerson()
-        setLoading(false)
-      } catch (error) {
-        setLoading(false)
-      }
+    const initContracts = async (): Promise<void> => {
+      await getContracts()
     }
-    initFormData()
+    initContracts()
+  }, [])
+
+  useEffect((): void => {
+    const initPhysicalPerson = async (): Promise<void> => {
+      await getPhysicalPerson()
+    }
+    initPhysicalPerson()
   }, [])
 
   useEffect(() => {
@@ -93,22 +99,38 @@ const FormPhysicalPerson = ({
   }, [editPhysicalPerson])
 
   const getContracts = async () => {
+    setLoading(true)
     try {
       const contracts = await contractsService.getAll()
       const contractsList = parseContracts(contracts)
       setContracts(contractsList.length > 0 ? contractsList : [])
+      setLoading(false)
     } catch (error) {
-      return []
+      setLoading(false)
+      if (error instanceof Error) {
+        notifyError(error.message)
+      }
     }
   }
 
+  const notifyError = (message: string): void => {
+    setNotifyOpen(true)
+    setNotifySeverity(NOTIFICATION.ERROR)
+    setNotifyMessage(message)
+  }
+
   const getPhysicalPerson = async () => {
+    setLoading(true)
     try {
       if (!physicalPersonId) return
       const person = await physicalPersonService.findById(physicalPersonId)
       setEditPhysicalPerson(person)
+      setLoading(false)
     } catch (error) {
-      return {}
+      setLoading(false)
+      if (error instanceof Error) {
+        notifyError(error.message)
+      }
     }
   }
 
@@ -129,6 +151,10 @@ const FormPhysicalPerson = ({
 
   const onCloseHandler = () => {
     setOpenCancelConfirm(false)
+  }
+
+  const onCloseNotifyHandler = (): void => {
+    setNotifyOpen(false)
   }
 
   return (
@@ -234,6 +260,12 @@ const FormPhysicalPerson = ({
         message={PHYSICAL_PERSON_NEW_CANCEL_MESSAGE}
       ></DialogConfirm>
       <BackdropLoading open={loading}></BackdropLoading>
+      <Notification
+        message={notifyMessage}
+        severity={notifySeverity}
+        open={notifyOpen}
+        onClose={onCloseNotifyHandler}
+      ></Notification>
     </>
   )
 }

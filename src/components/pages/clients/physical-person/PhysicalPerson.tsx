@@ -6,10 +6,8 @@ import {
   PHYSICAL_PERSON_DELETE_MESSAGE,
   PHYSICAL_PERSON_DELETE_SUCCESS,
   PHYSICAL_PERSON_DELETE_TITLE,
-  PHYSICAL_PERSON_NEW_FAIL,
   PHYSICAL_PERSON_NEW_SUCCESS,
   PHYSICAL_PERSON_NEW_TITLE,
-  PHYSICAL_PERSON_ROWS_FAIL,
   PHYSICAL_PERSON_TITLE,
 } from '../../../shared/messages/physical-person'
 import { Severity } from '../../../shared/types/notification'
@@ -59,7 +57,9 @@ const PhysicalPerson = () => {
         setLoading(false)
       } catch (error) {
         setLoading(false)
-        notifyError(PHYSICAL_PERSON_ROWS_FAIL)
+        if (error instanceof Error) {
+          notifyError(error.message)
+        }
       }
     }
     getPhysicalPerson()
@@ -84,7 +84,9 @@ const PhysicalPerson = () => {
       updateRows()
     } catch (error) {
       setLoading(false)
-      notifyError(PHYSICAL_PERSON_NEW_FAIL)
+      if (error instanceof Error) {
+        notifyError(error.message)
+      }
     }
   }
 
@@ -98,7 +100,9 @@ const PhysicalPerson = () => {
       updateRows()
     } catch (error) {
       setLoading(false)
-      notifyError(PHYSICAL_PERSON_DELETE_SUCCESS)
+      if (error instanceof Error) {
+        notifyError(error.message)
+      }
     }
   }
 
