@@ -12,16 +12,16 @@ import ListItemText from '@mui/material/ListItemText'
 import { ReactNode, useState } from 'react'
 import { ListItemType } from '../../types/list'
 
-function not(a: readonly ListItemType[], b: readonly ListItemType[]) {
-  return a.filter((value) => b.findIndex((item) => item.id === value.id) === -1)
+function not(list: readonly ListItemType[], listNotIn: readonly ListItemType[]) {
+  return list.filter((value) => listNotIn.findIndex((item) => item.id === value.id) === -1)
 }
 
-function intersection(a: readonly ListItemType[], b: readonly ListItemType[]) {
-  return a.filter((value) => b.findIndex((item) => item.id == value.id) !== -1)
+function intersection(list: readonly ListItemType[], listIn: readonly ListItemType[]) {
+  return list.filter((value) => listIn.findIndex((item) => item.id === value.id) !== -1)
 }
 
-function union(a: readonly ListItemType[], b: readonly ListItemType[]) {
-  return [...a, ...not(b, a)]
+function union(list: readonly ListItemType[], listToUnion: readonly ListItemType[]) {
+  return [...list, ...not(listToUnion, list)]
 }
 
 interface TranferListProps {
