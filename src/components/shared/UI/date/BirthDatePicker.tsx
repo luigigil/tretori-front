@@ -10,9 +10,10 @@ interface BirthDatePickerProps {
   onChange: (dateTime: DateTime | null) => void
 }
 
+const ADPATER_LOCALE = process.env.REACT_APP_LOCALE
 const BirthDatePicker = ({ value, required, helperText, onChange }: BirthDatePickerProps) => {
   return (
-    <LocalizationProvider dateAdapter={AdapterLuxon} adapterLocale={'pt-br'}>
+    <LocalizationProvider dateAdapter={AdapterLuxon} adapterLocale={ADPATER_LOCALE}>
       <DatePicker
         openTo='year'
         views={['year', 'month', 'day']}
