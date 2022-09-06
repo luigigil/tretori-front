@@ -113,12 +113,6 @@ const FormPhysicalPerson = ({
     }
   }
 
-  const notifyError = (message: string): void => {
-    setNotifyOpen(true)
-    setNotifySeverity(NotificationEnum.ERROR)
-    setNotifyMessage(message)
-  }
-
   const getPhysicalPerson = async () => {
     setLoading(true)
     try {
@@ -151,6 +145,12 @@ const FormPhysicalPerson = ({
 
   const onCloseHandler = () => {
     setOpenCancelConfirm(false)
+  }
+
+  const notifyError = (message: string): void => {
+    setNotifyOpen(true)
+    setNotifySeverity(NotificationEnum.ERROR)
+    setNotifyMessage(message)
   }
 
   const onCloseNotifyHandler = (): void => {
