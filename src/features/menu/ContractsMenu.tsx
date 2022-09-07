@@ -1,7 +1,8 @@
-import { ExpandLess, ExpandMore, StarBorder } from '@mui/icons-material'
+import { ExpandLess, ExpandMore, Inventory, StarBorder } from '@mui/icons-material'
 import { Collapse, List, ListItemButton, ListItemIcon, ListItemText } from '@mui/material'
 import { useState } from 'react'
 import InboxIcon from '@mui/icons-material/MoveToInbox'
+import { Link } from 'react-router-dom'
 
 const ContratosMenu = () => {
   const [open, setOpen] = useState(true)
@@ -21,9 +22,9 @@ const ContratosMenu = () => {
       </ListItemButton>
       <Collapse in={open} timeout='auto' unmountOnExit>
         <List component='div' disablePadding>
-          <ListItemButton sx={{ pl: 4 }}>
+          <ListItemButton sx={{ pl: 4 }} component={Link} to='/contrato'>
             <ListItemIcon>
-              <StarBorder />
+              <Inventory />
             </ListItemIcon>
             <ListItemText primary='Contrato' />
           </ListItemButton>

@@ -13,7 +13,7 @@ import {
   Tooltip,
 } from '@mui/material'
 import React from 'react'
-import { Column } from '../../../../shared/types/table'
+import { Column } from '../../utils/types/table'
 
 interface TableMainProps {
   columns: Column[]

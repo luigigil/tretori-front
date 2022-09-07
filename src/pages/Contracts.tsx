@@ -1,7 +1,7 @@
 import { Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
-import physicalPersonService from '../../../api/physicalPersonService'
-import { NotificationEnum } from '../../../shared/enums/notification'
+import physicalPersonService from '../api/physicalPersonService'
+import { NotificationEnum } from '../utils/enums/notification'
 import {
   PHYSICAL_PERSON_DELETE_MESSAGE,
   PHYSICAL_PERSON_DELETE_SUCCESS,
@@ -9,19 +9,19 @@ import {
   PHYSICAL_PERSON_NEW_SUCCESS,
   PHYSICAL_PERSON_NEW_TITLE,
   PHYSICAL_PERSON_TITLE,
-} from '../../../shared/messages/physical-person'
-import { Severity } from '../../../shared/types/notification'
-import { PhysicalPersonRow, PhysicalPersonType } from '../../../shared/types/physical-person'
-import { Column } from '../../../shared/types/table'
-import Bread from '../../../components/shared/UI/breadcrumbs/Bread'
-import Breadcrumb from '../../../components/shared/UI/breadcrumbs/Breadcrumbs'
-import DialogConfirm from '../../../components/shared/UI/dialog/DialogConfirm'
-import DialogForm from '../../../components/shared/UI/dialog/DialogForm'
-import BackdropLoading from '../../../components/shared/UI/loading/BackdropLoading'
-import Notification from '../../../components/shared/UI/notification/Notification'
-import TableMain from '../../../components/shared/UI/table/TableMain'
-import TitlePage from '../../../components/shared/UI/title/TitlePage'
-import FormPhysicalPerson from './FormPhysicalPerson'
+} from '../utils/messages/physical-person'
+import { Severity } from '../utils/types/notification'
+import { PhysicalPersonRow, PhysicalPersonType } from '../utils/types/physical-person'
+import { Column } from '../utils/types/table'
+import Bread from '../ui/breadcrumbs/Bread'
+import Breadcrumb from '../ui/breadcrumbs/Breadcrumbs'
+import DialogConfirm from '../ui/dialog/DialogConfirm'
+import DialogForm from '../ui/dialog/DialogForm'
+import BackdropLoading from '../ui/loading/BackdropLoading'
+import Notification from '../ui/notification/Notification'
+import TableMain from '../ui/table/TableMain'
+import TitlePage from '../ui/title/TitlePage'
+import FormPhysicalPerson from '../features/physical-person/FormPhysicalPerson'
 
 const breadcrumbs = [
   <Bread key='1' name='Dashboard' link={true} href='/dashboard' />,
@@ -35,7 +35,7 @@ const columns: Column[] = [
   { id: 'rg', label: 'RG', minWidth: 100 },
 ]
 
-const PhysicalPerson = () => {
+const Contracts = () => {
   const [selectedId, setSelectedId] = React.useState(0)
   const [refreshKey, setRefreshKey] = React.useState(0)
   const [rows, setRows] = useState<PhysicalPersonRow[]>([])
@@ -175,4 +175,4 @@ const PhysicalPerson = () => {
   )
 }
 
-export default PhysicalPerson
+export default Contracts

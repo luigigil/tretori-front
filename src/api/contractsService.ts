@@ -1,4 +1,4 @@
-import { ContractsType } from '../shared/types/contracts'
+import { ContractsType } from '../utils/types/contracts'
 import client from './axios'
 
 const baseUrl = '/contract'
