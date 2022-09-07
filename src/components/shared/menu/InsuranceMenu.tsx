@@ -3,7 +3,7 @@ import { Collapse, List, ListItemButton, ListItemIcon, ListItemText } from '@mui
 import { useState } from 'react'
 import InboxIcon from '@mui/icons-material/MoveToInbox'
 
-const GestaoMenu = () => {
+const SeguradorasMenu = () => {
   const [open, setOpen] = useState(true)
 
   const handleClick = () => {
@@ -16,22 +16,28 @@ const GestaoMenu = () => {
         <ListItemIcon>
           <InboxIcon />
         </ListItemIcon>
-        <ListItemText primary="Gestao" />
+        <ListItemText primary='Seguradoras' />
         {open ? <ExpandLess /> : <ExpandMore />}
       </ListItemButton>
-      <Collapse in={open} timeout="auto" unmountOnExit>
-        <List component="div" disablePadding>
+      <Collapse in={open} timeout='auto' unmountOnExit>
+        <List component='div' disablePadding>
           <ListItemButton sx={{ pl: 4 }}>
             <ListItemIcon>
               <StarBorder />
             </ListItemIcon>
-            <ListItemText primary="Usuários" />
+            <ListItemText primary='Seguradoras' />
           </ListItemButton>
           <ListItemButton sx={{ pl: 4 }}>
             <ListItemIcon>
               <StarBorder />
             </ListItemIcon>
-            <ListItemText primary="Login" />
+            <ListItemText primary='Produtos' />
+          </ListItemButton>
+          <ListItemButton sx={{ pl: 4 }}>
+            <ListItemIcon>
+              <StarBorder />
+            </ListItemIcon>
+            <ListItemText primary=' Representantes' />
           </ListItemButton>
         </List>
       </Collapse>
@@ -39,4 +45,4 @@ const GestaoMenu = () => {
   )
 }
 
-export default GestaoMenu
+export default SeguradorasMenu

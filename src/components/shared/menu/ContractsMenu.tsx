@@ -16,34 +16,34 @@ const ContratosMenu = () => {
         <ListItemIcon>
           <InboxIcon />
         </ListItemIcon>
-        <ListItemText primary="Contratos" />
+        <ListItemText primary='Contratos' />
         {open ? <ExpandLess /> : <ExpandMore />}
       </ListItemButton>
-      <Collapse in={open} timeout="auto" unmountOnExit>
-        <List component="div" disablePadding>
+      <Collapse in={open} timeout='auto' unmountOnExit>
+        <List component='div' disablePadding>
           <ListItemButton sx={{ pl: 4 }}>
             <ListItemIcon>
               <StarBorder />
             </ListItemIcon>
-            <ListItemText primary="Contrato" />
+            <ListItemText primary='Contrato' />
           </ListItemButton>
           <ListItemButton sx={{ pl: 4 }}>
             <ListItemIcon>
               <StarBorder />
             </ListItemIcon>
-            <ListItemText primary="Movimentação" />
+            <ListItemText primary='Movimentação' />
           </ListItemButton>
           <ListItemButton sx={{ pl: 4 }}>
             <ListItemIcon>
               <StarBorder />
             </ListItemIcon>
-            <ListItemText primary="Acessos" />
+            <ListItemText primary='Acessos' />
           </ListItemButton>
           <ListItemButton sx={{ pl: 4 }}>
             <ListItemIcon>
               <StarBorder />
             </ListItemIcon>
-            <ListItemText primary="Renovação" />
+            <ListItemText primary='Renovação' />
           </ListItemButton>
         </List>
       </Collapse>

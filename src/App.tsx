@@ -18,12 +18,11 @@ import Typography from '@mui/material/Typography'
 import * as React from 'react'
 import { Route, Routes } from 'react-router-dom'
 import './App.css'
-import CadastrarPessoaFisica from './components/pages/clientes/pessoa-fisica/CadastrarPessoaFisica'
-import ConsultarPessoaFisica from './components/pages/clientes/pessoa-fisica/ConsultarPessoaFisica'
-import ClientesMenu from './components/shared/menu/ClientesMenu'
-import ContratosMenu from './components/shared/menu/ContratosMenu'
-import GestaoMenu from './components/shared/menu/GestaoMenu'
-import SeguradorasMenu from './components/shared/menu/SeguradorasMenu'
+import PhysicalPerson from './components/pages/clients/physical-person/PhysicalPerson'
+import ClientesMenu from './components/shared/menu/ClientsMenu'
+import ContratosMenu from './components/shared/menu/ContractsMenu'
+import SeguradorasMenu from './components/shared/menu/InsuranceMenu'
+import GestaoMenu from './components/shared/menu/ManagementMenu'
 import SignIn from './components/shared/sign-in/SignIn'
 import SignUp from './components/shared/sign-up/SignUp'
 
@@ -165,12 +164,11 @@ export default function App() {
           >
             <Toolbar />
             <Container maxWidth='lg' sx={{ mt: 4, mb: 4 }}>
-              <Grid container spacing={3}>
+              <Grid>
                 <Routes>
                   <Route path='/signin' element={<SignIn />} />
                   <Route path='/signup' element={<SignUp />} />
-                  <Route path='/pessoa-fisica' element={<ConsultarPessoaFisica />} />
-                  <Route path='/pessoa-fisica/cadastro' element={<CadastrarPessoaFisica />} />
+                  <Route path='/pessoa-fisica' element={<PhysicalPerson />} />
                 </Routes>
               </Grid>
               <Copyright sx={{ pt: 4 }} />
