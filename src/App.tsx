@@ -18,13 +18,13 @@ import Typography from '@mui/material/Typography'
 import * as React from 'react'
 import { Route, Routes } from 'react-router-dom'
 import './App.css'
-import PhysicalPerson from './components/pages/clients/physical-person/PhysicalPerson'
+import PhysicalPerson from './pages/clients/physical-person/PhysicalPerson'
 import ClientesMenu from './components/shared/menu/ClientsMenu'
 import ContratosMenu from './components/shared/menu/ContractsMenu'
 import SeguradorasMenu from './components/shared/menu/InsuranceMenu'
 import GestaoMenu from './components/shared/menu/ManagementMenu'
-import SignIn from './components/shared/sign-in/SignIn'
-import SignUp from './components/shared/sign-up/SignUp'
+import SignIn from './pages/sign-in/SignIn'
+import SignUp from './pages/sign-up/SignUp'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function Copyright(props: any) {

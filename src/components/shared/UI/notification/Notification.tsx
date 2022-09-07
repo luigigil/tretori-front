@@ -1,5 +1,5 @@
 import { Alert, Snackbar } from '@mui/material'
-import { Severity } from '../../types/notification'
+import { Severity } from '../../../../shared/types/notification'
 
 interface NotificationProps {
   message: string

@@ -1,6 +1,6 @@
 import { Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
-import physicalPersonService from '../../../../api/physicalPersonService'
+import physicalPersonService from '../../../api/physicalPersonService'
 import { NotificationEnum } from '../../../shared/enums/notification'
 import {
   PHYSICAL_PERSON_DELETE_MESSAGE,
@@ -13,14 +13,14 @@ import {
 import { Severity } from '../../../shared/types/notification'
 import { PhysicalPersonRow, PhysicalPersonType } from '../../../shared/types/physical-person'
 import { Column } from '../../../shared/types/table'
-import Bread from '../../../shared/UI/breadcrumbs/Bread'
-import Breadcrumb from '../../../shared/UI/breadcrumbs/Breadcrumbs'
-import DialogConfirm from '../../../shared/UI/dialog/DialogConfirm'
-import DialogForm from '../../../shared/UI/dialog/DialogForm'
-import BackdropLoading from '../../../shared/UI/loading/BackdropLoading'
-import Notification from '../../../shared/UI/notification/Notification'
-import TableMain from '../../../shared/UI/table/TableMain'
-import TitlePage from '../../../shared/UI/title/TitlePage'
+import Bread from '../../../components/shared/UI/breadcrumbs/Bread'
+import Breadcrumb from '../../../components/shared/UI/breadcrumbs/Breadcrumbs'
+import DialogConfirm from '../../../components/shared/UI/dialog/DialogConfirm'
+import DialogForm from '../../../components/shared/UI/dialog/DialogForm'
+import BackdropLoading from '../../../components/shared/UI/loading/BackdropLoading'
+import Notification from '../../../components/shared/UI/notification/Notification'
+import TableMain from '../../../components/shared/UI/table/TableMain'
+import TitlePage from '../../../components/shared/UI/title/TitlePage'
 import FormPhysicalPerson from './FormPhysicalPerson'
 
 const breadcrumbs = [
