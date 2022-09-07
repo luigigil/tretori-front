@@ -52,7 +52,7 @@ const PhysicalPerson = () => {
     setLoading(true)
     const getPhysicalPerson = async (): Promise<void> => {
       try {
-        const list = await physicalPersonService.findAll()
+        const list = (await physicalPersonService.findAll()).data
         setRows(list)
         setLoading(false)
       } catch (error) {

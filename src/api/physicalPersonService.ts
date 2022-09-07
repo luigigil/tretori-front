@@ -3,23 +3,20 @@ import client from './axios'
 
 const baseUrl = '/physical-person'
 
-const findById = async (id: number): Promise<PhysicalPersonType> => {
-  const result = await client.get(`${baseUrl}/${id}`)
-  return result.data
+const findById = (id: number): Promise<{ data: PhysicalPersonType }> => {
+  return client.get(`${baseUrl}/${id}`)
 }
 
-const findAll = async (): Promise<PhysicalPersonType[]> => {
-  const result = await client.get(baseUrl)
-  return result.data
+const findAll = (): Promise<{ data: PhysicalPersonType[] }> => {
+  return client.get(baseUrl)
 }
 
-const save = async (physicalPerson: PhysicalPersonType): Promise<PhysicalPersonType> => {
-  const result = await client.post(baseUrl, physicalPerson)
-  return result.data
+const save = (physicalPerson: PhysicalPersonType): Promise<{ data: PhysicalPersonType }> => {
+  return client.post(baseUrl, physicalPerson)
 }
 
-const deleteOneById = async (id: number): Promise<void> => {
-  return await client.delete(`/physical-person/${id}`)
+const deleteOneById = (id: number): Promise<void> => {
+  return client.delete(`/physical-person/${id}`)
 }
 
 export default {

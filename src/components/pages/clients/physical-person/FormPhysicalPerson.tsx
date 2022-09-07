@@ -101,7 +101,7 @@ const FormPhysicalPerson = ({
   const getContracts = async () => {
     setLoading(true)
     try {
-      const contracts = await contractsService.getAll()
+      const contracts = (await contractsService.findAll()).data
       const contractsList = parseContracts(contracts)
       setContracts(contractsList.length > 0 ? contractsList : [])
       setLoading(false)
@@ -117,7 +117,7 @@ const FormPhysicalPerson = ({
     setLoading(true)
     try {
       if (!physicalPersonId) return
-      const person = await physicalPersonService.findById(physicalPersonId)
+      const person = (await physicalPersonService.findById(physicalPersonId)).data
       setEditPhysicalPerson(person)
       setLoading(false)
     } catch (error) {
@@ -130,6 +130,7 @@ const FormPhysicalPerson = ({
 
   const onSubmit = (data: PhysicalPersonType) => {
     if (!birthdate) return
+    data.code = ''
     data.birthdate = birthdate
     data.contracts = selectedContracts.map((contract) => `${contract.id}`)
     onConfirm(data)
