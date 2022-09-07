@@ -3,11 +3,10 @@ import client from './axios'
 
 const baseUrl = '/contract'
 
-const getAll = async (): Promise<ContractsType[]> => {
-  const result = await client.get(baseUrl)
-  return result.data
+const findAll = async (): Promise<{ data: ContractsType[] }> => {
+  return client.get(baseUrl)
 }
 
 export default {
-  getAll,
+  findAll,
 }
