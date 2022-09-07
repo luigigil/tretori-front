@@ -13,15 +13,15 @@ import {
 import { Severity } from '../utils/types/notification'
 import { PhysicalPersonRow, PhysicalPersonType } from '../utils/types/physical-person'
 import { Column } from '../utils/types/table'
-import Bread from '../ui/breadcrumbs/bread'
 import Breadcrumb from '../ui/breadcrumbs/bread-crumbs'
 import DialogConfirm from '../ui/dialog/dialog-confirm'
 import DialogForm from '../ui/dialog/dialog-form'
 import BackdropLoading from '../ui/loading/backdrop-loading'
-import Notification from '../ui/notification/notification'
 import TableMain from '../ui/table/table-main'
 import TitlePage from '../ui/title/title-page'
 import FormPhysicalPerson from '../features/physical-person/form-physical-person'
+import Notification from '../ui/notification/notification'
+import Bread from '../ui/breadcrumbs/bread'
 
 const breadcrumbs = [
   <Bread key='1' name='Dashboard' link={true} href='/dashboard' />,
