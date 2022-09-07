@@ -1,0 +1,3 @@
+CODEOWNERS @luigifsl
+package.json @luigifsl
+yarn.lock @luigifsl

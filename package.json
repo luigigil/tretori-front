@@ -2,6 +2,39 @@
   "name": "tretori-react",
   "version": "0.1.0",
   "private": true,
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "postinstall": "husky install",
+    "lint": "yarn lint:eslint && yarn lint:prettier",
+    "lint:eslint": "eslint --ignore-pattern=coverage .",
+    "lint:prettier": "prettier --check -u .",
+    "lint:errors": "yarn lint:eslint --quiet",
+    "lint:fix": "yarn lint:eslint --fix",
+    "verify": "yarn tsc && yarn lint && yarn build:test && yarn test",
+    "verify:quick": "yarn tsc && yarn fmt && yarn lint:fix",
+    "prepare": "husky install"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
   "dependencies": {
     "@date-io/luxon": "^2.15.0",
     "@emotion/react": "^11.10.0",
@@ -30,39 +63,9 @@
     "typescript": "^4.4.2",
     "web-vitals": "^2.1.0"
   },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "postinstall": "husky install",
-    "lint": "yarn lint:eslint && yarn lint:prettier",
-    "lint:eslint": "eslint --ignore-pattern=coverage .",
-    "lint:prettier": "prettier --check -u .",
-    "lint:errors": "yarn lint:eslint --quiet",
-    "lint:fix": "yarn lint:eslint --fix",
-    "verify": "yarn tsc && yarn lint && yarn build:test && yarn test",
-    "verify:quick": "yarn tsc && yarn fmt && yarn lint:fix"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
   "devDependencies": {
+    "@commitlint/cli": "^17.1.2",
+    "@commitlint/config-conventional": "^17.1.0",
     "@types/luxon": "^3.0.0",
     "@typescript-eslint/eslint-plugin": "^5.34.0",
     "@typescript-eslint/parser": "^5.34.0",
@@ -70,7 +73,8 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.30.1",
     "eslint-plugin-react-hooks": "^4.6.0",
-    "husky": "^8.0.1",
+    "husky": "^8.0.0",
+    "lint-staged": "^13.0.3",
     "pinst": "^3.0.0",
     "prettier": "^2.7.1"
   },
