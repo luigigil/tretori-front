@@ -5,7 +5,7 @@ import IconButton from '@mui/material/IconButton'
 import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
 import * as React from 'react'
-import AppBar from './AppBar'
+import AppBar from './app-bar'
 
 interface AppBarContainerProps {
   open: boolean

@@ -3,11 +3,11 @@ import Divider from '@mui/material/Divider'
 import IconButton from '@mui/material/IconButton'
 import List from '@mui/material/List'
 import Toolbar from '@mui/material/Toolbar'
-import ClientesMenu from '../features/menu/ClientsMenu'
-import ContratosMenu from '../features/menu/ContractsMenu'
-import SeguradorasMenu from '../features/menu/InsuranceMenu'
-import GestaoMenu from '../features/menu/ManagementMenu'
-import Drawer from './Drawer'
+import ClientesMenu from '../features/menu/clients-menu'
+import ContratosMenu from '../features/menu/contracts-menu'
+import SeguradorasMenu from '../features/menu/insurance-menu'
+import GestaoMenu from '../features/menu/management-menu'
+import Drawer from './drawer'
 
 interface DrawerContainerProps {
   open: boolean

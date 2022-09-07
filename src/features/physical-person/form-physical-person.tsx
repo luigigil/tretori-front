@@ -16,12 +16,12 @@ import { ContractsType } from '../../utils/types/contracts'
 import { ListItemType } from '../../utils/types/list'
 import { Severity } from '../../utils/types/notification'
 import { PhysicalPersonType } from '../../utils/types/physical-person'
-import BirthDatePicker from '../../ui/date/BirthDatePicker'
-import DialogConfirm from '../../ui/dialog/DialogConfirm'
-import BackdropLoading from '../../ui/loading/BackdropLoading'
-import Notification from '../../ui/notification/Notification'
-import SubtitleDialog from '../../ui/title/SubtitleDialog'
-import TransferList from '../../ui/transfer-list/TransferList'
+import BirthDatePicker from '../../ui/date/birth-date-picker'
+import DialogConfirm from '../../ui/dialog/dialog-confirm'
+import BackdropLoading from '../../ui/loading/backdrop-loading'
+import Notification from '../../ui/notification/notification'
+import SubtitleDialog from '../../ui/title/subtitle-dialog'
+import TransferList from '../../ui/transfer-list/transfer-list'
 
 const schema = Joi.object({
   id: Joi.number().allow(null),

@@ -7,13 +7,13 @@ import Toolbar from '@mui/material/Toolbar'
 import { useState } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import './App.css'
-import AppBarContainer from './layouts/AppBarContainer'
+import AppBarContainer from './layouts/app-bar-container'
 import Copyright from './layouts/Copyright'
-import DrawerContainer from './layouts/DrawerContainer'
+import DrawerContainer from './layouts/drawer-container'
 import Contracts from './pages/Contracts'
-import PhysicalPerson from './pages/PhysicalPerson'
-import SignInSide from './pages/SignIn'
-import SignUp from './pages/SignUp'
+import PhysicalPerson from './pages/physical-person'
+import SignInSide from './pages/sign-in'
+import SignUp from './pages/sign-up'
 
 const mdTheme = createTheme()
 export default function App() {
