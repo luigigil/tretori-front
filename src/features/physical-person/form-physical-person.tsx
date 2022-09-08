@@ -6,22 +6,20 @@ import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import contractsService from '../../api/contractsService'
 import physicalPersonService from '../../api/physicalPersonService'
-import { NotificationEnum } from '../../utils/enums/notification'
-import {
-  PHYSICAL_PERSON_NEW_CANCEL_MESSAGE,
-  PHYSICAL_PERSON_TITLE,
-} from '../../utils/messages/physical-person'
-import { REQUIRED_FIELD } from '../../utils/messages/system'
-import { ContractsType } from '../../utils/types/contracts'
-import { ListItemType } from '../../utils/types/list'
-import { Severity } from '../../utils/types/notification'
-import { PhysicalPersonType } from '../../utils/types/physical-person'
 import BirthDatePicker from '../../ui/date/birth-date-picker'
 import DialogConfirm from '../../ui/dialog/dialog-confirm'
 import BackdropLoading from '../../ui/loading/backdrop-loading'
 import Notification from '../../ui/notification/notification'
 import SubtitleDialog from '../../ui/title/subtitle-dialog'
 import TransferList from '../../ui/transfer-list/transfer-list'
+import { NotificationEnum } from '../../utils/enums/notification'
+import { MS_CANCEL } from '../../utils/messages/common'
+import { MS_PHYSICAL_PERSON } from '../../utils/messages/physical-person'
+import { REQUIRED_FIELD } from '../../utils/messages/system'
+import { ContractsType } from '../../utils/types/contracts'
+import { ListItemType } from '../../utils/types/list'
+import { Severity } from '../../utils/types/notification'
+import { PhysicalPersonType } from '../../utils/types/physical-person'
 
 const schema = Joi.object({
   id: Joi.number().allow(null),
@@ -29,14 +27,14 @@ const schema = Joi.object({
   name: Joi.string().min(2).max(200).required(),
   cpf: Joi.string().min(11).max(11).required(),
   rg: Joi.string().max(20).required(),
-  rgEmissor: Joi.string().max(20).required(),
-  rgEmissorUf: Joi.string().max(20).required(),
+  rg_emissor: Joi.string().max(20).required(),
+  rg_emissor_uf: Joi.string().max(20).required(),
   phone: Joi.string().max(25).required(),
   email: Joi.string()
     .max(250)
     .email({ minDomainSegments: 2, tlds: { allow: false } })
     .required(),
-  phoneSecondary: Joi.string().max(25).allow(null, ''),
+  phone_secondary: Joi.string().max(25).allow(null, ''),
   cep: Joi.string().max(20).allow(null, ''),
   address: Joi.string().max(250).allow(null, ''),
   city: Joi.string().max(100).allow(null, ''),
@@ -95,7 +93,7 @@ const FormPhysicalPerson = ({
   }, [])
 
   useEffect(() => {
-    reset(editPhysicalPerson)
+    reset({ ...editPhysicalPerson })
   }, [editPhysicalPerson])
 
   const getContracts = async () => {
@@ -112,14 +110,20 @@ const FormPhysicalPerson = ({
       }
     }
   }
+  const initNewPhysicalPerson = () => {
+    console.log('new')
+  }
 
+  const initEditPhysicalPerson = async (id: number) => {
+    const person = (await physicalPersonService.findById(id)).data
+    setEditPhysicalPerson(person)
+    setLoading(false)
+  }
   const getPhysicalPerson = async () => {
     setLoading(true)
     try {
-      if (!physicalPersonId) return
-      const person = (await physicalPersonService.findById(physicalPersonId)).data
-      setEditPhysicalPerson(person)
-      setLoading(false)
+      physicalPersonId ? initEditPhysicalPerson(physicalPersonId) : initNewPhysicalPerson()
+      return
     } catch (error) {
       setLoading(false)
       if (error instanceof Error) {
@@ -169,12 +173,11 @@ const FormPhysicalPerson = ({
         autoComplete='off'
       >
         <TextField
+          {...register('name')}
           label='Nome'
           required
           error={!!errors.name}
           helperText={errors.name?.type === 'required' && REQUIRED_FIELD}
-          defaultValue={editPhysicalPerson?.name}
-          {...register('name')}
         />
         <BirthDatePicker
           required
@@ -257,8 +260,8 @@ const FormPhysicalPerson = ({
           onCloseHandler()
           onClose()
         }}
-        title={`Cancelar ${PHYSICAL_PERSON_TITLE}`}
-        message={PHYSICAL_PERSON_NEW_CANCEL_MESSAGE}
+        title={`Cancelar ${physicalPersonId ? 'Edição' : 'cadastro'} de ${MS_PHYSICAL_PERSON}`}
+        message={MS_CANCEL}
       ></DialogConfirm>
       <BackdropLoading open={loading}></BackdropLoading>
       <Notification
