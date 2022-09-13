@@ -9,7 +9,7 @@ export interface PhysicalPersonRow {
 export interface PhysicalPersonType {
   id?: number
   name: string
-  birthdate: DateTime
+  birthdate: string
   cpf: string
   rg: string
   rg_emissor: string

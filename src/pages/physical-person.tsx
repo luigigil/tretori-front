@@ -15,6 +15,7 @@ import {
   PHYSICAL_PERSON_DELETE_MESSAGE,
   PHYSICAL_PERSON_DELETE_SUCCESS,
   PHYSICAL_PERSON_DELETE_TITLE,
+  PHYSICAL_PERSON_EDIT_SUCCESS,
   PHYSICAL_PERSON_EDIT_TITLE,
   PHYSICAL_PERSON_NEW_SUCCESS,
   PHYSICAL_PERSON_NEW_TITLE,
@@ -83,7 +84,9 @@ const PhysicalPerson = () => {
     try {
       await physicalPersonService.save(physicalPerson)
       setLoading(false)
-      notifySuccess(PHYSICAL_PERSON_NEW_SUCCESS)
+      const notifyMessage =
+        physicalPerson.id != null ? PHYSICAL_PERSON_EDIT_SUCCESS : PHYSICAL_PERSON_NEW_SUCCESS
+      notifySuccess(notifyMessage)
       updateRows()
     } catch (error) {
       setLoading(false)
