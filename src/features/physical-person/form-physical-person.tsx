@@ -241,7 +241,7 @@ const FormPhysicalPerson = ({
           onCloseHandler()
           onClose()
         }}
-        title={`Cancelar ${physicalPersonId ? 'Edição' : 'cadastro'} de ${MS_PHYSICAL_PERSON}`}
+        title={`Cancelar ${physicalPersonId ? 'Edição' : 'Cadastro'} de ${MS_PHYSICAL_PERSON}`}
         message={MS_CANCEL}
       ></DialogConfirm>
       <BackdropLoading open={loading}></BackdropLoading>
