@@ -1,5 +1,6 @@
 import { TextField } from '@mui/material'
 import { Control, Controller } from 'react-hook-form'
+import { INVALID_INPUT } from '../../../utils/messages/system'
 
 interface FormTextFieldProps {
   // TODO check how to use generic types
@@ -30,7 +31,7 @@ const FormTextField = ({
       control={control}
       name={name}
       defaultValue={defaultValue}
-      rules={{ required: { value: true, message: 'Invalid input' } }}
+      rules={{ required: { value: true, message: INVALID_INPUT } }}
     />
   )
 }
