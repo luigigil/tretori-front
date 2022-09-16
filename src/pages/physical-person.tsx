@@ -84,8 +84,9 @@ const PhysicalPerson = () => {
     try {
       await physicalPersonService.save(physicalPerson)
       setLoading(false)
-      const notifyMessage =
-        physicalPerson.id != null ? PHYSICAL_PERSON_EDIT_SUCCESS : PHYSICAL_PERSON_NEW_SUCCESS
+      const notifyMessage = physicalPerson.id
+        ? PHYSICAL_PERSON_EDIT_SUCCESS
+        : PHYSICAL_PERSON_NEW_SUCCESS
       notifySuccess(notifyMessage)
       updateRows()
     } catch (error) {
