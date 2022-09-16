@@ -73,7 +73,7 @@ const FormPhysicalPerson = ({
     formState: { errors },
   } = useForm<PhysicalPersonType>({ resolver: joiResolver(schema) })
   const [openCancelConfirm, setOpenCancelConfirm] = useState(false)
-  const [birthdate, setBirthdate] = useState<DateTime | string | null>(DateTime.now())
+  const [birthdate, setBirthdate] = useState<string | undefined>(DateTime.now().toISO())
   const [contracts, setContracts] = useState<ListItemType[]>([])
   const [selectedContracts, setSelectedContracts] = useState<ListItemType[]>([])
   const [loading, setLoading] = useState(false)
@@ -134,7 +134,7 @@ const FormPhysicalPerson = ({
 
   const initEditPhysicalPerson = async (id: number) => {
     const person = (await physicalPersonService.findById(id)).data
-    setBirthdate(DateTime.fromISO(person.birthdate))
+    setBirthdate(person.birthdate)
     setEditPhysicalPerson(person)
     setLoading(false)
   }
@@ -142,7 +142,7 @@ const FormPhysicalPerson = ({
   const onSubmit = (data: PhysicalPersonType) => {
     if (!birthdate) return
     data.code = ''
-    data.birthdate = typeof birthdate === 'string' ? birthdate : birthdate.toISODate()
+    data.birthdate = birthdate
     data.contracts = selectedContracts.map((contract) => `${contract.id}`)
     onConfirm(data)
   }
@@ -185,7 +185,7 @@ const FormPhysicalPerson = ({
           helperText={errors.birthdate?.type === 'required' && REQUIRED_FIELD}
           value={birthdate}
           onChange={(newValue: DateTime | null) => {
-            setBirthdate(newValue)
+            setBirthdate(newValue?.toISODate())
           }}
         ></BirthDatePicker>
         <FormTextField label={'CPF'} name='cpf' control={control} errors={errors} />
