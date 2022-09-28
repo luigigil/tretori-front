@@ -1,18 +1,7 @@
 import { Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import physicalPersonService from '../api/physicalPersonService'
-import { NotificationEnum } from '../utils/enums/notification'
-import {
-  PHYSICAL_PERSON_DELETE_MESSAGE,
-  PHYSICAL_PERSON_DELETE_SUCCESS,
-  PHYSICAL_PERSON_DELETE_TITLE,
-  PHYSICAL_PERSON_NEW_SUCCESS,
-  PHYSICAL_PERSON_NEW_TITLE,
-  PHYSICAL_PERSON_TITLE,
-} from '../utils/messages/physical-person'
-import { Severity } from '../utils/types/notification'
-import { PhysicalPersonRow, PhysicalPersonType } from '../utils/types/physical-person'
-import { Column } from '../utils/types/table'
+import FormPhysicalPerson from '../features/physical-person/form-physical-person'
 import Bread from '../ui/breadcrumbs/bread'
 import Breadcrumb from '../ui/breadcrumbs/bread-crumbs'
 import DialogConfirm from '../ui/dialog/dialog-confirm'
@@ -21,7 +10,20 @@ import BackdropLoading from '../ui/loading/backdrop-loading'
 import Notification from '../ui/notification/notification'
 import TableMain from '../ui/table/table-main'
 import TitlePage from '../ui/title/title-page'
-import FormPhysicalPerson from '../features/physical-person/form-physical-person'
+import { NotificationEnum } from '../utils/enums/notification'
+import {
+  PHYSICAL_PERSON_DELETE_MESSAGE,
+  PHYSICAL_PERSON_DELETE_SUCCESS,
+  PHYSICAL_PERSON_DELETE_TITLE,
+  PHYSICAL_PERSON_EDIT_SUCCESS,
+  PHYSICAL_PERSON_EDIT_TITLE,
+  PHYSICAL_PERSON_NEW_SUCCESS,
+  PHYSICAL_PERSON_NEW_TITLE,
+  PHYSICAL_PERSON_TITLE,
+} from '../utils/messages/physical-person'
+import { Severity } from '../utils/types/notification'
+import { PhysicalPersonRow, PhysicalPersonType } from '../utils/types/physical-person'
+import { Column } from '../utils/types/table'
 
 const breadcrumbs = [
   <Bread key='1' name='Dashboard' link={true} href='/dashboard' />,
@@ -45,6 +47,7 @@ const PhysicalPerson = () => {
   const [dialogConfirmOpen, setDialogConfirmOpen] = React.useState(false)
   const [dialogConfirmTitle, setDialogConfirmTitle] = React.useState('')
   const [dialogConfirmMessage, setDialogConfirmMessage] = React.useState('')
+  const [dialogFormTitle, setDialogFormTitle] = React.useState('')
   const [dialogFormOpen, setDialogFormOpen] = React.useState(false)
   const [loading, setLoading] = React.useState(false)
 
@@ -66,6 +69,7 @@ const PhysicalPerson = () => {
   }, [refreshKey])
 
   const onNewHandler = (): void => {
+    setDialogFormTitle(PHYSICAL_PERSON_NEW_TITLE)
     setDialogFormOpen(true)
   }
 
@@ -80,7 +84,10 @@ const PhysicalPerson = () => {
     try {
       await physicalPersonService.save(physicalPerson)
       setLoading(false)
-      notifySuccess(PHYSICAL_PERSON_NEW_SUCCESS)
+      const notifyMessage = physicalPerson.id
+        ? PHYSICAL_PERSON_EDIT_SUCCESS
+        : PHYSICAL_PERSON_NEW_SUCCESS
+      notifySuccess(notifyMessage)
       updateRows()
     } catch (error) {
       setLoading(false)
@@ -88,6 +95,12 @@ const PhysicalPerson = () => {
         notifyError(error.message)
       }
     }
+  }
+
+  const onEditHandler = async (id: number): Promise<void> => {
+    setSelectedId(id)
+    setDialogFormTitle(PHYSICAL_PERSON_EDIT_TITLE)
+    setDialogFormOpen(true)
   }
 
   const onDeleteConfirmHandler = async (): Promise<void> => {
@@ -149,8 +162,13 @@ const PhysicalPerson = () => {
           Nada aqui para ser mostrado
         </Typography>
       )}
-      <TableMain columns={columns} rows={rows} onDelete={onDeleteHandler}></TableMain>
-      <DialogForm title={PHYSICAL_PERSON_NEW_TITLE} open={dialogFormOpen}>
+      <TableMain
+        columns={columns}
+        rows={rows}
+        onDelete={onDeleteHandler}
+        onEdit={onEditHandler}
+      ></TableMain>
+      <DialogForm title={dialogFormTitle} open={dialogFormOpen}>
         <FormPhysicalPerson
           physicalPersonId={selectedId}
           onClose={onDialogFormCloseHandler}

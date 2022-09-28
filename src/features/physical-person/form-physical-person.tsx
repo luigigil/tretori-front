@@ -1,42 +1,43 @@
 import { joiResolver } from '@hookform/resolvers/joi'
-import { Box, Button, Divider, TextField } from '@mui/material'
+import { Box, Button, Divider } from '@mui/material'
 import Joi from 'joi'
 import { DateTime } from 'luxon'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import contractsService from '../../api/contractsService'
 import physicalPersonService from '../../api/physicalPersonService'
+import BirthDatePicker from '../../ui/date/birth-date-picker'
+import DialogConfirm from '../../ui/dialog/dialog-confirm'
+import FormTextField from '../../ui/form/inputs/text-field'
+import BackdropLoading from '../../ui/loading/backdrop-loading'
+import Notification from '../../ui/notification/notification'
+import SubtitleDialog from '../../ui/title/subtitle-dialog'
+import TransferList from '../../ui/transfer-list/transfer-list'
 import { NotificationEnum } from '../../utils/enums/notification'
-import {
-  PHYSICAL_PERSON_NEW_CANCEL_MESSAGE,
-  PHYSICAL_PERSON_TITLE,
-} from '../../utils/messages/physical-person'
+import { MS_CANCEL } from '../../utils/messages/common'
+import { MS_PHYSICAL_PERSON } from '../../utils/messages/physical-person'
 import { REQUIRED_FIELD } from '../../utils/messages/system'
 import { ContractsType } from '../../utils/types/contracts'
 import { ListItemType } from '../../utils/types/list'
 import { Severity } from '../../utils/types/notification'
 import { PhysicalPersonType } from '../../utils/types/physical-person'
-import BirthDatePicker from '../../ui/date/birth-date-picker'
-import DialogConfirm from '../../ui/dialog/dialog-confirm'
-import BackdropLoading from '../../ui/loading/backdrop-loading'
-import Notification from '../../ui/notification/notification'
-import SubtitleDialog from '../../ui/title/subtitle-dialog'
-import TransferList from '../../ui/transfer-list/transfer-list'
 
+/* eslint-disable camelcase */
 const schema = Joi.object({
   id: Joi.number().allow(null),
   code: Joi.any(),
   name: Joi.string().min(2).max(200).required(),
+  birthdate: Joi.any(),
   cpf: Joi.string().min(11).max(11).required(),
   rg: Joi.string().max(20).required(),
-  rgEmissor: Joi.string().max(20).required(),
-  rgEmissorUf: Joi.string().max(20).required(),
+  rg_emissor: Joi.string().max(20).required(),
+  rg_emissor_uf: Joi.string().max(20).required(),
   phone: Joi.string().max(25).required(),
   email: Joi.string()
     .max(250)
     .email({ minDomainSegments: 2, tlds: { allow: false } })
     .required(),
-  phoneSecondary: Joi.string().max(25).allow(null, ''),
+  phone_secondary: Joi.string().max(25).allow(null, ''),
   cep: Joi.string().max(20).allow(null, ''),
   address: Joi.string().max(250).allow(null, ''),
   city: Joi.string().max(100).allow(null, ''),
@@ -44,6 +45,7 @@ const schema = Joi.object({
   uf: Joi.string().max(20).allow(null, ''),
   contracts: Joi.array().items(Joi.string()),
 })
+/* eslint-enable camelcase */
 
 const parseContracts = (list: ContractsType[]): ListItemType[] => {
   return list.map((item) => ({ id: item.id, label: `Contrato ${item.id} ` }))
@@ -65,13 +67,13 @@ const FormPhysicalPerson = ({
   labelButtonConfirm,
 }: FormPhysicalPersonProps) => {
   const {
-    register,
     handleSubmit,
-    formState: { errors },
+    control,
     reset,
+    formState: { errors },
   } = useForm<PhysicalPersonType>({ resolver: joiResolver(schema) })
   const [openCancelConfirm, setOpenCancelConfirm] = useState(false)
-  const [birthdate, setBirthdate] = useState<DateTime | null>(DateTime.now())
+  const [birthdate, setBirthdate] = useState<string | undefined>(DateTime.now().toISO())
   const [contracts, setContracts] = useState<ListItemType[]>([])
   const [selectedContracts, setSelectedContracts] = useState<ListItemType[]>([])
   const [loading, setLoading] = useState(false)
@@ -95,6 +97,7 @@ const FormPhysicalPerson = ({
   }, [])
 
   useEffect(() => {
+    if (!editPhysicalPerson) return
     reset(editPhysicalPerson)
   }, [editPhysicalPerson])
 
@@ -112,20 +115,28 @@ const FormPhysicalPerson = ({
       }
     }
   }
-
   const getPhysicalPerson = async () => {
     setLoading(true)
     try {
-      if (!physicalPersonId) return
-      const person = (await physicalPersonService.findById(physicalPersonId)).data
-      setEditPhysicalPerson(person)
-      setLoading(false)
+      physicalPersonId ? initEditPhysicalPerson(physicalPersonId) : initNewPhysicalPerson()
+      return
     } catch (error) {
       setLoading(false)
       if (error instanceof Error) {
         notifyError(error.message)
       }
     }
+  }
+
+  const initNewPhysicalPerson = () => {
+    reset({})
+  }
+
+  const initEditPhysicalPerson = async (id: number) => {
+    const person = (await physicalPersonService.findById(id)).data
+    setBirthdate(person.birthdate)
+    setEditPhysicalPerson(person)
+    setLoading(false)
   }
 
   const onSubmit = (data: PhysicalPersonType) => {
@@ -168,70 +179,43 @@ const FormPhysicalPerson = ({
         noValidate
         autoComplete='off'
       >
-        <TextField
-          label='Nome'
-          required
-          error={!!errors.name}
-          helperText={errors.name?.type === 'required' && REQUIRED_FIELD}
-          defaultValue={editPhysicalPerson?.name}
-          {...register('name')}
-        />
+        <FormTextField label={'Nome'} name='name' control={control} errors={errors} />
         <BirthDatePicker
           required
           helperText={errors.birthdate?.type === 'required' && REQUIRED_FIELD}
           value={birthdate}
           onChange={(newValue: DateTime | null) => {
-            setBirthdate(newValue)
+            setBirthdate(newValue?.toISODate())
           }}
         ></BirthDatePicker>
-        <TextField
-          label='CPF'
-          required
-          error={!!errors.cpf}
-          helperText={errors.cpf?.type === 'required' && REQUIRED_FIELD}
-          {...register('cpf')}
+        <FormTextField label={'CPF'} name='cpf' control={control} errors={errors} />
+        <FormTextField label={'RG'} name='rg' control={control} errors={errors} />
+        <FormTextField
+          label={'Órgão Emissor'}
+          name='rg_emissor'
+          control={control}
+          errors={errors}
         />
-        <TextField
-          label='RG'
-          required
-          error={!!errors.rg}
-          helperText={errors.rg?.type === 'required' && REQUIRED_FIELD}
-          {...register('rg')}
+        <FormTextField
+          label={'Órgão Emissor UF'}
+          name='rg_emissor_uf'
+          control={control}
+          errors={errors}
         />
-        <TextField
-          label='Órgão Emissor'
-          required
-          error={!!errors.rg_emissor}
-          helperText={errors.rg_emissor?.type === 'required' && REQUIRED_FIELD}
-          {...register('rg_emissor')}
+        <FormTextField label={'Telefone'} name='phone' control={control} errors={errors} />
+        <FormTextField
+          label={'Telefone Secundário'}
+          name='phone_secondary'
+          control={control}
+          errors={errors}
         />
-        <TextField
-          label='Órgão Emissor UF'
-          required
-          error={!!errors.rg_emissor_uf}
-          helperText={errors.rg_emissor_uf?.type === 'required' && REQUIRED_FIELD}
-          {...register('rg_emissor_uf')}
-        />
-        <TextField
-          label='Telefone'
-          required
-          error={!!errors.phone}
-          helperText={errors.phone?.type === 'required' && REQUIRED_FIELD}
-          {...register('phone')}
-        />
-        <TextField label='Telefone Secundário' {...register('phone_secondary')} />
-        <TextField
-          label='Email'
-          required
-          error={!!errors.email}
-          helperText={errors.email?.type === 'required' && REQUIRED_FIELD}
-          {...register('email')}
-        />
-        <TextField label='CEP' {...register('cep')} />
-        <TextField label='Endereço' {...register('address')} />
-        <TextField label='Cidade' {...register('city')} />
-        <TextField label='Bairro' {...register('neighborhood')} />
-        <TextField label='UF' {...register('uf')} />
+        <FormTextField label={'Email'} name='email' control={control} errors={errors} />
+        <FormTextField label={'CEP'} name='cep' control={control} errors={errors} />
+        <FormTextField label={'Endereço'} name='address' control={control} errors={errors} />
+        <FormTextField label={'Cidade'} name='city' control={control} errors={errors} />
+        <FormTextField label={'Bairro'} name='neighborhood' control={control} errors={errors} />
+        <FormTextField label={'UF'} name='uf' control={control} errors={errors} />
+
         {contracts.length > 0 && (
           <>
             <Divider></Divider>
@@ -257,8 +241,8 @@ const FormPhysicalPerson = ({
           onCloseHandler()
           onClose()
         }}
-        title={`Cancelar ${PHYSICAL_PERSON_TITLE}`}
-        message={PHYSICAL_PERSON_NEW_CANCEL_MESSAGE}
+        title={`Cancelar ${physicalPersonId ? 'Edição' : 'Cadastro'} de ${MS_PHYSICAL_PERSON}`}
+        message={MS_CANCEL}
       ></DialogConfirm>
       <BackdropLoading open={loading}></BackdropLoading>
       <Notification
