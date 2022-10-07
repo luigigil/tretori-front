@@ -1,4 +1,4 @@
-import { PhysicalPersonType } from '../utils/types/physical-person'
+import { PhysicalPersonType } from '../utils/types'
 import client from './axios'
 
 const baseUrl = '/physical-person'

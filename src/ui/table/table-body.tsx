@@ -1,6 +1,6 @@
 import { TableBody as Body, TableCell, TableRow } from '@mui/material'
 import React from 'react'
-import { Column } from '../../utils/types/table'
+import { Column } from '../../utils/types'
 
 interface TableBodyProps<T> {
   columns: Column[]

@@ -1,13 +1,13 @@
 import { Link, Typography } from '@mui/material'
 
-interface BreadProps {
+export interface BreadcrumbItemProps {
   name: string
   link?: boolean
   href?: string
   color?: string
 }
 
-const Bread = ({ name, link, href, color }: BreadProps) => {
+export default function BreadcrumbItem({ name, link, href, color }: BreadcrumbItemProps) {
   return (
     <>
       {link ? (
@@ -20,5 +20,3 @@ const Bread = ({ name, link, href, color }: BreadProps) => {
     </>
   )
 }
-
-export default Bread

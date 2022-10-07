@@ -1,23 +1,30 @@
 import { Typography } from '@mui/material'
-import Breadcrumb from '../ui/breadcrumbs/bread-crumbs'
-import TableMain from '../ui/table'
+import Breadcrumb from '../ui/breadcrumbs'
+import Loading from '../ui/loading'
+import Table from '../ui/table'
 import TitlePage from '../ui/title/title-page'
-import { PHYSICAL_PERSON_TITLE } from '../utils/messages/physical-person'
-import { Column } from '../utils/types/table'
+import { BreadcrumbType, Column } from '../utils/types'
 
 interface TablePageProps<T> {
-  breadcrumbs: JSX.Element[]
+  title: string
+  breadcrumbs: BreadcrumbType[]
   columns: Column[]
   rows: T[]
   isLoading: boolean
 }
 
-export default function TablePage<T>({ breadcrumbs, columns, rows, isLoading }: TablePageProps<T>) {
+export default function TablePage<T>({
+  title,
+  breadcrumbs,
+  columns,
+  rows,
+  isLoading,
+}: TablePageProps<T>) {
   return (
     <>
       <Breadcrumb breadcrumbs={breadcrumbs}></Breadcrumb>
       <TitlePage
-        title={PHYSICAL_PERSON_TITLE}
+        title={title}
         onNew={() => {
           console.log('fix this') // ! fix here
         }}
@@ -27,7 +34,8 @@ export default function TablePage<T>({ breadcrumbs, columns, rows, isLoading }: 
           Nada aqui para ser mostrado
         </Typography>
       )}
-      <TableMain columns={columns} rows={rows}></TableMain>
+
+      {isLoading ? <Loading /> : <Table columns={columns} rows={rows}></Table>}
     </>
   )
 }
