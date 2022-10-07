@@ -1,6 +1,6 @@
 import { TextField } from '@mui/material'
 import { Control, Controller } from 'react-hook-form'
-import { INVALID_INPUT } from '../../../utils/messages/system'
+import { INVALID_INPUT } from '../../../utils/messages'
 
 interface FormTextFieldProps {
   // TODO check how to use generic types
@@ -22,6 +22,7 @@ const FormTextField = ({
     <Controller
       render={({ field }) => (
         <TextField
+          fullWidth
           {...field}
           label={label}
           error={Boolean(errors[name])}

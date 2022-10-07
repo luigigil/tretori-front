@@ -3,10 +3,12 @@ import { Box } from '@mui/system'
 
 interface TitlePageProps {
   title: string
-  onNew: () => void
+  onNew?: () => void
+  onEdit?: () => void
+  onDelete?: () => void
 }
 
-const TitlePage = ({ title, onNew }: TitlePageProps) => {
+const TitlePage = ({ title, onNew, onEdit, onDelete }: TitlePageProps) => {
   return (
     <Box my={4}>
       <Grid
@@ -23,9 +25,22 @@ const TitlePage = ({ title, onNew }: TitlePageProps) => {
           </Typography>
         </Grid>
         <Grid>
-          <Button variant='contained' onClick={onNew}>
-            Novo
-          </Button>
+          {onNew && (
+            <Button style={{ margin: 8 }} variant='contained' onClick={onNew}>
+              Novo
+            </Button>
+          )}
+          {onDelete && (
+            <Button style={{ margin: 8 }} variant='contained' onClick={onDelete}>
+              Deletar
+            </Button>
+          )}
+
+          {onEdit && (
+            <Button style={{ margin: 8 }} variant='contained' onClick={onEdit}>
+              Editar
+            </Button>
+          )}
         </Grid>
       </Grid>
       <Divider />

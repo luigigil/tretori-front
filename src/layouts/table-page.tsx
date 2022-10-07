@@ -11,6 +11,7 @@ interface TablePageProps<T> {
   columns: Column[]
   rows: T[]
   isLoading: boolean
+  detailRoute?: string
 }
 
 export default function TablePage<T>({
@@ -19,6 +20,7 @@ export default function TablePage<T>({
   columns,
   rows,
   isLoading,
+  detailRoute,
 }: TablePageProps<T>) {
   return (
     <>
@@ -36,7 +38,11 @@ export default function TablePage<T>({
         </Typography>
       )}
 
-      {isLoading ? <Loading /> : <Table columns={columns} rows={rows}></Table>}
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <Table detailRoute={detailRoute} columns={columns} rows={rows}></Table>
+      )}
     </>
   )
 }
