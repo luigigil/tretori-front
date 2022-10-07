@@ -4,8 +4,8 @@ import Joi from 'joi'
 import { DateTime } from 'luxon'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import contractsService from '../../api/contractsService'
-import physicalPersonService from '../../api/physicalPersonService'
+// import contractsService from '../../api/contractsService'
+// import physicalPersonService from '../../api/physicalPersonService'
 import BirthDatePicker from '../../ui/date/birth-date-picker'
 import DialogConfirm from '../../ui/dialog/dialog-confirm'
 import FormTextField from '../../ui/form/inputs/text-field'
@@ -100,7 +100,7 @@ const FormPhysicalPerson = ({
   const getContracts = async () => {
     setLoading(true)
     try {
-      const contracts = (await contractsService.findAll()).data
+      // const contracts = (await contractsService.findAll()).data
       const contractsList = parseContracts(contracts)
       setContracts(contractsList.length > 0 ? contractsList : [])
       setLoading(false)
@@ -129,9 +129,9 @@ const FormPhysicalPerson = ({
   }
 
   const initEditPhysicalPerson = async (id: number) => {
-    const person = (await physicalPersonService.findById(id)).data
-    setBirthdate(person.birthdate)
-    setEditPhysicalPerson(person)
+    // const person = (await physicalPersonService.findById(id)).data
+    // setBirthdate(person.birthdate)
+    // setEditPhysicalPerson(person)
     setLoading(false)
   }
 
