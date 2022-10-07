@@ -29,7 +29,8 @@ export default function TablePage<T>({
           console.log('fix this') // ! fix here
         }}
       ></TitlePage>
-      {rows.length <= 0 && (
+      {/* // ! fix this isLoading condition */}
+      {!isLoading && rows.length <= 0 && (
         <Typography align='center' marginBottom='1em'>
           Nada aqui para ser mostrado
         </Typography>
