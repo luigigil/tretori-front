@@ -1,28 +1,8 @@
-import { Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import physicalPersonService from '../api/physicalPersonService'
-import FormPhysicalPerson from '../features/physical-person/form-physical-person'
+import TablePage from '../layouts/table-page'
 import Bread from '../ui/breadcrumbs/bread'
-import Breadcrumb from '../ui/breadcrumbs/bread-crumbs'
-import DialogConfirm from '../ui/dialog/dialog-confirm'
-import DialogForm from '../ui/dialog/dialog-form'
-import BackdropLoading from '../ui/loading/backdrop-loading'
-import Notification from '../ui/notification/notification'
-import TableMain from '../ui/table/table-main'
-import TitlePage from '../ui/title/title-page'
-import { NotificationEnum } from '../utils/enums/notification'
-import {
-  PHYSICAL_PERSON_DELETE_MESSAGE,
-  PHYSICAL_PERSON_DELETE_SUCCESS,
-  PHYSICAL_PERSON_DELETE_TITLE,
-  PHYSICAL_PERSON_EDIT_SUCCESS,
-  PHYSICAL_PERSON_EDIT_TITLE,
-  PHYSICAL_PERSON_NEW_SUCCESS,
-  PHYSICAL_PERSON_NEW_TITLE,
-  PHYSICAL_PERSON_TITLE,
-} from '../utils/messages/physical-person'
-import { Severity } from '../utils/types/notification'
-import { PhysicalPersonRow, PhysicalPersonType } from '../utils/types/physical-person'
+import { PhysicalPersonRow } from '../utils/types/physical-person'
 import { Column } from '../utils/types/table'
 
 const breadcrumbs = [
@@ -38,158 +18,32 @@ const columns: Column[] = [
 ]
 
 const PhysicalPerson = () => {
-  const [selectedId, setSelectedId] = React.useState(0)
-  const [refreshKey, setRefreshKey] = React.useState(0)
   const [rows, setRows] = useState<PhysicalPersonRow[]>([])
-  const [notifyMessage, setNotifyMessage] = React.useState('')
-  const [notifyOpen, setNotifyOpen] = React.useState(false)
-  const [notifySeverity, setNotifySeverity] = React.useState<Severity['types']>('info')
-  const [dialogConfirmOpen, setDialogConfirmOpen] = React.useState(false)
-  const [dialogConfirmTitle, setDialogConfirmTitle] = React.useState('')
-  const [dialogConfirmMessage, setDialogConfirmMessage] = React.useState('')
-  const [dialogFormTitle, setDialogFormTitle] = React.useState('')
-  const [dialogFormOpen, setDialogFormOpen] = React.useState(false)
-  const [loading, setLoading] = React.useState(false)
+  const [isLoading, setIsLoading] = React.useState(true)
 
   useEffect((): void => {
-    setLoading(true)
     const getPhysicalPerson = async (): Promise<void> => {
       try {
         const list = (await physicalPersonService.findAll()).data
         setRows(list)
-        setLoading(false)
+        setIsLoading(false)
       } catch (error) {
-        setLoading(false)
+        setIsLoading(false)
         if (error instanceof Error) {
-          notifyError(error.message)
+          // notifyError(error.message)
         }
       }
     }
     getPhysicalPerson()
-  }, [refreshKey])
-
-  const onNewHandler = (): void => {
-    setDialogFormTitle(PHYSICAL_PERSON_NEW_TITLE)
-    setDialogFormOpen(true)
-  }
-
-  const onDeleteHandler = (id: number): void => {
-    openDialogDeleteConfirm()
-    setSelectedId(id)
-  }
-
-  const onSaveHandler = async (physicalPerson: PhysicalPersonType): Promise<void> => {
-    onDialogFormCloseHandler()
-    setLoading(true)
-    try {
-      await physicalPersonService.save(physicalPerson)
-      setLoading(false)
-      const notifyMessage = physicalPerson.id
-        ? PHYSICAL_PERSON_EDIT_SUCCESS
-        : PHYSICAL_PERSON_NEW_SUCCESS
-      notifySuccess(notifyMessage)
-      updateRows()
-    } catch (error) {
-      setLoading(false)
-      if (error instanceof Error) {
-        notifyError(error.message)
-      }
-    }
-  }
-
-  const onEditHandler = async (id: number): Promise<void> => {
-    setSelectedId(id)
-    setDialogFormTitle(PHYSICAL_PERSON_EDIT_TITLE)
-    setDialogFormOpen(true)
-  }
-
-  const onDeleteConfirmHandler = async (): Promise<void> => {
-    setDialogConfirmOpen(false)
-    setLoading(true)
-    try {
-      await physicalPersonService.deleteOneById(selectedId)
-      notifySuccess(PHYSICAL_PERSON_DELETE_SUCCESS)
-      setLoading(false)
-      updateRows()
-    } catch (error) {
-      setLoading(false)
-      if (error instanceof Error) {
-        notifyError(error.message)
-      }
-    }
-  }
-
-  const updateRows = () => {
-    setRefreshKey((oldKey) => oldKey + 1)
-  }
-  const onDialogFormCloseHandler = (): void => {
-    setSelectedId(0)
-    setDialogFormOpen(false)
-  }
-
-  const onDialogCloseHandler = (): void => {
-    setDialogConfirmOpen(false)
-  }
-
-  const onCloseNotifyHandler = (): void => {
-    setNotifyOpen(false)
-  }
-
-  const openDialogDeleteConfirm = (): void => {
-    setDialogConfirmOpen(true)
-    setDialogConfirmTitle(PHYSICAL_PERSON_DELETE_TITLE)
-    setDialogConfirmMessage(PHYSICAL_PERSON_DELETE_MESSAGE)
-  }
-
-  const notifySuccess = (message: string): void => {
-    setNotifyOpen(true)
-    setNotifySeverity(NotificationEnum.SUCCESS)
-    setNotifyMessage(message)
-  }
-
-  const notifyError = (message: string): void => {
-    setNotifyOpen(true)
-    setNotifySeverity(NotificationEnum.ERROR)
-    setNotifyMessage(message)
-  }
+  }, [])
 
   return (
-    <section>
-      <Breadcrumb breadcrumbs={breadcrumbs}></Breadcrumb>
-      <TitlePage title={PHYSICAL_PERSON_TITLE} onNew={onNewHandler}></TitlePage>
-      {rows.length <= 0 && (
-        <Typography align='center' marginBottom='1em'>
-          Nada aqui para ser mostrado
-        </Typography>
-      )}
-      <TableMain
-        columns={columns}
-        rows={rows}
-        onDelete={onDeleteHandler}
-        onEdit={onEditHandler}
-      ></TableMain>
-      <DialogForm title={dialogFormTitle} open={dialogFormOpen}>
-        <FormPhysicalPerson
-          physicalPersonId={selectedId}
-          onClose={onDialogFormCloseHandler}
-          onConfirm={(physicalPerson: PhysicalPersonType) => onSaveHandler(physicalPerson)}
-        ></FormPhysicalPerson>
-      </DialogForm>
-      <DialogConfirm
-        open={dialogConfirmOpen}
-        title={dialogConfirmTitle}
-        message={dialogConfirmMessage}
-        onClose={onDialogCloseHandler}
-        onConfirm={onDeleteConfirmHandler}
-      ></DialogConfirm>
-      <BackdropLoading open={loading}></BackdropLoading>
-      <Notification
-        message={notifyMessage}
-        severity={notifySeverity}
-        open={notifyOpen}
-        onClose={onCloseNotifyHandler}
-      ></Notification>
-    </section>
+    <TablePage
+      breadcrumbs={breadcrumbs}
+      columns={columns}
+      rows={rows}
+      isLoading={isLoading}
+    ></TablePage>
   )
 }
 
