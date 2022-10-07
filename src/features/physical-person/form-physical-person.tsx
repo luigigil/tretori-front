@@ -2,21 +2,16 @@ import { joiResolver } from '@hookform/resolvers/joi'
 import { Box, Button, Divider } from '@mui/material'
 import Joi from 'joi'
 import { DateTime } from 'luxon'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-// import contractsService from '../../api/contractsService'
-// import physicalPersonService from '../../api/physicalPersonService'
+import useAxiosFetch from '../../hooks/useAxiosFetch'
 import BirthDatePicker from '../../ui/date/birth-date-picker'
-import DialogConfirm from '../../ui/dialog/dialog-confirm'
 import FormTextField from '../../ui/form/inputs/text-field'
-import Notification from '../../ui/notification/notification'
+import Loading from '../../ui/loading'
 import SubtitleDialog from '../../ui/title/subtitle-dialog'
 import TransferList from '../../ui/transfer-list/transfer-list'
-import { NotificationEnum } from '../../utils/enums/notification'
-import { MS_CANCEL } from '../../utils/messages/common'
-import { MS_PHYSICAL_PERSON } from '../../utils/messages/physical-person'
-import { REQUIRED_FIELD } from '../../utils/messages/system'
-import { ContractsType, ListItemType, Severity, PhysicalPersonType } from '../../utils/types'
+import { REQUIRED_FIELD } from '../../utils/messages'
+import { ListItemType, PhysicalPersonType } from '../../utils/types'
 
 /* eslint-disable camelcase */
 const schema = Joi.object({
@@ -41,141 +36,92 @@ const schema = Joi.object({
   uf: Joi.string().max(20).allow(null, ''),
   contracts: Joi.array().items(Joi.string()),
 })
-/* eslint-enable camelcase */
-
-const parseContracts = (list: ContractsType[]): ListItemType[] => {
-  return list.map((item) => ({ id: item.id, label: `Contrato ${item.id} ` }))
-}
 
 interface FormPhysicalPersonProps {
-  onClose: () => void
-  onConfirm: (data: PhysicalPersonType) => void
-  physicalPersonId?: number
-  labelButtonCancel?: string
-  labelButtonConfirm?: string
+  physicalPerson?: PhysicalPersonType
+  shouldCreateNewPhysicalPerson: boolean
 }
 
 const FormPhysicalPerson = ({
-  onClose,
-  onConfirm,
-  physicalPersonId,
-  labelButtonCancel,
-  labelButtonConfirm,
+  physicalPerson,
+  shouldCreateNewPhysicalPerson,
 }: FormPhysicalPersonProps) => {
   const {
     handleSubmit,
     control,
-    reset,
     formState: { errors },
   } = useForm<PhysicalPersonType>({ resolver: joiResolver(schema) })
-  const [openCancelConfirm, setOpenCancelConfirm] = useState(false)
   const [birthdate, setBirthdate] = useState<string | undefined>(DateTime.now().toISO())
-  const [contracts, setContracts] = useState<ListItemType[]>([])
   const [selectedContracts, setSelectedContracts] = useState<ListItemType[]>([])
-  const [loading, setLoading] = useState(false)
-  const [editPhysicalPerson, setEditPhysicalPerson] = useState<PhysicalPersonType>()
-  const [notifyMessage, setNotifyMessage] = useState('')
-  const [notifyOpen, setNotifyOpen] = useState(false)
-  const [notifySeverity, setNotifySeverity] = useState<Severity['types']>('info')
 
-  useEffect((): void => {
-    const initContracts = async (): Promise<void> => {
-      await getContracts()
-    }
-    initContracts()
-  }, [])
+  const [data, error, isLoading] = useAxiosFetch({
+    method: 'GET',
+    url: '/contract',
+  })
 
-  useEffect((): void => {
-    const initPhysicalPerson = async (): Promise<void> => {
-      await getPhysicalPerson()
-    }
-    initPhysicalPerson()
-  }, [])
-
-  useEffect(() => {
-    if (!editPhysicalPerson) return
-    reset(editPhysicalPerson)
-  }, [editPhysicalPerson])
-
-  const getContracts = async () => {
-    setLoading(true)
-    try {
-      // const contracts = (await contractsService.findAll()).data
-      const contractsList = parseContracts(contracts)
-      setContracts(contractsList.length > 0 ? contractsList : [])
-      setLoading(false)
-    } catch (error) {
-      setLoading(false)
-      if (error instanceof Error) {
-        notifyError(error.message)
-      }
-    }
-  }
-  const getPhysicalPerson = async () => {
-    setLoading(true)
-    try {
-      physicalPersonId ? initEditPhysicalPerson(physicalPersonId) : initNewPhysicalPerson()
-      return
-    } catch (error) {
-      setLoading(false)
-      if (error instanceof Error) {
-        notifyError(error.message)
-      }
-    }
-  }
-
-  const initNewPhysicalPerson = () => {
-    reset({})
-  }
-
-  const initEditPhysicalPerson = async (id: number) => {
-    // const person = (await physicalPersonService.findById(id)).data
-    // setBirthdate(person.birthdate)
-    // setEditPhysicalPerson(person)
-    setLoading(false)
+  if (error) {
+    return <p>erro</p>
   }
 
   const onSubmit = (data: PhysicalPersonType) => {
-    if (!birthdate) return
-    data.code = ''
-    data.birthdate = birthdate
-    data.contracts = selectedContracts.map((contract) => `${contract.id}`)
-    onConfirm(data)
+    console.log(data)
   }
 
   const onChangeSelectedContractsHandler = (selected: ListItemType[]): void => {
     setSelectedContracts(selected)
   }
 
-  const onCancelHandler = () => {
-    setOpenCancelConfirm(true)
-  }
-
-  const onCloseHandler = () => {
-    setOpenCancelConfirm(false)
-  }
-
-  const notifyError = (message: string): void => {
-    setNotifyOpen(true)
-    setNotifySeverity(NotificationEnum.ERROR)
-    setNotifyMessage(message)
-  }
-
-  const onCloseNotifyHandler = (): void => {
-    setNotifyOpen(false)
-  }
-
   return (
-    <>
-      <Box
-        component='form'
-        sx={{
-          '& .MuiTextField-root': { m: 1, width: '25ch' },
-        }}
-        noValidate
-        autoComplete='off'
-      >
-        <FormTextField label={'Nome'} name='name' control={control} errors={errors} />
+    <Box
+      component='form'
+      sx={{
+        '& .MuiTextField-root': { m: 1 },
+      }}
+      noValidate
+      autoComplete='off'
+      display='flex'
+      flexDirection='column'
+    >
+      <Box display='flex'>
+        <FormTextField
+          label={'Nome'}
+          name='name'
+          control={control}
+          errors={errors}
+          defaultValue={physicalPerson?.name}
+        />
+        <FormTextField
+          label={'CPF'}
+          name='cpf'
+          control={control}
+          errors={errors}
+          defaultValue={physicalPerson?.cpf}
+        />
+      </Box>
+
+      <Box display='flex'>
+        <FormTextField
+          label={'RG'}
+          name='rg'
+          control={control}
+          errors={errors}
+          defaultValue={physicalPerson?.rg}
+        />
+        <FormTextField
+          label={'Órgão Emissor'}
+          name='rg_emissor'
+          control={control}
+          errors={errors}
+          defaultValue={physicalPerson?.rg_emissor}
+        />
+        <FormTextField
+          label={'Órgão Emissor UF'}
+          name='rg_emissor_uf'
+          control={control}
+          errors={errors}
+          defaultValue={physicalPerson?.rg_emissor_uf}
+        />
+
         <BirthDatePicker
           required
           helperText={errors.birthdate?.type === 'required' && REQUIRED_FIELD}
@@ -184,70 +130,83 @@ const FormPhysicalPerson = ({
             setBirthdate(newValue?.toISODate())
           }}
         ></BirthDatePicker>
-        <FormTextField label={'CPF'} name='cpf' control={control} errors={errors} />
-        <FormTextField label={'RG'} name='rg' control={control} errors={errors} />
+      </Box>
+      <Box display='flex'>
         <FormTextField
-          label={'Órgão Emissor'}
-          name='rg_emissor'
+          label={'Telefone'}
+          name='phone'
           control={control}
           errors={errors}
+          defaultValue={physicalPerson?.phone}
         />
-        <FormTextField
-          label={'Órgão Emissor UF'}
-          name='rg_emissor_uf'
-          control={control}
-          errors={errors}
-        />
-        <FormTextField label={'Telefone'} name='phone' control={control} errors={errors} />
         <FormTextField
           label={'Telefone Secundário'}
           name='phone_secondary'
           control={control}
           errors={errors}
+          defaultValue={physicalPerson?.phone_secondary}
         />
-        <FormTextField label={'Email'} name='email' control={control} errors={errors} />
-        <FormTextField label={'CEP'} name='cep' control={control} errors={errors} />
-        <FormTextField label={'Endereço'} name='address' control={control} errors={errors} />
-        <FormTextField label={'Cidade'} name='city' control={control} errors={errors} />
-        <FormTextField label={'Bairro'} name='neighborhood' control={control} errors={errors} />
-        <FormTextField label={'UF'} name='uf' control={control} errors={errors} />
-
-        {contracts.length > 0 && (
-          <>
-            <Divider></Divider>
-            <SubtitleDialog subtitle='Contratos' />
-            <TransferList
-              list={contracts}
-              listSelected={[]}
-              onChange={onChangeSelectedContractsHandler}
-            ></TransferList>
-          </>
-        )}
-        <Divider></Divider>
+        <FormTextField
+          label={'Email'}
+          name='email'
+          control={control}
+          errors={errors}
+          defaultValue={physicalPerson?.email}
+        />
       </Box>
-      <Box sx={{ float: 'right' }}>
-        <Button onClick={onCancelHandler}>{labelButtonCancel || 'Cancelar'}</Button>
-        <Button onClick={handleSubmit(onSubmit)}>{labelButtonConfirm || 'Salvar'}</Button>
+      <Box display='flex'>
+        <FormTextField
+          defaultValue={physicalPerson?.cep}
+          label={'CEP'}
+          name='cep'
+          control={control}
+          errors={errors}
+        />
+        <FormTextField
+          defaultValue={physicalPerson?.address}
+          label={'Endereço'}
+          name='address'
+          control={control}
+          errors={errors}
+        />
+        <FormTextField
+          defaultValue={physicalPerson?.city}
+          label={'Cidade'}
+          name='city'
+          control={control}
+          errors={errors}
+        />
+        <FormTextField
+          defaultValue={physicalPerson?.neighborhood}
+          label={'Bairro'}
+          name='neighborhood'
+          control={control}
+          errors={errors}
+        />
+        <FormTextField
+          defaultValue={physicalPerson?.uf}
+          label={'UF'}
+          name='uf'
+          control={control}
+          errors={errors}
+        />
       </Box>
 
-      <DialogConfirm
-        open={openCancelConfirm}
-        onClose={onCloseHandler}
-        onConfirm={() => {
-          onCloseHandler()
-          onClose()
-        }}
-        title={`Cancelar ${physicalPersonId ? 'Edição' : 'Cadastro'} de ${MS_PHYSICAL_PERSON}`}
-        message={MS_CANCEL}
-      ></DialogConfirm>
-      {/* <BackdropLoading open={loading}></BackdropLoading> */}
-      <Notification
-        message={notifyMessage}
-        severity={notifySeverity}
-        open={notifyOpen}
-        onClose={onCloseNotifyHandler}
-      ></Notification>
-    </>
+      {isLoading && <Loading />}
+
+      {!isLoading && data.length > 0 && (
+        <>
+          <Divider style={{ marginTop: 32 }} />
+          <SubtitleDialog subtitle='Contratos' />
+          <TransferList
+            list={data}
+            listSelected={[]}
+            onChange={onChangeSelectedContractsHandler}
+          ></TransferList>
+        </>
+      )}
+      <Divider style={{ marginTop: 32 }} />
+    </Box>
   )
 }
 

@@ -11,7 +11,9 @@ import AppBarContainer from './layouts/app-bar-container'
 import Copyright from './layouts/copyright'
 import DrawerContainer from './layouts/drawer-container'
 import Contracts from './pages/contracts'
-import PhysicalPerson from './pages/physical-person'
+import CreatePhysicalPerson from './pages/physical-person/create-physical-person copy'
+import DetailPhysicalPerson from './pages/physical-person/detail-physical-person'
+import ListPhysicalPerson from './pages/physical-person/list-physical-person'
 import SignInSide from './pages/sign-in'
 import SignUp from './pages/sign-up'
 
@@ -43,9 +45,15 @@ export default function App() {
             <Container maxWidth='lg' sx={{ mt: 4, mb: 4 }}>
               <Grid>
                 <Routes>
+                  {/* follow this pattern ! */}
+                  <Route
+                    path='/pessoa-fisica/:physicalPersonId'
+                    element={<DetailPhysicalPerson />}
+                  />
+                  <Route path='/pessoa-fisica/new' element={<CreatePhysicalPerson />} />
+                  <Route path='/pessoa-fisica' element={<ListPhysicalPerson />} />
                   <Route path='/signin' element={<SignInSide />} />
                   <Route path='/signup' element={<SignUp />} />
-                  <Route path='/pessoa-fisica' element={<PhysicalPerson />} />
                   <Route path='/contrato' element={<Contracts />} />
                 </Routes>
               </Grid>

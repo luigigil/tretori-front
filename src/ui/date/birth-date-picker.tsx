@@ -23,7 +23,7 @@ const BirthDatePicker = ({ value, required, helperText, onChange }: BirthDatePic
           onChange(newValue)
         }}
         renderInput={(params) => (
-          <TextField {...params} helperText={helperText} required={required} />
+          <TextField fullWidth {...params} helperText={helperText} required={required} />
         )}
         maxDate={DateTime.now()}
       />

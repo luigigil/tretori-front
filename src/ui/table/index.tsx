@@ -8,9 +8,10 @@ import TablePagination from './table-pagination'
 interface TableMainProps<T> {
   columns: Column[]
   rows: T[]
+  detailRoute?: string
 }
 
-export default function TableMain<T>({ columns, rows }: TableMainProps<T>) {
+export default function TableMain<T>({ columns, rows, detailRoute }: TableMainProps<T>) {
   const [page, setPage] = React.useState(0)
   const [rowsPerPage, setRowsPerPage] = React.useState(10)
 
@@ -20,7 +21,7 @@ export default function TableMain<T>({ columns, rows }: TableMainProps<T>) {
         <TableContainer sx={{ maxHeight: 600 }}>
           <Table stickyHeader size='small' aria-label='sticky table'>
             <TableHeader columns={columns} />
-            <TableBody rows={rows} columns={columns} />
+            <TableBody detailRoute={detailRoute} rows={rows} columns={columns} />
           </Table>
         </TableContainer>
         <TablePagination rows={rows} />
