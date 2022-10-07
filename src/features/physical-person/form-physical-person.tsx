@@ -9,7 +9,6 @@ import physicalPersonService from '../../api/physicalPersonService'
 import BirthDatePicker from '../../ui/date/birth-date-picker'
 import DialogConfirm from '../../ui/dialog/dialog-confirm'
 import FormTextField from '../../ui/form/inputs/text-field'
-import BackdropLoading from '../../ui/loading/backdrop-loading'
 import Notification from '../../ui/notification/notification'
 import SubtitleDialog from '../../ui/title/subtitle-dialog'
 import TransferList from '../../ui/transfer-list/transfer-list'
@@ -17,10 +16,7 @@ import { NotificationEnum } from '../../utils/enums/notification'
 import { MS_CANCEL } from '../../utils/messages/common'
 import { MS_PHYSICAL_PERSON } from '../../utils/messages/physical-person'
 import { REQUIRED_FIELD } from '../../utils/messages/system'
-import { ContractsType } from '../../utils/types/contracts'
-import { ListItemType } from '../../utils/types/list'
-import { Severity } from '../../utils/types/notification'
-import { PhysicalPersonType } from '../../utils/types/physical-person'
+import { ContractsType, ListItemType, Severity, PhysicalPersonType } from '../../utils/types'
 
 /* eslint-disable camelcase */
 const schema = Joi.object({
@@ -244,7 +240,7 @@ const FormPhysicalPerson = ({
         title={`Cancelar ${physicalPersonId ? 'Edição' : 'Cadastro'} de ${MS_PHYSICAL_PERSON}`}
         message={MS_CANCEL}
       ></DialogConfirm>
-      <BackdropLoading open={loading}></BackdropLoading>
+      {/* <BackdropLoading open={loading}></BackdropLoading> */}
       <Notification
         message={notifyMessage}
         severity={notifySeverity}

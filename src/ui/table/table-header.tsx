@@ -1,5 +1,5 @@
 import { TableCell, TableHead, TableRow } from '@mui/material'
-import { Column } from '../../utils/types/table'
+import { Column } from '../../utils/types'
 
 interface TableHeaderProps<T> {
   columns: Column[]

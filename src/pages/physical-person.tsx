@@ -1,23 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import physicalPersonService from '../api/physicalPersonService'
+import {
+  PHYSICAL_PERSON_BREADCRUMBS,
+  PHYSICAL_PERSON_TABLE_FIELDS,
+} from '../features/physical-person/info'
 import TablePage from '../layouts/table-page'
-import Bread from '../ui/breadcrumbs/bread'
-import { PhysicalPersonRow } from '../utils/types/physical-person'
-import { Column } from '../utils/types/table'
+import { PHYSICAL_PERSON_TITLE } from '../utils/messages/physical-person'
+import { PhysicalPersonRow } from '../utils/types'
 
-const breadcrumbs = [
-  <Bread key='1' name='Dashboard' link={true} href='/dashboard' />,
-  <Bread key='2' name='Pessoa' />,
-  <Bread key='3' name='Consulta' color='text.primary' />,
-]
-
-const columns: Column[] = [
-  { id: 'name', label: 'Nome', minWidth: 170 },
-  { id: 'cpf', label: 'CPF', minWidth: 100 },
-  { id: 'rg', label: 'RG', minWidth: 100 },
-]
-
-const PhysicalPerson = () => {
+export default function PhysicalPerson() {
   const [rows, setRows] = useState<PhysicalPersonRow[]>([])
   const [isLoading, setIsLoading] = React.useState(true)
 
@@ -39,12 +30,11 @@ const PhysicalPerson = () => {
 
   return (
     <TablePage
-      breadcrumbs={breadcrumbs}
-      columns={columns}
+      title={PHYSICAL_PERSON_TITLE}
+      breadcrumbs={PHYSICAL_PERSON_BREADCRUMBS}
+      columns={PHYSICAL_PERSON_TABLE_FIELDS}
       rows={rows}
       isLoading={isLoading}
     ></TablePage>
   )
 }
-
-export default PhysicalPerson
