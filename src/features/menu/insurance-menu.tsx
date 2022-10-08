@@ -2,6 +2,7 @@ import { ExpandLess, ExpandMore, StarBorder } from '@mui/icons-material'
 import { Collapse, List, ListItemButton, ListItemIcon, ListItemText } from '@mui/material'
 import { useState } from 'react'
 import InboxIcon from '@mui/icons-material/MoveToInbox'
+import { Link as RouterLink } from 'react-router-dom'
 
 const SeguradorasMenu = () => {
   const [open, setOpen] = useState(true)
@@ -27,7 +28,7 @@ const SeguradorasMenu = () => {
             </ListItemIcon>
             <ListItemText primary='Seguradoras' />
           </ListItemButton>
-          <ListItemButton sx={{ pl: 4 }}>
+          <ListItemButton sx={{ pl: 4 }} component={RouterLink} to='/products'>
             <ListItemIcon>
               <StarBorder />
             </ListItemIcon>

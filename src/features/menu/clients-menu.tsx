@@ -22,19 +22,19 @@ const ClientesMenu = () => {
       </ListItemButton>
       <Collapse in={open} timeout='auto' unmountOnExit>
         <List component='div' disablePadding>
-          <ListItemButton sx={{ pl: 4 }} component={RouterLink} to='/pessoa-fisica'>
+          <ListItemButton sx={{ pl: 4 }} component={RouterLink} to='/physical-person'>
             <ListItemIcon>
               <Person />
             </ListItemIcon>
             <ListItemText primary='Pessoa Física' />
           </ListItemButton>
-          <ListItemButton sx={{ pl: 4 }}>
+          <ListItemButton sx={{ pl: 4 }} component={RouterLink} to='/companies'>
             <ListItemIcon>
               <StarBorder />
             </ListItemIcon>
             <ListItemText primary='Empresas' />
           </ListItemButton>
-          <ListItemButton sx={{ pl: 4 }}>
+          <ListItemButton sx={{ pl: 4 }} component={RouterLink} to='/customers'>
             <ListItemIcon>
               <StarBorder />
             </ListItemIcon>

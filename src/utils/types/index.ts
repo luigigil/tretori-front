@@ -1,3 +1,9 @@
+export interface SnackBarType {
+  open: boolean
+  duration: number
+  severity: Severity
+  message: string
+}
 export interface BreadcrumbType {
   key: string
   name: string

@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { joiResolver } from '@hookform/resolvers/joi'
+/* eslint-disable @typescript-eslint/no-explicit-any */ import { joiResolver } from '@hookform/resolvers/joi'
 import { Box, Divider } from '@mui/material'
 import axios from 'axios'
 import { useSnackBar } from 'context/snackbar-context'
@@ -17,27 +16,20 @@ import FormTextField from 'ui/inputs/form/inputs/text-field'
 import TransferList from 'ui/inputs/transfer-list/transfer-list'
 import { REQUIRED_FIELD } from 'utils/messages'
 import { ListItemType, PhysicalPersonType } from 'utils/types'
-import { physicalPersonSchema } from './physical-person.joi.schema'
-import {
-  PHYSICAL_PERSON_DETAIL_TITLE,
-  PHYSICAL_PERSON_EDIT_TITLE,
-  PHYSICAL_PERSON_NEW_TITLE,
-} from './physical-person.messages'
+import { companySchema } from './company.joi.schema'
+import { COMPANY_DETAIL_TITLE, COMPANY_EDIT_TITLE, COMPANY_NEW_TITLE } from './company.messages'
 
-interface FormPhysicalPersonProps {
+interface FormCompanyProps {
   physicalPerson?: PhysicalPersonType
   shouldCreateNewPhysicalPerson: boolean
 }
 
-const FormPhysicalPerson = ({
-  physicalPerson,
-  shouldCreateNewPhysicalPerson,
-}: FormPhysicalPersonProps) => {
+const FormCompany = ({ physicalPerson, shouldCreateNewPhysicalPerson }: FormCompanyProps) => {
   const {
     handleSubmit,
     control,
     formState: { errors },
-  } = useForm<PhysicalPersonType>({ resolver: joiResolver(physicalPersonSchema) })
+  } = useForm<PhysicalPersonType>({ resolver: joiResolver(companySchema) })
   const navigate = useNavigate()
   const [selectedContracts, setSelectedContracts] = useState<ListItemType[]>([])
   const [shouldOpenDeleteDialog, setShouldOpenDeleteDialog] = useState(false)
@@ -131,17 +123,12 @@ const FormPhysicalPerson = ({
 
   const titlePageComponent = () => {
     if (shouldCreateNewPhysicalPerson) {
-      return (
-        <TitlePage
-          title={PHYSICAL_PERSON_NEW_TITLE}
-          onSave={handleSubmit(handleSavePhysicalPerson)}
-        />
-      )
+      return <TitlePage title={COMPANY_NEW_TITLE} onSave={handleSubmit(handleSavePhysicalPerson)} />
     }
 
     return (
       <TitlePage
-        title={isEditing ? PHYSICAL_PERSON_EDIT_TITLE : PHYSICAL_PERSON_DETAIL_TITLE}
+        title={isEditing ? COMPANY_EDIT_TITLE : COMPANY_DETAIL_TITLE}
         onDelete={() => setShouldOpenDeleteDialog(true)}
         onEdit={() => setIsEditing(true)}
         onCancel={() => setIsEditing(false)}
@@ -314,4 +301,4 @@ const FormPhysicalPerson = ({
   )
 }
 
-export default FormPhysicalPerson
+export default FormCompany

@@ -7,11 +7,11 @@ import TablePage from 'layouts/table-page'
 import { PHYSICAL_PERSON_TITLE } from 'features/physical-person/physical-person.messages'
 import { useNavigate } from 'react-router-dom'
 
-export default function ListPhysicalPerson() {
+export default function ListCompanies() {
   const navigate = useNavigate()
   const [data, error, isLoading] = useAxiosFetch({
     method: 'GET',
-    url: '/physical-person',
+    url: '/company',
   })
 
   // ! what to do with error?
@@ -21,7 +21,7 @@ export default function ListPhysicalPerson() {
 
   return (
     <TablePage
-      detailRoute='/physical-person'
+      detailRoute='/companies'
       title={PHYSICAL_PERSON_TITLE}
       breadcrumbs={PHYSICAL_PERSON_BREADCRUMBS}
       columns={PHYSICAL_PERSON_TABLE_FIELDS}

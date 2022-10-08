@@ -1,9 +1,14 @@
 import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
 import CssBaseline from '@mui/material/CssBaseline'
-import Grid from '@mui/material/Grid'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import Toolbar from '@mui/material/Toolbar'
+import CreateCompany from 'pages/companies/create-company'
+import DetailCompanies from 'pages/companies/detail-company'
+import ListCompanies from 'pages/companies/list-companies'
+import CreateProduct from 'pages/products/create-product'
+import DetailProduct from 'pages/products/detail-product'
+import ListProducts from 'pages/products/list-products'
 import { useState } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import './App.css'
@@ -43,20 +48,37 @@ export default function App() {
           >
             <Toolbar />
             <Container maxWidth='lg' sx={{ mt: 4, mb: 4 }}>
-              <Grid>
-                <Routes>
-                  {/* follow this pattern ! */}
-                  <Route
-                    path='/pessoa-fisica/:physicalPersonId'
-                    element={<DetailPhysicalPerson />}
-                  />
-                  <Route path='/pessoa-fisica/new' element={<CreatePhysicalPerson />} />
-                  <Route path='/pessoa-fisica' element={<ListPhysicalPerson />} />
-                  <Route path='/signin' element={<SignInSide />} />
-                  <Route path='/signup' element={<SignUp />} />
-                  <Route path='/contrato' element={<Contracts />} />
-                </Routes>
-              </Grid>
+              <Routes>
+                {/* // TODO */}
+                <Route path='/companies/:physicalPersonId' element={<DetailCompanies />} />
+                <Route path='/companies/new' element={<CreateCompany />} />
+                <Route path='/companies' element={<ListCompanies />} />
+
+                {/* // TODO */}
+                <Route path='/contracts/:physicalPersonId' element={<DetailPhysicalPerson />} />
+                <Route path='/contracts/new' element={<CreatePhysicalPerson />} />
+                <Route path='/contracts' element={<ListPhysicalPerson />} />
+
+                {/* // TODO */}
+                <Route path='/customers/:physicalPersonId' element={<DetailPhysicalPerson />} />
+                <Route path='/customers/new' element={<CreatePhysicalPerson />} />
+                <Route path='/customers' element={<ListPhysicalPerson />} />
+
+                <Route path='/products/:productId' element={<DetailProduct />} />
+                <Route path='/products/new' element={<CreateProduct />} />
+                <Route path='/products' element={<ListProducts />} />
+
+                <Route
+                  path='/physical-person/:physicalPersonId'
+                  element={<DetailPhysicalPerson />}
+                />
+                <Route path='/physical-person/new' element={<CreatePhysicalPerson />} />
+                <Route path='/physical-person' element={<ListPhysicalPerson />} />
+
+                <Route path='/signin' element={<SignInSide />} />
+                <Route path='/signup' element={<SignUp />} />
+                <Route path='/contrato' element={<Contracts />} />
+              </Routes>
               <Copyright sx={{ pt: 4 }} />
             </Container>
           </Box>
