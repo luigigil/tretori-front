@@ -10,7 +10,7 @@ import ListItem from '@mui/material/ListItem'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
 import { ReactNode, useState } from 'react'
-import { ListItemType } from '../../utils/types'
+import { ListItemType } from 'utils/types'
 
 function not(list: readonly ListItemType[], listNotIn: readonly ListItemType[]) {
   return list.filter((value) => listNotIn.findIndex((item) => item.id === value.id) === -1)

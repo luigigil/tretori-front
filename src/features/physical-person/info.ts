@@ -1,4 +1,4 @@
-import { BreadcrumbType, Column } from '../../utils/types'
+import { BreadcrumbType, Column } from 'utils/types'
 
 export const PHYSICAL_PERSON_TABLE_FIELDS: Column[] = [
   { id: 'name', label: 'Nome', minWidth: 170 },

@@ -1,6 +1,6 @@
 import { Card, Table, TableContainer } from '@mui/material'
 import React from 'react'
-import { Column } from '../../utils/types'
+import { Column } from 'utils/types'
 import TableBody from './table-body'
 import TableHeader from './table-header'
 import TablePagination from './table-pagination'
