@@ -1,6 +1,6 @@
 import { TextField } from '@mui/material'
 import { Control, Controller } from 'react-hook-form'
-import { INVALID_INPUT } from '../../../utils/messages'
+import { INVALID_INPUT } from 'utils/messages'
 
 interface FormTextFieldProps {
   // TODO check how to use generic types
@@ -9,6 +9,7 @@ interface FormTextFieldProps {
   control: Control<any, any>
   errors?: any
   defaultValue?: string
+  disabled?: boolean
 }
 
 const FormTextField = ({
@@ -17,6 +18,7 @@ const FormTextField = ({
   control,
   errors = {},
   defaultValue = '',
+  disabled = false,
 }: FormTextFieldProps) => {
   return (
     <Controller
@@ -27,6 +29,7 @@ const FormTextField = ({
           label={label}
           error={Boolean(errors[name])}
           helperText={errors[name] ? errors[name].message : ''}
+          disabled={disabled}
         />
       )}
       control={control}

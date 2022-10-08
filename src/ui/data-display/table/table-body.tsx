@@ -1,7 +1,7 @@
 import { TableBody as Body, TableCell, TableRow } from '@mui/material'
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Column } from '../../utils/types'
+import { Column } from 'utils/types'
 
 interface TableBodyProps<T> {
   columns: Column[]
