@@ -3,10 +3,10 @@ import Breadcrumb from 'ui/navigation/breadcrumbs'
 import Loading from 'ui/feedback/loading'
 import Table from 'ui/data-display/table'
 import TitlePage from 'ui/data-display/title/title-page'
-import { BreadcrumbType, Column } from 'utils/types'
+import { BreadcrumbType, Column, EntityMessageTypes } from 'utils/types'
 
 interface TablePageProps<T> {
-  title: string
+  messages: EntityMessageTypes
   breadcrumbs: BreadcrumbType[]
   columns: Column[]
   rows: T[]
@@ -16,7 +16,7 @@ interface TablePageProps<T> {
 }
 
 export default function TablePage<T>({
-  title,
+  messages,
   breadcrumbs,
   columns,
   rows,
@@ -27,7 +27,7 @@ export default function TablePage<T>({
   return (
     <>
       <Breadcrumb breadcrumbs={breadcrumbs}></Breadcrumb>
-      <TitlePage title={title} onNew={onNewClick}></TitlePage>
+      <TitlePage title={messages.title} onNew={onNewClick}></TitlePage>
       {/* // ! fix this isLoading condition */}
       {!isLoading && rows.length <= 0 && (
         <Typography align='center' marginBottom='1em'>

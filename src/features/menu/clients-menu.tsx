@@ -1,10 +1,17 @@
-import { ExpandLess, ExpandMore, Person, StarBorder } from '@mui/icons-material'
-import InboxIcon from '@mui/icons-material/MoveToInbox'
+import {
+  Business,
+  BusinessCenter,
+  ExpandLess,
+  ExpandMore,
+  Group,
+  PersonSearch,
+} from '@mui/icons-material'
 import { Collapse, List, ListItemButton, ListItemIcon, ListItemText } from '@mui/material'
+import { useRouter } from 'next/router'
 import { useState } from 'react'
-import { Link as RouterLink } from 'react-router-dom'
 
 const ClientesMenu = () => {
+  const router = useRouter()
   const [open, setOpen] = useState(true)
 
   const handleClick = () => {
@@ -15,28 +22,28 @@ const ClientesMenu = () => {
     <>
       <ListItemButton onClick={handleClick}>
         <ListItemIcon>
-          <InboxIcon />
+          <PersonSearch />
         </ListItemIcon>
         <ListItemText primary='Clientes' />
         {open ? <ExpandLess /> : <ExpandMore />}
       </ListItemButton>
       <Collapse in={open} timeout='auto' unmountOnExit>
         <List component='div' disablePadding>
-          <ListItemButton sx={{ pl: 4 }} component={RouterLink} to='/physical-person'>
+          <ListItemButton sx={{ pl: 4 }}>
             <ListItemIcon>
-              <Person />
+              <Group />
             </ListItemIcon>
-            <ListItemText primary='Pessoa Física' />
+            <ListItemText primary='Pessoa Física' onClick={() => router.push('/physical-person')} />
           </ListItemButton>
-          <ListItemButton sx={{ pl: 4 }} component={RouterLink} to='/companies'>
+          <ListItemButton sx={{ pl: 4 }} onClick={() => router.push('/companies')}>
             <ListItemIcon>
-              <StarBorder />
+              <Business />
             </ListItemIcon>
             <ListItemText primary='Empresas' />
           </ListItemButton>
-          <ListItemButton sx={{ pl: 4 }} component={RouterLink} to='/customers'>
+          <ListItemButton sx={{ pl: 4 }} onClick={() => router.push('/customers')}>
             <ListItemIcon>
-              <StarBorder />
+              <BusinessCenter />
             </ListItemIcon>
             <ListItemText primary='Clientes' />
           </ListItemButton>

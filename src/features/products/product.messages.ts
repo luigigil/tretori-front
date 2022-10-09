@@ -1,10 +1,14 @@
-export const MS_PRODUCT = 'Produto'
-export const PRODUCT_TITLE = 'Consultar Produto'
-export const PRODUCT_DETAIL_TITLE = 'Detalhar Produto'
-export const PRODUCT_NEW_TITLE = 'Cadastrar novo Produto'
-export const PRODUCT_EDIT_TITLE = 'Editar Produto'
-export const PRODUCT_NEW_SUCCESS = 'Produto adicionado com sucesso'
-export const PRODUCT_EDIT_SUCCESS = 'Produto editado com sucesso'
-export const PRODUCT_DELETE_TITLE = 'Deletar Produto'
-export const PRODUCT_DELETE_MESSAGE = 'Deseja realmente deletar esse Produto?'
-export const PRODUCT_DELETE_SUCCESS = 'Produto deletado com sucesso!'
+import { EntityMessageTypes } from 'utils/types'
+
+export const ProductMessages: EntityMessageTypes = {
+  entityName: 'Produto',
+  title: 'Consultar Produto',
+  detailTitle: 'Detalhar Produto',
+  newTitle: 'Cadastrar novo Produto',
+  editTitle: 'Editar Produto',
+  newSuccess: 'Produto adicionado com sucesso',
+  editSuccess: 'Produto editado com sucesso',
+  deleteTitle: 'Deletar Produto',
+  deleteMessage: 'Deseja realmente deletar esse Produto?',
+  deleteSuccess: 'Produto deletado com sucesso!',
+}

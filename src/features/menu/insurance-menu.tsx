@@ -1,10 +1,17 @@
-import { ExpandLess, ExpandMore, StarBorder } from '@mui/icons-material'
+import {
+  ExpandLess,
+  ExpandMore,
+  HealthAndSafety,
+  LocalOffer,
+  MedicalInformation,
+  Work,
+} from '@mui/icons-material'
 import { Collapse, List, ListItemButton, ListItemIcon, ListItemText } from '@mui/material'
+import { useRouter } from 'next/router'
 import { useState } from 'react'
-import InboxIcon from '@mui/icons-material/MoveToInbox'
-import { Link as RouterLink } from 'react-router-dom'
 
 const SeguradorasMenu = () => {
+  const router = useRouter()
   const [open, setOpen] = useState(true)
 
   const handleClick = () => {
@@ -15,28 +22,28 @@ const SeguradorasMenu = () => {
     <>
       <ListItemButton onClick={handleClick}>
         <ListItemIcon>
-          <InboxIcon />
+          <MedicalInformation />
         </ListItemIcon>
         <ListItemText primary='Seguradoras' />
         {open ? <ExpandLess /> : <ExpandMore />}
       </ListItemButton>
       <Collapse in={open} timeout='auto' unmountOnExit>
         <List component='div' disablePadding>
-          <ListItemButton sx={{ pl: 4 }}>
+          <ListItemButton sx={{ pl: 4 }} onClick={() => router.push('/insurances')}>
             <ListItemIcon>
-              <StarBorder />
+              <HealthAndSafety />
             </ListItemIcon>
             <ListItemText primary='Seguradoras' />
           </ListItemButton>
-          <ListItemButton sx={{ pl: 4 }} component={RouterLink} to='/products'>
+          <ListItemButton sx={{ pl: 4 }} onClick={() => router.push('/products')}>
             <ListItemIcon>
-              <StarBorder />
+              <LocalOffer />
             </ListItemIcon>
             <ListItemText primary='Produtos' />
           </ListItemButton>
-          <ListItemButton sx={{ pl: 4 }}>
+          <ListItemButton sx={{ pl: 4 }} onClick={() => router.push('/representatives')}>
             <ListItemIcon>
-              <StarBorder />
+              <Work />
             </ListItemIcon>
             <ListItemText primary=' Representantes' />
           </ListItemButton>

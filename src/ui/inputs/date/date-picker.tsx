@@ -14,7 +14,7 @@ interface DatePickerProps {
   control: Control<any, any>
 }
 
-const ADPATER_LOCALE = process.env.REACT_APP_LOCALE
+const ADPATER_LOCALE = process.env.NEXT_PUBLIC_REACT_APP_LOCALE
 const DatePicker = ({
   required,
   helperText,

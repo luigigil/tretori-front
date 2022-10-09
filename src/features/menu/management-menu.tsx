@@ -1,9 +1,10 @@
-import { ExpandLess, ExpandMore, StarBorder } from '@mui/icons-material'
+import { AssignmentInd, ExpandLess, ExpandMore, Login, ManageAccounts } from '@mui/icons-material'
 import { Collapse, List, ListItemButton, ListItemIcon, ListItemText } from '@mui/material'
+import { useRouter } from 'next/router'
 import { useState } from 'react'
-import InboxIcon from '@mui/icons-material/MoveToInbox'
 
 const GestaoMenu = () => {
+  const router = useRouter()
   const [open, setOpen] = useState(true)
 
   const handleClick = () => {
@@ -14,22 +15,22 @@ const GestaoMenu = () => {
     <>
       <ListItemButton onClick={handleClick}>
         <ListItemIcon>
-          <InboxIcon />
+          <ManageAccounts />
         </ListItemIcon>
         <ListItemText primary='Gestao' />
         {open ? <ExpandLess /> : <ExpandMore />}
       </ListItemButton>
       <Collapse in={open} timeout='auto' unmountOnExit>
         <List component='div' disablePadding>
-          <ListItemButton sx={{ pl: 4 }}>
+          <ListItemButton sx={{ pl: 4 }} onClick={() => router.push('/users')}>
             <ListItemIcon>
-              <StarBorder />
+              <AssignmentInd />
             </ListItemIcon>
             <ListItemText primary='Usuários' />
           </ListItemButton>
-          <ListItemButton sx={{ pl: 4 }}>
+          <ListItemButton sx={{ pl: 4 }} onClick={() => router.push('/login')}>
             <ListItemIcon>
-              <StarBorder />
+              <Login />
             </ListItemIcon>
             <ListItemText primary='Login' />
           </ListItemButton>

@@ -4,10 +4,9 @@ import { Box, Divider } from '@mui/material'
 import axios from 'axios'
 import { useSnackBar } from 'context/snackbar-context'
 import useAxiosFetch from 'hooks/useAxiosFetch'
-// import useSnackBars from 'hooks/useSnackbar'
+import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { useNavigate } from 'react-router-dom'
 import SubtitleDialog from 'ui/data-display/title/subtitle-dialog'
 import TitlePage from 'ui/data-display/title/title-page'
 import DialogConfirm from 'ui/feedback/dialog/dialog-confirm'
@@ -18,11 +17,7 @@ import TransferList from 'ui/inputs/transfer-list/transfer-list'
 import { REQUIRED_FIELD } from 'utils/messages'
 import { ListItemType, PhysicalPersonType } from 'utils/types'
 import { physicalPersonSchema } from './physical-person.joi.schema'
-import {
-  PHYSICAL_PERSON_DETAIL_TITLE,
-  PHYSICAL_PERSON_EDIT_TITLE,
-  PHYSICAL_PERSON_NEW_TITLE,
-} from './physical-person.messages'
+import { PhysicalPersonMessages } from './physical-person.messages'
 
 interface FormPhysicalPersonProps {
   physicalPerson?: PhysicalPersonType
@@ -38,7 +33,7 @@ const FormPhysicalPerson = ({
     control,
     formState: { errors },
   } = useForm<PhysicalPersonType>({ resolver: joiResolver(physicalPersonSchema) })
-  const navigate = useNavigate()
+  const router = useRouter()
   const [selectedContracts, setSelectedContracts] = useState<ListItemType[]>([])
   const [shouldOpenDeleteDialog, setShouldOpenDeleteDialog] = useState(false)
   const [, setIsLoadingRequest] = useState(false)
@@ -69,6 +64,7 @@ const FormPhysicalPerson = ({
       const response = await axios.request({
         method: 'DELETE',
         url: `/physical-person/${physicalPerson?.id}`,
+        baseURL: 'http://localhost:4200',
       })
       setShouldOpenDeleteDialog(false)
     } catch (error) {
@@ -80,7 +76,7 @@ const FormPhysicalPerson = ({
       setIsLoadingRequest(false)
     } finally {
       setIsLoadingRequest(false)
-      navigate('/physical-person')
+      router.push('/physical-person')
     }
   }
 
@@ -91,6 +87,7 @@ const FormPhysicalPerson = ({
       const response = await axios.request({
         method: 'PUT',
         url: `physical-person/${physicalPerson?.id}`,
+        baseURL: 'http://localhost:4200',
         data,
       })
       showSnackBar('Pessoa física editada com sucesso', 'success')
@@ -114,6 +111,7 @@ const FormPhysicalPerson = ({
       const response = await axios.request({
         method: 'POST',
         url: 'physical-person',
+        baseURL: 'http://localhost:4200',
         data,
       })
     } catch (error) {
@@ -125,7 +123,7 @@ const FormPhysicalPerson = ({
       setIsLoadingRequest(false)
     } finally {
       setIsLoadingRequest(false)
-      navigate('/physical-person')
+      router.push('/physical-person')
     }
   }
 
@@ -133,7 +131,7 @@ const FormPhysicalPerson = ({
     if (shouldCreateNewPhysicalPerson) {
       return (
         <TitlePage
-          title={PHYSICAL_PERSON_NEW_TITLE}
+          title={PhysicalPersonMessages.newTitle}
           onSave={handleSubmit(handleSavePhysicalPerson)}
         />
       )
@@ -141,7 +139,7 @@ const FormPhysicalPerson = ({
 
     return (
       <TitlePage
-        title={isEditing ? PHYSICAL_PERSON_EDIT_TITLE : PHYSICAL_PERSON_DETAIL_TITLE}
+        title={isEditing ? PhysicalPersonMessages.editTitle : PhysicalPersonMessages.detailTitle}
         onDelete={() => setShouldOpenDeleteDialog(true)}
         onEdit={() => setIsEditing(true)}
         onCancel={() => setIsEditing(false)}
@@ -210,7 +208,7 @@ const FormPhysicalPerson = ({
           <DatePicker
             required
             helperText={errors.birthdate?.type === 'required' && REQUIRED_FIELD}
-            defaultValue={physicalPerson?.birthdate}
+            defaultValue={physicalPerson ? physicalPerson.birthdate : undefined}
             label='Data de Nascimento'
             disabled={!isEditing && !shouldCreateNewPhysicalPerson}
             name='birthdate'

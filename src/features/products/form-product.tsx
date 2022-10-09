@@ -6,11 +6,10 @@ import { useSnackBar } from 'context/snackbar-context'
 // import useSnackBars from 'hooks/useSnackbar'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { useNavigate } from 'react-router-dom'
 import TitlePage from 'ui/data-display/title/title-page'
 import DialogConfirm from 'ui/feedback/dialog/dialog-confirm'
 import FormTextField from 'ui/inputs/form/inputs/text-field'
-import { PRODUCT_DETAIL_TITLE, PRODUCT_EDIT_TITLE, PRODUCT_NEW_TITLE } from './product.messages'
+import { ProductMessages } from './product.messages'
 import { companySchema } from './products.joi.schema'
 
 type ProductType = any
@@ -26,7 +25,7 @@ const FormProduct = ({ product, shouldCreateNewProduct }: FormProductProps) => {
     control,
     formState: { errors },
   } = useForm<ProductType>({ resolver: joiResolver(companySchema) })
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
   const [shouldOpenDeleteDialog, setShouldOpenDeleteDialog] = useState(false)
   const [, setIsLoadingRequest] = useState(false)
   const [isEditing, setIsEditing] = useState(false)
@@ -39,9 +38,10 @@ const FormProduct = ({ product, shouldCreateNewProduct }: FormProductProps) => {
   const handleOnConfirmDeleteDialog = async () => {
     setIsLoadingRequest(true)
     try {
-      const response = await axios.request({
+      await axios.request({
         method: 'DELETE',
         url: `/product/${product?.id}`,
+        baseURL: 'http://localhost:4200',
       })
       setShouldOpenDeleteDialog(false)
     } catch (error) {
@@ -53,7 +53,7 @@ const FormProduct = ({ product, shouldCreateNewProduct }: FormProductProps) => {
       setIsLoadingRequest(false)
     } finally {
       setIsLoadingRequest(false)
-      navigate('/products')
+      // navigate('/products')
     }
   }
 
@@ -61,9 +61,10 @@ const FormProduct = ({ product, shouldCreateNewProduct }: FormProductProps) => {
   const handleEditProduct = async (data: any) => {
     setIsLoadingRequest(true)
     try {
-      const response = await axios.request({
+      await axios.request({
         method: 'PUT',
         url: `product/${product?.id}`,
+        baseURL: 'http://localhost:4200',
         data,
       })
       showSnackBar('Pessoa física editada com sucesso', 'success')
@@ -84,9 +85,10 @@ const FormProduct = ({ product, shouldCreateNewProduct }: FormProductProps) => {
   const handleSaveProduct = async (data: any) => {
     setIsLoadingRequest(true)
     try {
-      const response = await axios.request({
+      await axios.request({
         method: 'POST',
         url: 'product',
+        baseURL: 'http://localhost:4200',
         data,
       })
     } catch (error) {
@@ -98,18 +100,18 @@ const FormProduct = ({ product, shouldCreateNewProduct }: FormProductProps) => {
       setIsLoadingRequest(false)
     } finally {
       setIsLoadingRequest(false)
-      navigate('/products')
+      // navigate('/products')
     }
   }
 
   const titlePageComponent = () => {
     if (shouldCreateNewProduct) {
-      return <TitlePage title={PRODUCT_NEW_TITLE} onSave={handleSubmit(handleSaveProduct)} />
+      return <TitlePage title={ProductMessages.title} onSave={handleSubmit(handleSaveProduct)} />
     }
 
     return (
       <TitlePage
-        title={isEditing ? PRODUCT_EDIT_TITLE : PRODUCT_DETAIL_TITLE}
+        title={isEditing ? ProductMessages.editTitle : ProductMessages.detailTitle}
         onDelete={() => setShouldOpenDeleteDialog(true)}
         onEdit={() => setIsEditing(true)}
         onCancel={() => setIsEditing(false)}

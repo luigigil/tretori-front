@@ -1,10 +1,14 @@
-export const MS_PHYSICAL_PERSON = 'Pessoa Física'
-export const PHYSICAL_PERSON_TITLE = 'Consultar Pessoa Física'
-export const PHYSICAL_PERSON_DETAIL_TITLE = 'Detalhar Pessoa Física'
-export const PHYSICAL_PERSON_NEW_TITLE = 'Cadastrar nova Pessoa Física'
-export const PHYSICAL_PERSON_EDIT_TITLE = 'Editar Pessoa Física'
-export const PHYSICAL_PERSON_NEW_SUCCESS = 'Pessoa Física adicionada com sucesso'
-export const PHYSICAL_PERSON_EDIT_SUCCESS = 'Pessoa Física editada com sucesso'
-export const PHYSICAL_PERSON_DELETE_TITLE = 'Deletar Pessoa'
-export const PHYSICAL_PERSON_DELETE_MESSAGE = 'Deseja realmente deletar essa pessoa?'
-export const PHYSICAL_PERSON_DELETE_SUCCESS = 'Pessoa deletada com sucesso!'
+import { EntityMessageTypes } from 'utils/types'
+
+export const PhysicalPersonMessages: EntityMessageTypes = {
+  entityName: 'Pessoa Física',
+  title: 'Consultar Pessoa Física',
+  detailTitle: 'Detalhar Pessoa Física',
+  newTitle: 'Cadastrar nova Pessoa Física',
+  editTitle: 'Editar Pessoa Física',
+  newSuccess: 'Pessoa Física adicionada com sucesso',
+  editSuccess: 'Pessoa Física editada com sucesso',
+  deleteTitle: 'Deletar Pessoa',
+  deleteMessage: 'Deseja realmente deletar essa pessoa?',
+  deleteSuccess: 'Pessoa deletada com sucesso!',
+}

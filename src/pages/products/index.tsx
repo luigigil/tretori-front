@@ -1,0 +1,30 @@
+import { PRODUCTS_BREADCRUMBS, PRODUCTS_TABLE_FIELDS } from 'features/products/info'
+import { ProductMessages } from 'features/products/product.messages'
+import useAxiosFetch from 'hooks/useAxiosFetch'
+import TablePage from 'layouts/table-page'
+import { useRouter } from 'next/router'
+
+export default function ListProducts() {
+  const router = useRouter()
+  const [data, error, isLoading] = useAxiosFetch({
+    method: 'GET',
+    url: '/product',
+  })
+
+  // ! what to do with error?
+  if (error) {
+    return <p>erro</p>
+  }
+
+  return (
+    <TablePage
+      detailRoute='/products'
+      messages={ProductMessages}
+      breadcrumbs={PRODUCTS_BREADCRUMBS}
+      columns={PRODUCTS_TABLE_FIELDS}
+      rows={data}
+      isLoading={isLoading}
+      onNewClick={() => router.push('/products/create')}
+    ></TablePage>
+  )
+}

@@ -1,10 +1,17 @@
-import { ExpandLess, ExpandMore, Inventory, StarBorder } from '@mui/icons-material'
+import {
+  CurrencyExchange,
+  Description,
+  ExpandLess,
+  ExpandMore,
+  HistoryEdu,
+  Lock,
+} from '@mui/icons-material'
 import { Collapse, List, ListItemButton, ListItemIcon, ListItemText } from '@mui/material'
+import { useRouter } from 'next/router'
 import { useState } from 'react'
-import InboxIcon from '@mui/icons-material/MoveToInbox'
-import { Link } from 'react-router-dom'
 
 const ContratosMenu = () => {
+  const router = useRouter()
   const [open, setOpen] = useState(true)
 
   const handleClick = () => {
@@ -15,34 +22,34 @@ const ContratosMenu = () => {
     <>
       <ListItemButton onClick={handleClick}>
         <ListItemIcon>
-          <InboxIcon />
+          <HistoryEdu />
         </ListItemIcon>
         <ListItemText primary='Contratos' />
         {open ? <ExpandLess /> : <ExpandMore />}
       </ListItemButton>
       <Collapse in={open} timeout='auto' unmountOnExit>
         <List component='div' disablePadding>
-          <ListItemButton sx={{ pl: 4 }} component={Link} to='/contrato'>
+          <ListItemButton sx={{ pl: 4 }} onClick={() => router.push('/contracts')}>
             <ListItemIcon>
-              <Inventory />
+              <Description />
             </ListItemIcon>
             <ListItemText primary='Contrato' />
           </ListItemButton>
-          <ListItemButton sx={{ pl: 4 }}>
+          <ListItemButton sx={{ pl: 4 }} onClick={() => router.push('/movements')}>
             <ListItemIcon>
-              <StarBorder />
+              <HistoryEdu />
             </ListItemIcon>
             <ListItemText primary='Movimentação' />
           </ListItemButton>
-          <ListItemButton sx={{ pl: 4 }}>
+          <ListItemButton sx={{ pl: 4 }} onClick={() => router.push('/accesses')}>
             <ListItemIcon>
-              <StarBorder />
+              <Lock />
             </ListItemIcon>
             <ListItemText primary='Acessos' />
           </ListItemButton>
-          <ListItemButton sx={{ pl: 4 }}>
+          <ListItemButton sx={{ pl: 4 }} onClick={() => router.push('/renewals')}>
             <ListItemIcon>
-              <StarBorder />
+              <CurrencyExchange />
             </ListItemIcon>
             <ListItemText primary='Renovação' />
           </ListItemButton>

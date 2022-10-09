@@ -1,6 +1,6 @@
 import { TableBody as Body, TableCell, TableRow } from '@mui/material'
+import { useRouter } from 'next/router'
 import React from 'react'
-import { useNavigate } from 'react-router-dom'
 import { Column } from 'utils/types'
 
 interface TableBodyProps<T> {
@@ -10,10 +10,11 @@ interface TableBodyProps<T> {
 }
 
 export default function TableBody<T>({ columns, rows, detailRoute }: TableBodyProps<T>) {
-  const navigate = useNavigate()
+  const router = useRouter()
   const [page, setPage] = React.useState(0)
   const [rowsPerPage, setRowsPerPage] = React.useState(10)
 
+  console.log(rows, typeof rows)
   return (
     <Body>
       {rows
@@ -28,7 +29,7 @@ export default function TableBody<T>({ columns, rows, detailRoute }: TableBodyPr
                 return (
                   <TableCell
                     onClick={() => {
-                      navigate(`${detailRoute}/${row.id}`)
+                      router.push(`${detailRoute}/${row.id}`)
                     }}
                     key={column.id}
                     align={column.align}

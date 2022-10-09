@@ -1,8 +1,6 @@
 import { useState, useEffect } from 'react'
 import axios, { AxiosRequestConfig } from 'axios'
 
-axios.defaults.baseURL = process.env.REACT_APP_AXIOS_BASE_URL
-
 export default function useAxiosFetch(params: AxiosRequestConfig<any>) {
   const [data, setData] = useState<any>(null)
   const [error, setError] = useState<any>(null)
@@ -10,7 +8,10 @@ export default function useAxiosFetch(params: AxiosRequestConfig<any>) {
 
   const fetchData = async (): Promise<void> => {
     try {
-      const response = await axios.request(params)
+      const response = await axios.request({
+        ...params,
+        baseURL: 'http://localhost:4200',
+      })
       setData(response.data)
     } catch (error) {
       if (axios.isAxiosError(error)) {

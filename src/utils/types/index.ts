@@ -12,7 +12,7 @@ export interface BreadcrumbType {
   color?: string
 }
 
-export interface ContractsType {
+export interface ContractType {
   id: number
 }
 
@@ -64,4 +64,61 @@ export enum NotificationEnum {
   WARN = 'warning',
   INFO = 'info',
   SUCCESS = 'success',
+}
+
+export interface EntityMessageTypes {
+  entityName: string
+  title: string
+  detailTitle: string
+  newTitle: string
+  editTitle: string
+  newSuccess: string
+  editSuccess: string
+  deleteTitle: string
+  deleteMessage: string
+  deleteSuccess: string
+}
+
+export interface RepresentativeType {
+  id?: number
+  type: string
+  name: string
+  role: string
+  description: string
+  email: string
+  phone: string
+  birthdate: string
+  insurance: string
+  company: string
+}
+
+export interface InsuranceType {
+  id?: number
+  code?: string
+  email: string
+  phone: string
+  phone_secondary: string
+  address: string
+  cep: string
+  city: string
+  neighborhood: string
+  uf: string
+  fantasy_name: string
+  cnpj: string
+  social_reason: string
+  type: string
+  size: string
+  representatives: string
+  contracts: [string]
+}
+
+export interface MovementType {
+  id?: number
+  move_date: string
+  action: string
+  number_of_lives: string
+  description: string
+  details: string
+  // contract: ContractType
+  contract: string
 }
