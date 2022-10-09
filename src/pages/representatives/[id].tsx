@@ -15,7 +15,7 @@ export default function DetailRepresentative() {
     try {
       const response = await axios.request({
         url: `/representative/${id}`,
-        baseURL: process.env.NEXT_PUBLIC_NEXT_PUBLIC_BASE_URL,
+        baseURL: process.env.NEXT_PUBLIC_BASE_URL,
       })
       setData(response.data)
     } catch (error) {

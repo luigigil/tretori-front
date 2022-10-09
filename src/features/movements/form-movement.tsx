@@ -43,7 +43,7 @@ const FormMovement = ({ movement, shouldCreateNewMovement }: FormMovementProps) 
       await axios.request({
         method: 'DELETE',
         url: `/move/${movement?.id}`,
-        baseURL: process.env.NEXT_PUBLIC_NEXT_PUBLIC_BASE_URL,
+        baseURL: process.env.NEXT_PUBLIC_BASE_URL,
       })
       setShouldOpenDeleteDialog(false)
     } catch (error) {
@@ -66,7 +66,7 @@ const FormMovement = ({ movement, shouldCreateNewMovement }: FormMovementProps) 
       await axios.request({
         method: 'PUT',
         url: `/move/${movement?.id}`,
-        baseURL: process.env.NEXT_PUBLIC_NEXT_PUBLIC_BASE_URL,
+        baseURL: process.env.NEXT_PUBLIC_BASE_URL,
         data,
       })
       showSnackBar('Pessoa física editada com sucesso', 'success')
@@ -90,7 +90,7 @@ const FormMovement = ({ movement, shouldCreateNewMovement }: FormMovementProps) 
       await axios.request({
         method: 'POST',
         url: '/move',
-        baseURL: process.env.NEXT_PUBLIC_NEXT_PUBLIC_BASE_URL,
+        baseURL: process.env.NEXT_PUBLIC_BASE_URL,
         data,
       })
     } catch (error) {
