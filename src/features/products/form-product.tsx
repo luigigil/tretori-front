@@ -41,7 +41,7 @@ const FormProduct = ({ product, shouldCreateNewProduct }: FormProductProps) => {
       await axios.request({
         method: 'DELETE',
         url: `/product/${product?.id}`,
-        baseURL: process.env.NEXT_PUBLIC_REACT_APP_AXIOS_BASE_URL,
+        baseURL: process.env.NEXT_PUBLIC_NEXT_PUBLIC_BASE_URL,
       })
       setShouldOpenDeleteDialog(false)
     } catch (error) {
@@ -64,7 +64,7 @@ const FormProduct = ({ product, shouldCreateNewProduct }: FormProductProps) => {
       await axios.request({
         method: 'PUT',
         url: `product/${product?.id}`,
-        baseURL: process.env.NEXT_PUBLIC_REACT_APP_AXIOS_BASE_URL,
+        baseURL: process.env.NEXT_PUBLIC_NEXT_PUBLIC_BASE_URL,
         data,
       })
       showSnackBar('Pessoa física editada com sucesso', 'success')
@@ -88,7 +88,7 @@ const FormProduct = ({ product, shouldCreateNewProduct }: FormProductProps) => {
       await axios.request({
         method: 'POST',
         url: 'product',
-        baseURL: process.env.NEXT_PUBLIC_REACT_APP_AXIOS_BASE_URL,
+        baseURL: process.env.NEXT_PUBLIC_NEXT_PUBLIC_BASE_URL,
         data,
       })
     } catch (error) {
