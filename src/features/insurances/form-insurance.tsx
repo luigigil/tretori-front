@@ -41,7 +41,7 @@ const FormInsurance = ({ insurance, shouldCreateNewInsurance }: FormInsurancePro
       await axios.request({
         method: 'DELETE',
         url: `/insurance/${insurance?.id}`,
-        baseURL: 'http://localhost:4200',
+        baseURL: process.env.NEXT_PUBLIC_REACT_APP_AXIOS_BASE_URL,
       })
       setShouldOpenDeleteDialog(false)
     } catch (error) {
@@ -64,7 +64,7 @@ const FormInsurance = ({ insurance, shouldCreateNewInsurance }: FormInsurancePro
       await axios.request({
         method: 'PUT',
         url: `/insurance/${insurance?.id}`,
-        baseURL: 'http://localhost:4200',
+        baseURL: process.env.NEXT_PUBLIC_REACT_APP_AXIOS_BASE_URL,
         data,
       })
       showSnackBar('Pessoa física editada com sucesso', 'success')
@@ -88,7 +88,7 @@ const FormInsurance = ({ insurance, shouldCreateNewInsurance }: FormInsurancePro
       await axios.request({
         method: 'POST',
         url: '/insurance',
-        baseURL: 'http://localhost:4200',
+        baseURL: process.env.NEXT_PUBLIC_REACT_APP_AXIOS_BASE_URL,
         data,
       })
     } catch (error) {

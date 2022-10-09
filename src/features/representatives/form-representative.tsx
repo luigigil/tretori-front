@@ -46,7 +46,7 @@ const FormRepresentative = ({
       await axios.request({
         method: 'DELETE',
         url: `/representative/${representative?.id}`,
-        baseURL: 'http://localhost:4200',
+        baseURL: process.env.NEXT_PUBLIC_REACT_APP_AXIOS_BASE_URL,
       })
       setShouldOpenDeleteDialog(false)
     } catch (error) {
@@ -69,7 +69,7 @@ const FormRepresentative = ({
       await axios.request({
         method: 'PATCH',
         url: `/representative/${representative?.id}`,
-        baseURL: 'http://localhost:4200',
+        baseURL: process.env.NEXT_PUBLIC_REACT_APP_AXIOS_BASE_URL,
         data,
       })
       showSnackBar('Pessoa física editada com sucesso', 'success')
@@ -93,7 +93,7 @@ const FormRepresentative = ({
       await axios.request({
         method: 'POST',
         url: '/representative',
-        baseURL: 'http://localhost:4200',
+        baseURL: process.env.NEXT_PUBLIC_REACT_APP_AXIOS_BASE_URL,
         data,
       })
     } catch (error) {

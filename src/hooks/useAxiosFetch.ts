@@ -10,7 +10,7 @@ export default function useAxiosFetch(params: AxiosRequestConfig<any>) {
     try {
       const response = await axios.request({
         ...params,
-        baseURL: 'http://localhost:4200',
+        baseURL: process.env.NEXT_PUBLIC_REACT_APP_AXIOS_BASE_URL,
       })
       setData(response.data)
     } catch (error) {
