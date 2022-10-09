@@ -35,13 +35,13 @@ const ClientesMenu = () => {
             </ListItemIcon>
             <ListItemText primary='Pessoa Física' onClick={() => router.push('/physical-person')} />
           </ListItemButton>
-          <ListItemButton sx={{ pl: 4 }} onClick={() => router.push('/companies')}>
+          <ListItemButton sx={{ pl: 4 }}>
             <ListItemIcon>
               <Business />
             </ListItemIcon>
             <ListItemText primary='Empresas' />
           </ListItemButton>
-          <ListItemButton sx={{ pl: 4 }} onClick={() => router.push('/customers')}>
+          <ListItemButton sx={{ pl: 4 }}>
             <ListItemIcon>
               <BusinessCenter />
             </ListItemIcon>

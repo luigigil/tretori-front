@@ -22,13 +22,13 @@ const GestaoMenu = () => {
       </ListItemButton>
       <Collapse in={open} timeout='auto' unmountOnExit>
         <List component='div' disablePadding>
-          <ListItemButton sx={{ pl: 4 }} onClick={() => router.push('/users')}>
+          <ListItemButton sx={{ pl: 4 }}>
             <ListItemIcon>
               <AssignmentInd />
             </ListItemIcon>
             <ListItemText primary='Usuários' />
           </ListItemButton>
-          <ListItemButton sx={{ pl: 4 }} onClick={() => router.push('/login')}>
+          <ListItemButton sx={{ pl: 4 }}>
             <ListItemIcon>
               <Login />
             </ListItemIcon>

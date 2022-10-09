@@ -29,7 +29,7 @@ const ContratosMenu = () => {
       </ListItemButton>
       <Collapse in={open} timeout='auto' unmountOnExit>
         <List component='div' disablePadding>
-          <ListItemButton sx={{ pl: 4 }} onClick={() => router.push('/contracts')}>
+          <ListItemButton sx={{ pl: 4 }}>
             <ListItemIcon>
               <Description />
             </ListItemIcon>
@@ -41,13 +41,13 @@ const ContratosMenu = () => {
             </ListItemIcon>
             <ListItemText primary='Movimentação' />
           </ListItemButton>
-          <ListItemButton sx={{ pl: 4 }} onClick={() => router.push('/accesses')}>
+          <ListItemButton sx={{ pl: 4 }}>
             <ListItemIcon>
               <Lock />
             </ListItemIcon>
             <ListItemText primary='Acessos' />
           </ListItemButton>
-          <ListItemButton sx={{ pl: 4 }} onClick={() => router.push('/renewals')}>
+          <ListItemButton sx={{ pl: 4 }}>
             <ListItemIcon>
               <CurrencyExchange />
             </ListItemIcon>

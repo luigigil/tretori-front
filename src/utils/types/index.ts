@@ -25,12 +25,6 @@ export interface Severity {
   types: 'error' | 'warning' | 'info' | 'success'
 }
 
-export interface PhysicalPersonRow {
-  name: string
-  cpf: string
-  rg: string
-}
-
 export interface PhysicalPersonType {
   id?: number
   name: string
@@ -121,4 +115,24 @@ export interface MovementType {
   details: string
   // contract: ContractType
   contract: string
+}
+
+export interface CompanyType {
+  id?: number
+  code?: string
+  phone: string
+  phone_secondary: string
+  address: string
+  cep: string
+  city: string
+  neighborhood: string
+  uf: string
+  email: string
+  fantasy_name: string
+  cnpj: string
+  social_reason: string
+  type: string
+  size: string
+  representatives: string
+  contracts: [string]
 }
