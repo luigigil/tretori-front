@@ -69,7 +69,7 @@ const callbacks = {
     // Send properties to the client, like an access_token from a provider.
     if (token) {
       session.accessToken = token.accessToken
-      session.role = token.role
+      session.user.role = token.role
     }
     return session
   },
