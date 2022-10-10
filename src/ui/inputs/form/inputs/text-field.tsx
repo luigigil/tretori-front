@@ -10,6 +10,7 @@ interface FormTextFieldProps {
   errors?: any
   defaultValue?: string
   disabled?: boolean
+  type?: string
 }
 
 const FormTextField = ({
@@ -19,11 +20,13 @@ const FormTextField = ({
   errors = {},
   defaultValue = '',
   disabled = false,
+  type = 'text',
 }: FormTextFieldProps) => {
   return (
     <Controller
       render={({ field }) => (
         <TextField
+          type={type}
           fullWidth
           {...field}
           label={label}

@@ -136,3 +136,10 @@ export interface CompanyType {
   representatives: string
   contracts: [string]
 }
+
+export interface UsersType {
+  id?: number
+  username: string
+  password: string
+  roles?: string
+}
