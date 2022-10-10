@@ -1,4 +1,5 @@
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
+import { Typography } from '@mui/material'
 import Divider from '@mui/material/Divider'
 import IconButton from '@mui/material/IconButton'
 import List from '@mui/material/List'
@@ -30,6 +31,9 @@ const DrawerContainer = ({ open, handleDrawerOpen }: DrawerContainerProps) => {
           px: [1],
         }}
       >
+        <Typography display='flex' justifySelf='center' marginRight='3rem' variant='h5'>
+          Tretori
+        </Typography>
         <IconButton onClick={handleDrawerOpen}>
           <ChevronLeftIcon />
         </IconButton>
@@ -41,7 +45,6 @@ const DrawerContainer = ({ open, handleDrawerOpen }: DrawerContainerProps) => {
         <ClientesMenu />
         <SeguradorasMenu />
         <Divider sx={{ my: 1 }} />
-        {/* {secondaryListItems} */}
       </List>
     </Drawer>
   )
