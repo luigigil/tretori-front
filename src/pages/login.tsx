@@ -12,6 +12,8 @@ import Grid from '@mui/material/Grid'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import Typography from '@mui/material/Typography'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
+import { useRouter } from 'next/router'
+import axios from 'axios'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function Copyright(props: any) {
@@ -30,13 +32,31 @@ function Copyright(props: any) {
 const theme = createTheme()
 
 export default function SignInSide() {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const router = useRouter()
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    })
+    try {
+      const response = await axios.request({
+        method: 'POST',
+        url: 'auth/login',
+        baseURL: process.env.NEXT_PUBLIC_BASE_URL,
+        data: {
+          username: data.get('email'),
+          password: data.get('password'),
+        },
+      })
+      localStorage.setItem('token', response.data.access_token)
+      router.push('/')
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        // ! show error message snackbar
+      } else {
+        // ! show error message snackbar
+      }
+      alert('Usuário ou Senha inválidos')
+    }
   }
 
   return (
