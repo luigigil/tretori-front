@@ -3,6 +3,7 @@ import { joiResolver } from '@hookform/resolvers/joi'
 import { Box, Divider } from '@mui/material'
 import axios from 'axios'
 import { useSnackBar } from 'context/snackbar-context'
+import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -29,6 +30,7 @@ const FormRepresentative = ({
     control,
     formState: { errors },
   } = useForm<RepresentativeType>({ resolver: joiResolver(representativeSchema) })
+  const { data: session } = useSession()
   const router = useRouter()
   const [shouldOpenDeleteDialog, setShouldOpenDeleteDialog] = useState(false)
   const [, setIsLoadingRequest] = useState(false)
@@ -47,6 +49,9 @@ const FormRepresentative = ({
         method: 'DELETE',
         url: `/representative/${representative?.id}`,
         baseURL: process.env.NEXT_PUBLIC_BASE_URL,
+        headers: {
+          Authorization: `Bearer ${session?.accessToken}`,
+        },
       })
       setShouldOpenDeleteDialog(false)
     } catch (error) {
@@ -70,6 +75,9 @@ const FormRepresentative = ({
         method: 'PATCH',
         url: `/representative/${representative?.id}`,
         baseURL: process.env.NEXT_PUBLIC_BASE_URL,
+        headers: {
+          Authorization: `Bearer ${session?.accessToken}`,
+        },
         data,
       })
       showSnackBar('Pessoa física editada com sucesso', 'success')
@@ -94,6 +102,9 @@ const FormRepresentative = ({
         method: 'POST',
         url: '/representative',
         baseURL: process.env.NEXT_PUBLIC_BASE_URL,
+        headers: {
+          Authorization: `Bearer ${session?.accessToken}`,
+        },
         data,
       })
     } catch (error) {

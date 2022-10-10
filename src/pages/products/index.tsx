@@ -1,12 +1,12 @@
 import { PRODUCTS_BREADCRUMBS, PRODUCTS_TABLE_FIELDS } from 'features/products/info'
 import { ProductMessages } from 'features/products/product.messages'
-import useAxiosFetch from 'hooks/useAxiosFetch'
+import useStandardFetcher from 'hooks/useStandardFetcher'
 import TablePage from 'layouts/table-page'
 import { useRouter } from 'next/router'
 
 export default function ListProducts() {
   const router = useRouter()
-  const [data, error, isLoading] = useAxiosFetch({
+  const [data, error, isLoading] = useStandardFetcher({
     method: 'GET',
     url: '/product',
   })

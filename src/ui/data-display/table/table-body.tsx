@@ -14,7 +14,6 @@ export default function TableBody<T>({ columns, rows, detailRoute }: TableBodyPr
   const [page, setPage] = React.useState(0)
   const [rowsPerPage, setRowsPerPage] = React.useState(10)
 
-  console.log(rows, typeof rows)
   return (
     <Body>
       {rows

@@ -3,6 +3,7 @@ import { joiResolver } from '@hookform/resolvers/joi'
 import { Box, Divider } from '@mui/material'
 import axios from 'axios'
 import { useSnackBar } from 'context/snackbar-context'
+import { useSession } from 'next-auth/react'
 // import useSnackBars from 'hooks/useSnackbar'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -25,6 +26,7 @@ const FormProduct = ({ product, shouldCreateNewProduct }: FormProductProps) => {
     control,
     formState: { errors },
   } = useForm<ProductType>({ resolver: joiResolver(companySchema) })
+  const { data: session } = useSession()
   // const navigate = useNavigate()
   const [shouldOpenDeleteDialog, setShouldOpenDeleteDialog] = useState(false)
   const [, setIsLoadingRequest] = useState(false)
@@ -42,6 +44,9 @@ const FormProduct = ({ product, shouldCreateNewProduct }: FormProductProps) => {
         method: 'DELETE',
         url: `/product/${product?.id}`,
         baseURL: process.env.NEXT_PUBLIC_BASE_URL,
+        headers: {
+          Authorization: `Bearer ${session?.accessToken}`,
+        },
       })
       setShouldOpenDeleteDialog(false)
     } catch (error) {
@@ -65,6 +70,9 @@ const FormProduct = ({ product, shouldCreateNewProduct }: FormProductProps) => {
         method: 'PUT',
         url: `product/${product?.id}`,
         baseURL: process.env.NEXT_PUBLIC_BASE_URL,
+        headers: {
+          Authorization: `Bearer ${session?.accessToken}`,
+        },
         data,
       })
       showSnackBar('Pessoa física editada com sucesso', 'success')
@@ -89,6 +97,9 @@ const FormProduct = ({ product, shouldCreateNewProduct }: FormProductProps) => {
         method: 'POST',
         url: 'product',
         baseURL: process.env.NEXT_PUBLIC_BASE_URL,
+        headers: {
+          Authorization: `Bearer ${session?.accessToken}`,
+        },
         data,
       })
     } catch (error) {

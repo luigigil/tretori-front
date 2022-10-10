@@ -2,14 +2,14 @@ import {
   REPRESENTATIVE_BREADCRUMBS,
   REPRESENTATIVE_TABLE_FIELDS,
 } from 'features/representatives/info'
-import useAxiosFetch from 'hooks/useAxiosFetch'
+import { RepresentativeMessages } from 'features/representatives/representative.messages'
+import useStandardFetcher from 'hooks/useStandardFetcher'
 import TablePage from 'layouts/table-page'
 import { useRouter } from 'next/router'
-import { RepresentativeMessages } from 'features/representatives/representative.messages'
 
 export default function ListProducts() {
   const router = useRouter()
-  const [data, error, isLoading] = useAxiosFetch({
+  const [data, error, isLoading] = useStandardFetcher({
     method: 'GET',
     url: '/representative',
   })

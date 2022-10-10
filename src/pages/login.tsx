@@ -1,19 +1,37 @@
-import * as React from 'react'
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import Avatar from '@mui/material/Avatar'
+import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
-import CssBaseline from '@mui/material/CssBaseline'
-import TextField from '@mui/material/TextField'
-import FormControlLabel from '@mui/material/FormControlLabel'
 import Checkbox from '@mui/material/Checkbox'
+import CssBaseline from '@mui/material/CssBaseline'
+import FormControlLabel from '@mui/material/FormControlLabel'
+import Grid from '@mui/material/Grid'
 import Link from '@mui/material/Link'
 import Paper from '@mui/material/Paper'
-import Box from '@mui/material/Box'
-import Grid from '@mui/material/Grid'
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
-import Typography from '@mui/material/Typography'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
+import TextField from '@mui/material/TextField'
+import Typography from '@mui/material/Typography'
+import { GetServerSideProps } from 'next'
+import { getSession, signIn, useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
-import axios from 'axios'
+import { FormEvent } from 'react'
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const session = await getSession({ req: context.req })
+
+  if (session) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    }
+  }
+
+  return {
+    props: {},
+  }
+}
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function Copyright(props: any) {
@@ -32,31 +50,30 @@ function Copyright(props: any) {
 const theme = createTheme()
 
 export default function SignInSide() {
+  const { data: session } = useSession()
   const router = useRouter()
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  if (session) {
+    router.push('/')
+    return
+  }
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
-    try {
-      const response = await axios.request({
-        method: 'POST',
-        url: 'auth/login',
-        baseURL: process.env.NEXT_PUBLIC_BASE_URL,
-        data: {
-          username: data.get('email'),
-          password: data.get('password'),
-        },
-      })
-      localStorage.setItem('token', response.data.access_token)
-      router.push('/')
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        // ! show error message snackbar
-      } else {
-        // ! show error message snackbar
-      }
-      alert('Usuário ou Senha inválidos')
+
+    const result = await signIn('credentials', {
+      redirect: false,
+      username: data.get('email') as string,
+      password: data.get('password') as string,
+    })
+
+    if (result?.error) {
+      alert(result.error)
+      return
     }
+
+    router.push('/')
   }
 
   return (

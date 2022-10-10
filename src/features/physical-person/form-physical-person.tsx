@@ -3,7 +3,8 @@ import { joiResolver } from '@hookform/resolvers/joi'
 import { Box, Divider } from '@mui/material'
 import axios from 'axios'
 import { useSnackBar } from 'context/snackbar-context'
-import useAxiosFetch from 'hooks/useAxiosFetch'
+import useStandardFetcher from 'hooks/useStandardFetcher'
+import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -33,6 +34,7 @@ const FormPhysicalPerson = ({
     control,
     formState: { errors },
   } = useForm<PhysicalPersonType>({ resolver: joiResolver(physicalPersonSchema) })
+  const { data: session } = useSession()
   const router = useRouter()
   const [selectedContracts, setSelectedContracts] = useState<ListItemType[]>([])
   const [shouldOpenDeleteDialog, setShouldOpenDeleteDialog] = useState(false)
@@ -41,7 +43,7 @@ const FormPhysicalPerson = ({
   // const { addAlert } = useSnackBars()
   const { showSnackBar } = useSnackBar()
 
-  const [data, error, isLoading] = useAxiosFetch({
+  const [data, error, isLoading] = useStandardFetcher({
     method: 'GET',
     url: '/contract',
   })
@@ -65,6 +67,9 @@ const FormPhysicalPerson = ({
         method: 'DELETE',
         url: `/physical-person/${physicalPerson?.id}`,
         baseURL: process.env.NEXT_PUBLIC_BASE_URL,
+        headers: {
+          Authorization: `Bearer ${session?.accessToken}`,
+        },
       })
       setShouldOpenDeleteDialog(false)
     } catch (error) {
@@ -88,6 +93,9 @@ const FormPhysicalPerson = ({
         method: 'PUT',
         url: `physical-person/${physicalPerson?.id}`,
         baseURL: process.env.NEXT_PUBLIC_BASE_URL,
+        headers: {
+          Authorization: `Bearer ${session?.accessToken}`,
+        },
         data,
       })
       showSnackBar('Pessoa física editada com sucesso', 'success')
@@ -112,6 +120,9 @@ const FormPhysicalPerson = ({
         method: 'POST',
         url: 'physical-person',
         baseURL: process.env.NEXT_PUBLIC_BASE_URL,
+        headers: {
+          Authorization: `Bearer ${session?.accessToken}`,
+        },
         data,
       })
     } catch (error) {

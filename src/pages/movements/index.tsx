@@ -1,12 +1,12 @@
 import { MOVEMENT_BREADCRUMBS, MOVEMENT_TABLE_FIELDS } from 'features/movements/info'
 import { MovementMessages } from 'features/movements/movement.messages'
-import useAxiosFetch from 'hooks/useAxiosFetch'
+import useStandardFetcher from 'hooks/useStandardFetcher'
 import TablePage from 'layouts/table-page'
 import { useRouter } from 'next/router'
 
 export default function ListMovements() {
   const router = useRouter()
-  const [data, error, isLoading] = useAxiosFetch({
+  const [data, error, isLoading] = useStandardFetcher({
     method: 'GET',
     url: '/move',
   })

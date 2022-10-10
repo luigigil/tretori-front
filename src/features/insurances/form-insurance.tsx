@@ -3,6 +3,7 @@ import { joiResolver } from '@hookform/resolvers/joi'
 import { Box, Divider } from '@mui/material'
 import axios from 'axios'
 import { useSnackBar } from 'context/snackbar-context'
+import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -24,6 +25,7 @@ const FormInsurance = ({ insurance, shouldCreateNewInsurance }: FormInsurancePro
     control,
     formState: { errors },
   } = useForm<InsuranceType>({ resolver: joiResolver(insuranceSchema) })
+  const { data: session } = useSession()
   const router = useRouter()
   const [shouldOpenDeleteDialog, setShouldOpenDeleteDialog] = useState(false)
   const [, setIsLoadingRequest] = useState(false)
@@ -42,6 +44,9 @@ const FormInsurance = ({ insurance, shouldCreateNewInsurance }: FormInsurancePro
         method: 'DELETE',
         url: `/insurance/${insurance?.id}`,
         baseURL: process.env.NEXT_PUBLIC_BASE_URL,
+        headers: {
+          Authorization: `Bearer ${session?.accessToken}`,
+        },
       })
       setShouldOpenDeleteDialog(false)
     } catch (error) {
@@ -65,6 +70,9 @@ const FormInsurance = ({ insurance, shouldCreateNewInsurance }: FormInsurancePro
         method: 'PUT',
         url: `/insurance/${insurance?.id}`,
         baseURL: process.env.NEXT_PUBLIC_BASE_URL,
+        headers: {
+          Authorization: `Bearer ${session?.accessToken}`,
+        },
         data,
       })
       showSnackBar('Pessoa física editada com sucesso', 'success')
@@ -89,6 +97,9 @@ const FormInsurance = ({ insurance, shouldCreateNewInsurance }: FormInsurancePro
         method: 'POST',
         url: '/insurance',
         baseURL: process.env.NEXT_PUBLIC_BASE_URL,
+        headers: {
+          Authorization: `Bearer ${session?.accessToken}`,
+        },
         data,
       })
     } catch (error) {

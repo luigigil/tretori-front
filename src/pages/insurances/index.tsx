@@ -1,12 +1,12 @@
 import { INSURANCE_BREADCRUMBS, INSURANCE_TABLE_FIELDS } from 'features/insurances/info'
 import { InsuranceMessages } from 'features/insurances/insurance.messages'
-import useAxiosFetch from 'hooks/useAxiosFetch'
+import useStandardFetcher from 'hooks/useStandardFetcher'
 import TablePage from 'layouts/table-page'
 import { useRouter } from 'next/router'
 
 export default function ListInsurances() {
   const router = useRouter()
-  const [data, error, isLoading] = useAxiosFetch({
+  const [data, error, isLoading] = useStandardFetcher({
     method: 'GET',
     url: '/insurance',
   })

@@ -7,6 +7,7 @@ import ClientesMenu from 'features/menu/clients-menu'
 import ContratosMenu from 'features/menu/contracts-menu'
 import SeguradorasMenu from 'features/menu/insurance-menu'
 import GestaoMenu from 'features/menu/management-menu'
+import { useSession } from 'next-auth/react'
 import Drawer from './drawer'
 
 interface DrawerContainerProps {
@@ -15,6 +16,10 @@ interface DrawerContainerProps {
 }
 
 const DrawerContainer = ({ open, handleDrawerOpen }: DrawerContainerProps) => {
+  const { data: session } = useSession()
+
+  const isAdmin = session?.role === 'admin'
+
   return (
     <Drawer variant='permanent' open={open}>
       <Toolbar
@@ -32,7 +37,7 @@ const DrawerContainer = ({ open, handleDrawerOpen }: DrawerContainerProps) => {
       <Divider />
       <List component='nav'>
         <ContratosMenu />
-        <GestaoMenu />
+        {isAdmin && <GestaoMenu />}
         <ClientesMenu />
         <SeguradorasMenu />
         <Divider sx={{ my: 1 }} />
