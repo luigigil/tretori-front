@@ -8,7 +8,7 @@ export const PhysicalPersonMessages: EntityMessageTypes = {
   editTitle: 'Editar Pessoa Física',
   newSuccess: 'Pessoa Física adicionada com sucesso',
   editSuccess: 'Pessoa Física editada com sucesso',
-  deleteTitle: 'Deletar Pessoa',
-  deleteMessage: 'Deseja realmente deletar essa pessoa?',
-  deleteSuccess: 'Pessoa deletada com sucesso!',
+  deleteTitle: 'Deletar Pessoa Física',
+  deleteMessage: 'Deseja realmente deletar essa Pessoa Física?',
+  deleteSuccess: 'Pessoa Física deletada com sucesso!',
 }
