@@ -1,5 +1,12 @@
-import { Typography } from '@mui/material'
+import { Button } from '@mui/material'
+import { useSnackbar } from 'notistack'
 
 export default function App() {
-  return <Typography>Index Page</Typography>
+  const { enqueueSnackbar } = useSnackbar()
+
+  const handleClick = () => {
+    enqueueSnackbar('I love hooks', { variant: 'success' })
+  }
+
+  return <Button onClick={handleClick}>Index Page</Button>
 }

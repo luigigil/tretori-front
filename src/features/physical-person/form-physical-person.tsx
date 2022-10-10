@@ -2,10 +2,10 @@
 import { joiResolver } from '@hookform/resolvers/joi'
 import { Box, Divider } from '@mui/material'
 import axios from 'axios'
-import { useSnackBar } from 'context/snackbar-context'
 import useStandardFetcher from 'hooks/useStandardFetcher'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
+import { useSnackbar } from 'notistack'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import SubtitleDialog from 'ui/data-display/title/subtitle-dialog'
@@ -15,7 +15,7 @@ import Loading from 'ui/feedback/loading'
 import DatePicker from 'ui/inputs/date/date-picker'
 import FormTextField from 'ui/inputs/form/inputs/text-field'
 import TransferList from 'ui/inputs/transfer-list/transfer-list'
-import { REQUIRED_FIELD } from 'utils/messages'
+import { REQUIRED_FIELD, SERVER_ERROR } from 'utils/messages'
 import { ListItemType, PhysicalPersonType } from 'utils/types'
 import { physicalPersonSchema } from './physical-person.joi.schema'
 import { PhysicalPersonMessages } from './physical-person.messages'
@@ -40,8 +40,7 @@ const FormPhysicalPerson = ({
   const [shouldOpenDeleteDialog, setShouldOpenDeleteDialog] = useState(false)
   const [, setIsLoadingRequest] = useState(false)
   const [isEditing, setIsEditing] = useState(false)
-  // const { addAlert } = useSnackBars()
-  const { showSnackBar } = useSnackBar()
+  const { enqueueSnackbar } = useSnackbar()
 
   const [data, error, isLoading] = useStandardFetcher({
     method: 'GET',
@@ -63,7 +62,7 @@ const FormPhysicalPerson = ({
   const handleOnConfirmDeleteDialog = async () => {
     setIsLoadingRequest(true)
     try {
-      const response = await axios.request({
+      await axios.request({
         method: 'DELETE',
         url: `/physical-person/${physicalPerson?.id}`,
         baseURL: process.env.NEXT_PUBLIC_BASE_URL,
@@ -72,13 +71,13 @@ const FormPhysicalPerson = ({
         },
       })
       setShouldOpenDeleteDialog(false)
+      enqueueSnackbar(PhysicalPersonMessages.deleteSuccess, { variant: 'success' })
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        // ! show error message snackbar
+        enqueueSnackbar(SERVER_ERROR, { variant: 'error' })
       } else {
-        // ! show error message snackbar
+        enqueueSnackbar(SERVER_ERROR, { variant: 'error' })
       }
-      setIsLoadingRequest(false)
     } finally {
       setIsLoadingRequest(false)
       router.push('/physical-person')
@@ -89,7 +88,7 @@ const FormPhysicalPerson = ({
   const handleEditPhysicalPerson = async (data: any) => {
     setIsLoadingRequest(true)
     try {
-      const response = await axios.request({
+      await axios.request({
         method: 'PUT',
         url: `physical-person/${physicalPerson?.id}`,
         baseURL: process.env.NEXT_PUBLIC_BASE_URL,
@@ -98,17 +97,16 @@ const FormPhysicalPerson = ({
         },
         data,
       })
-      showSnackBar('Pessoa física editada com sucesso', 'success')
+      enqueueSnackbar(PhysicalPersonMessages.editSuccess, { variant: 'success' })
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        // ! show error message snackbar
+        enqueueSnackbar(SERVER_ERROR, { variant: 'error' })
       } else {
-        // ! show error message snackbar
+        enqueueSnackbar(SERVER_ERROR, { variant: 'error' })
       }
-      setIsLoadingRequest(false)
     } finally {
-      // setIsLoadingRequest(false)
-      // setIsEditing(false)
+      setIsLoadingRequest(false)
+      setIsEditing(false)
     }
   }
 
@@ -116,7 +114,7 @@ const FormPhysicalPerson = ({
   const handleSavePhysicalPerson = async (data: any) => {
     setIsLoadingRequest(true)
     try {
-      const response = await axios.request({
+      await axios.request({
         method: 'POST',
         url: 'physical-person',
         baseURL: process.env.NEXT_PUBLIC_BASE_URL,
@@ -125,11 +123,12 @@ const FormPhysicalPerson = ({
         },
         data,
       })
+      enqueueSnackbar(PhysicalPersonMessages.newSuccess, { variant: 'success' })
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        // ! show error message snackbar
+        enqueueSnackbar(SERVER_ERROR, { variant: 'error' })
       } else {
-        // ! show error message snackbar
+        enqueueSnackbar(SERVER_ERROR, { variant: 'error' })
       }
       setIsLoadingRequest(false)
     } finally {
@@ -312,10 +311,10 @@ const FormPhysicalPerson = ({
       </Box>
       <DialogConfirm
         open={shouldOpenDeleteDialog}
-        title='Deletar Pessoa Física'
+        title={PhysicalPersonMessages.deleteTitle}
         cancelMessage='cancelar'
         confirmMessage='confirmar'
-        message='Você tem certeza que deseja deletar?'
+        message={PhysicalPersonMessages.deleteMessage}
         onClose={handleOnCloseDeleteDialog}
         onConfirm={handleOnConfirmDeleteDialog}
       />

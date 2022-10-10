@@ -2,14 +2,15 @@
 import { joiResolver } from '@hookform/resolvers/joi'
 import { Box, Divider } from '@mui/material'
 import axios from 'axios'
-import { useSnackBar } from 'context/snackbar-context'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
+import { useSnackbar } from 'notistack'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import TitlePage from 'ui/data-display/title/title-page'
 import DialogConfirm from 'ui/feedback/dialog/dialog-confirm'
 import FormTextField from 'ui/inputs/form/inputs/text-field'
+import { SERVER_ERROR } from 'utils/messages'
 import { UsersType } from 'utils/types'
 import { usersSchema } from './users.joi.schema'
 import { UsersMessages } from './users.messages'
@@ -25,13 +26,12 @@ const FormUsers = ({ users, shouldCreateNewUsers }: FormUsersProps) => {
     control,
     formState: { errors },
   } = useForm<UsersType>({ resolver: joiResolver(usersSchema) })
+  const { enqueueSnackbar } = useSnackbar()
   const { data: session } = useSession()
   const router = useRouter()
   const [shouldOpenDeleteDialog, setShouldOpenDeleteDialog] = useState(false)
   const [, setIsLoadingRequest] = useState(false)
   const [isEditing, setIsEditing] = useState(false)
-  // const { addAlert } = useSnackBars()
-  const { showSnackBar } = useSnackBar()
 
   const handleOnCloseDeleteDialog = () => {
     setShouldOpenDeleteDialog(false)
@@ -49,11 +49,12 @@ const FormUsers = ({ users, shouldCreateNewUsers }: FormUsersProps) => {
         },
       })
       setShouldOpenDeleteDialog(false)
+      enqueueSnackbar(UsersMessages.deleteSuccess, { variant: 'success' })
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        // ! show error message snackbar
+        enqueueSnackbar(SERVER_ERROR, { variant: 'error' })
       } else {
-        // ! show error message snackbar
+        enqueueSnackbar(SERVER_ERROR, { variant: 'error' })
       }
       setIsLoadingRequest(false)
     } finally {
@@ -75,17 +76,16 @@ const FormUsers = ({ users, shouldCreateNewUsers }: FormUsersProps) => {
         },
         data,
       })
-      showSnackBar('Usuário editado com sucesso', 'success')
+      enqueueSnackbar(UsersMessages.editSuccess, { variant: 'success' })
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        // ! show error message snackbar
+        enqueueSnackbar(SERVER_ERROR, { variant: 'error' })
       } else {
-        // ! show error message snackbar
+        enqueueSnackbar(SERVER_ERROR, { variant: 'error' })
       }
-      setIsLoadingRequest(false)
     } finally {
-      // setIsLoadingRequest(false)
-      // setIsEditing(false)
+      setIsLoadingRequest(false)
+      setIsEditing(false)
     }
   }
 
@@ -102,11 +102,12 @@ const FormUsers = ({ users, shouldCreateNewUsers }: FormUsersProps) => {
         },
         data,
       })
+      enqueueSnackbar(UsersMessages.newSuccess, { variant: 'success' })
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        // ! show error message snackbar
+        enqueueSnackbar(SERVER_ERROR, { variant: 'error' })
       } else {
-        // ! show error message snackbar
+        enqueueSnackbar(SERVER_ERROR, { variant: 'error' })
       }
       setIsLoadingRequest(false)
     } finally {
@@ -163,25 +164,14 @@ const FormUsers = ({ users, shouldCreateNewUsers }: FormUsersProps) => {
             disabled={!isEditing && !shouldCreateNewUsers}
           />
         </Box>
-        {/* <Box display='flex' width='50%'>
-          <FormTextField
-            defaultValue={users?.roles}
-            label={'Permissões'}
-            name='roles'
-            control={control}
-            errors={errors}
-            // disabled={!isEditing && !shouldCreateNewUsers}
-            disabled
-          />
-        </Box> */}
         <Divider style={{ margin: 32 }} />
       </Box>
       <DialogConfirm
         open={shouldOpenDeleteDialog}
-        title='Deletar Usuário'
+        title={UsersMessages.deleteTitle}
         cancelMessage='cancelar'
         confirmMessage='confirmar'
-        message='Você tem certeza que deseja deletar?'
+        message={UsersMessages.deleteMessage}
         onClose={handleOnCloseDeleteDialog}
         onConfirm={handleOnConfirmDeleteDialog}
       />

@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from 'axios'
 import jwtDecode from 'jwt-decode'
@@ -25,7 +24,7 @@ const providers = [
       username: { label: 'Username', type: 'text', placeholder: 'jsmith' },
       password: { label: 'Password', type: 'password' },
     },
-    async authorize(credentials, req) {
+    async authorize(credentials) {
       try {
         const response = await axios.request({
           method: 'POST',
@@ -51,11 +50,6 @@ const providers = [
 
         return user
       } catch (error) {
-        if (axios.isAxiosError(error)) {
-          // ! show error message snackbar
-        } else {
-          // ! show error message snackbar
-        }
         throw new Error('Invalid credentials')
       }
     },
@@ -63,7 +57,7 @@ const providers = [
 ]
 
 const callbacks = {
-  async jwt({ token, user }) {
+  async jwt({ token, user }: any) {
     // Persist the OAuth access_token to the token right after signin
     if (user) {
       token.accessToken = user.token
@@ -71,7 +65,7 @@ const callbacks = {
     }
     return token
   },
-  async session({ session, token }) {
+  async session({ session, token }: any) {
     // Send properties to the client, like an access_token from a provider.
     if (token) {
       session.accessToken = token.accessToken

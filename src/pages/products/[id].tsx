@@ -11,9 +11,8 @@ export default function DetailPhysicalPerson() {
     url: `/product/${id}`,
   })
 
-  // ! what to do with error?
   if (error) {
-    return <p>erro</p>
+    router.push('/404')
   }
 
   return (

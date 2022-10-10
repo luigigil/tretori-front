@@ -2,16 +2,16 @@
 import { joiResolver } from '@hookform/resolvers/joi'
 import { Box, Divider } from '@mui/material'
 import axios from 'axios'
-import { useSnackBar } from 'context/snackbar-context'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
+import { useSnackbar } from 'notistack'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import TitlePage from 'ui/data-display/title/title-page'
 import DialogConfirm from 'ui/feedback/dialog/dialog-confirm'
 import DatePicker from 'ui/inputs/date/date-picker'
 import FormTextField from 'ui/inputs/form/inputs/text-field'
-import { REQUIRED_FIELD } from 'utils/messages'
+import { REQUIRED_FIELD, SERVER_ERROR } from 'utils/messages'
 import { MovementType } from 'utils/types'
 import { movementSchema } from './movement.joi.schema'
 import { MovementMessages } from './movement.messages'
@@ -32,8 +32,7 @@ const FormMovement = ({ movement, shouldCreateNewMovement }: FormMovementProps) 
   const [shouldOpenDeleteDialog, setShouldOpenDeleteDialog] = useState(false)
   const [, setIsLoadingRequest] = useState(false)
   const [isEditing, setIsEditing] = useState(false)
-  // const { addAlert } = useSnackBars()
-  const { showSnackBar } = useSnackBar()
+  const { enqueueSnackbar } = useSnackbar()
 
   const handleOnCloseDeleteDialog = () => {
     setShouldOpenDeleteDialog(false)
@@ -51,13 +50,13 @@ const FormMovement = ({ movement, shouldCreateNewMovement }: FormMovementProps) 
         },
       })
       setShouldOpenDeleteDialog(false)
+      enqueueSnackbar(MovementMessages.deleteSuccess, { variant: 'success' })
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        // ! show error message snackbar
+        enqueueSnackbar(SERVER_ERROR, { variant: 'error' })
       } else {
-        // ! show error message snackbar
+        enqueueSnackbar(SERVER_ERROR, { variant: 'error' })
       }
-      setIsLoadingRequest(false)
     } finally {
       setIsLoadingRequest(false)
       router.push('/movements')
@@ -77,17 +76,16 @@ const FormMovement = ({ movement, shouldCreateNewMovement }: FormMovementProps) 
         },
         data,
       })
-      showSnackBar('Pessoa física editada com sucesso', 'success')
+      enqueueSnackbar(MovementMessages.editSuccess, { variant: 'success' })
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        // ! show error message snackbar
+        enqueueSnackbar(SERVER_ERROR, { variant: 'error' })
       } else {
-        // ! show error message snackbar
+        enqueueSnackbar(SERVER_ERROR, { variant: 'error' })
       }
-      setIsLoadingRequest(false)
     } finally {
-      // setIsLoadingRequest(false)
-      // setIsEditing(false)
+      setIsLoadingRequest(false)
+      setIsEditing(false)
     }
   }
 
@@ -104,13 +102,13 @@ const FormMovement = ({ movement, shouldCreateNewMovement }: FormMovementProps) 
         },
         data,
       })
+      enqueueSnackbar(MovementMessages.newSuccess, { variant: 'success' })
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        // ! show error message snackbar
+        enqueueSnackbar(SERVER_ERROR, { variant: 'error' })
       } else {
-        // ! show error message snackbar
+        enqueueSnackbar(SERVER_ERROR, { variant: 'error' })
       }
-      setIsLoadingRequest(false)
     } finally {
       setIsLoadingRequest(false)
       router.push('/movements')
@@ -208,10 +206,10 @@ const FormMovement = ({ movement, shouldCreateNewMovement }: FormMovementProps) 
       </Box>
       <DialogConfirm
         open={shouldOpenDeleteDialog}
-        title='Deletar Movimentação'
+        title={MovementMessages.deleteTitle}
         cancelMessage='cancelar'
         confirmMessage='confirmar'
-        message='Você tem certeza que deseja deletar?'
+        message={MovementMessages.deleteMessage}
         onClose={handleOnCloseDeleteDialog}
         onConfirm={handleOnConfirmDeleteDialog}
       />

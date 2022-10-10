@@ -2,16 +2,16 @@
 import { joiResolver } from '@hookform/resolvers/joi'
 import { Box, Divider } from '@mui/material'
 import axios from 'axios'
-import { useSnackBar } from 'context/snackbar-context'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
+import { useSnackbar } from 'notistack'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import TitlePage from 'ui/data-display/title/title-page'
 import DialogConfirm from 'ui/feedback/dialog/dialog-confirm'
 import DatePicker from 'ui/inputs/date/date-picker'
 import FormTextField from 'ui/inputs/form/inputs/text-field'
-import { REQUIRED_FIELD } from 'utils/messages'
+import { REQUIRED_FIELD, SERVER_ERROR } from 'utils/messages'
 import { RepresentativeType } from 'utils/types'
 import { representativeSchema } from './representative.joi.schema'
 import { RepresentativeMessages } from './representative.messages'
@@ -35,8 +35,7 @@ const FormRepresentative = ({
   const [shouldOpenDeleteDialog, setShouldOpenDeleteDialog] = useState(false)
   const [, setIsLoadingRequest] = useState(false)
   const [isEditing, setIsEditing] = useState(false)
-  // const { addAlert } = useSnackBars()
-  const { showSnackBar } = useSnackBar()
+  const { enqueueSnackbar } = useSnackbar()
 
   const handleOnCloseDeleteDialog = () => {
     setShouldOpenDeleteDialog(false)
@@ -54,11 +53,12 @@ const FormRepresentative = ({
         },
       })
       setShouldOpenDeleteDialog(false)
+      enqueueSnackbar(RepresentativeMessages.deleteSuccess, { variant: 'success' })
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        // ! show error message snackbar
+        enqueueSnackbar(SERVER_ERROR, { variant: 'error' })
       } else {
-        // ! show error message snackbar
+        enqueueSnackbar(SERVER_ERROR, { variant: 'error' })
       }
       setIsLoadingRequest(false)
     } finally {
@@ -68,7 +68,7 @@ const FormRepresentative = ({
   }
 
   // ! fix this any
-  const handleEditPhysicalPerson = async (data: any) => {
+  const handleEditRepresentative = async (data: any) => {
     setIsLoadingRequest(true)
     try {
       await axios.request({
@@ -80,22 +80,21 @@ const FormRepresentative = ({
         },
         data,
       })
-      showSnackBar('Pessoa física editada com sucesso', 'success')
+      enqueueSnackbar(RepresentativeMessages.editSuccess, { variant: 'success' })
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        // ! show error message snackbar
+        enqueueSnackbar(SERVER_ERROR, { variant: 'error' })
       } else {
-        // ! show error message snackbar
+        enqueueSnackbar(SERVER_ERROR, { variant: 'error' })
       }
-      setIsLoadingRequest(false)
     } finally {
-      // setIsLoadingRequest(false)
-      // setIsEditing(false)
+      setIsLoadingRequest(false)
+      setIsEditing(false)
     }
   }
 
   // ! fix this any
-  const handleSavePhysicalPerson = async (data: any) => {
+  const handleSaveRepresentative = async (data: any) => {
     setIsLoadingRequest(true)
     try {
       await axios.request({
@@ -107,13 +106,13 @@ const FormRepresentative = ({
         },
         data,
       })
+      enqueueSnackbar(RepresentativeMessages.newSuccess, { variant: 'success' })
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        // ! show error message snackbar
+        enqueueSnackbar(SERVER_ERROR, { variant: 'error' })
       } else {
-        // ! show error message snackbar
+        enqueueSnackbar(SERVER_ERROR, { variant: 'error' })
       }
-      setIsLoadingRequest(false)
     } finally {
       setIsLoadingRequest(false)
       router.push('/representatives')
@@ -125,7 +124,7 @@ const FormRepresentative = ({
       return (
         <TitlePage
           title={RepresentativeMessages.newTitle}
-          onSave={handleSubmit(handleSavePhysicalPerson)}
+          onSave={handleSubmit(handleSaveRepresentative)}
         />
       )
     }
@@ -136,7 +135,7 @@ const FormRepresentative = ({
         onDelete={() => setShouldOpenDeleteDialog(true)}
         onEdit={() => setIsEditing(true)}
         onCancel={() => setIsEditing(false)}
-        onSave={handleSubmit(handleEditPhysicalPerson)}
+        onSave={handleSubmit(handleEditRepresentative)}
       />
     )
   }
@@ -238,10 +237,10 @@ const FormRepresentative = ({
       </Box>
       <DialogConfirm
         open={shouldOpenDeleteDialog}
-        title='Deletar Representante'
+        title={RepresentativeMessages.deleteTitle}
         cancelMessage='cancelar'
         confirmMessage='confirmar'
-        message='Você tem certeza que deseja deletar?'
+        message={RepresentativeMessages.deleteMessage}
         onClose={handleOnCloseDeleteDialog}
         onConfirm={handleOnConfirmDeleteDialog}
       />

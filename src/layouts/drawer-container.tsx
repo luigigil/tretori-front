@@ -18,7 +18,7 @@ interface DrawerContainerProps {
 const DrawerContainer = ({ open, handleDrawerOpen }: DrawerContainerProps) => {
   const { data: session } = useSession()
 
-  const isAdmin = session?.role === 'admin'
+  const isAdmin = session?.user.role === 'admin'
 
   return (
     <Drawer variant='permanent' open={open}>

@@ -69,7 +69,6 @@ export default function SignInSide() {
     })
 
     if (result?.error) {
-      alert(result.error)
       return
     }
 

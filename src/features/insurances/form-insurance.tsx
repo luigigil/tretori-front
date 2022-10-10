@@ -2,14 +2,16 @@
 import { joiResolver } from '@hookform/resolvers/joi'
 import { Box, Divider } from '@mui/material'
 import axios from 'axios'
-import { useSnackBar } from 'context/snackbar-context'
+import { Session } from 'next-auth'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
+import { useSnackbar } from 'notistack'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import TitlePage from 'ui/data-display/title/title-page'
 import DialogConfirm from 'ui/feedback/dialog/dialog-confirm'
 import FormTextField from 'ui/inputs/form/inputs/text-field'
+import { SERVER_ERROR } from 'utils/messages'
 import { InsuranceType } from 'utils/types'
 import { insuranceSchema } from './insurance.joi.schema'
 import { InsuranceMessages } from './insurance.messages'
@@ -25,13 +27,12 @@ const FormInsurance = ({ insurance, shouldCreateNewInsurance }: FormInsurancePro
     control,
     formState: { errors },
   } = useForm<InsuranceType>({ resolver: joiResolver(insuranceSchema) })
+  const { enqueueSnackbar } = useSnackbar()
   const { data: session } = useSession()
   const router = useRouter()
   const [shouldOpenDeleteDialog, setShouldOpenDeleteDialog] = useState(false)
   const [, setIsLoadingRequest] = useState(false)
   const [isEditing, setIsEditing] = useState(false)
-  // const { addAlert } = useSnackBars()
-  const { showSnackBar } = useSnackBar()
 
   const handleOnCloseDeleteDialog = () => {
     setShouldOpenDeleteDialog(false)
@@ -49,13 +50,13 @@ const FormInsurance = ({ insurance, shouldCreateNewInsurance }: FormInsurancePro
         },
       })
       setShouldOpenDeleteDialog(false)
+      enqueueSnackbar(InsuranceMessages.newSuccess, { variant: 'success' })
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        // ! show error message snackbar
+        enqueueSnackbar(SERVER_ERROR, { variant: 'error' })
       } else {
-        // ! show error message snackbar
+        enqueueSnackbar(SERVER_ERROR, { variant: 'error' })
       }
-      setIsLoadingRequest(false)
     } finally {
       setIsLoadingRequest(false)
       router.push('/insurances')
@@ -75,17 +76,16 @@ const FormInsurance = ({ insurance, shouldCreateNewInsurance }: FormInsurancePro
         },
         data,
       })
-      showSnackBar('Pessoa física editada com sucesso', 'success')
+      enqueueSnackbar(InsuranceMessages.editSuccess, { variant: 'success' })
+      setIsEditing(false)
+      setIsLoadingRequest(false)
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        // ! show error message snackbar
+        enqueueSnackbar(SERVER_ERROR, { variant: 'error' })
       } else {
-        // ! show error message snackbar
+        enqueueSnackbar(SERVER_ERROR, { variant: 'error' })
       }
       setIsLoadingRequest(false)
-    } finally {
-      // setIsLoadingRequest(false)
-      // setIsEditing(false)
     }
   }
 
@@ -102,13 +102,13 @@ const FormInsurance = ({ insurance, shouldCreateNewInsurance }: FormInsurancePro
         },
         data,
       })
+      enqueueSnackbar(InsuranceMessages.newSuccess, { variant: 'success' })
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        // ! show error message snackbar
+        enqueueSnackbar(SERVER_ERROR, { variant: 'error' })
       } else {
-        // ! show error message snackbar
+        enqueueSnackbar(SERVER_ERROR, { variant: 'error' })
       }
-      setIsLoadingRequest(false)
     } finally {
       setIsLoadingRequest(false)
       router.push('/insurances')
@@ -274,10 +274,10 @@ const FormInsurance = ({ insurance, shouldCreateNewInsurance }: FormInsurancePro
       </Box>
       <DialogConfirm
         open={shouldOpenDeleteDialog}
-        title='Deletar Seguradora'
+        title={InsuranceMessages.deleteTitle}
         cancelMessage='cancelar'
         confirmMessage='confirmar'
-        message='Você tem certeza que deseja deletar?'
+        message={InsuranceMessages.deleteMessage}
         onClose={handleOnCloseDeleteDialog}
         onConfirm={handleOnConfirmDeleteDialog}
       />

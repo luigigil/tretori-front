@@ -1,8 +1,11 @@
 import { useState, useEffect } from 'react'
 import axios, { AxiosRequestConfig } from 'axios'
 import { getSession, useSession } from 'next-auth/react'
+import { useSnackbar } from 'notistack'
+import { SERVER_ERROR } from 'utils/messages'
 
 export default function useStandardFetcher(params: AxiosRequestConfig<any>) {
+  const { enqueueSnackbar } = useSnackbar()
   const { data: session } = useSession()
   const [data, setData] = useState<any>(null)
   const [error, setError] = useState<any>(null)
@@ -34,6 +37,7 @@ export default function useStandardFetcher(params: AxiosRequestConfig<any>) {
         setError(error)
       }
 
+      enqueueSnackbar(SERVER_ERROR, { variant: 'error' })
       setIsLoading(false)
     } finally {
       setIsLoading(false)

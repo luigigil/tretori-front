@@ -69,7 +69,18 @@ export default function CrudButtons({
     )
     if (onSave) {
       if (onEdit && isEditing) {
-        return button
+        return (
+          <Button
+            style={{ margin: 8 }}
+            variant='contained'
+            onClick={() => {
+              setIsEditing(false)
+              onSave()
+            }}
+          >
+            Salvar
+          </Button>
+        )
       } else if (!onEdit) {
         return button
       }

@@ -2,14 +2,15 @@
 import { joiResolver } from '@hookform/resolvers/joi'
 import { Box, Divider } from '@mui/material'
 import axios from 'axios'
-import { useSnackBar } from 'context/snackbar-context'
 import { useSession } from 'next-auth/react'
-// import useSnackBars from 'hooks/useSnackbar'
+import { useRouter } from 'next/router'
+import { useSnackbar } from 'notistack'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import TitlePage from 'ui/data-display/title/title-page'
 import DialogConfirm from 'ui/feedback/dialog/dialog-confirm'
 import FormTextField from 'ui/inputs/form/inputs/text-field'
+import { SERVER_ERROR } from '../../utils/messages/index'
 import { ProductMessages } from './product.messages'
 import { companySchema } from './products.joi.schema'
 
@@ -27,11 +28,11 @@ const FormProduct = ({ product, shouldCreateNewProduct }: FormProductProps) => {
     formState: { errors },
   } = useForm<ProductType>({ resolver: joiResolver(companySchema) })
   const { data: session } = useSession()
-  // const navigate = useNavigate()
+  const router = useRouter()
   const [shouldOpenDeleteDialog, setShouldOpenDeleteDialog] = useState(false)
   const [, setIsLoadingRequest] = useState(false)
   const [isEditing, setIsEditing] = useState(false)
-  const { showSnackBar } = useSnackBar()
+  const { enqueueSnackbar } = useSnackbar()
 
   const handleOnCloseDeleteDialog = () => {
     setShouldOpenDeleteDialog(false)
@@ -49,16 +50,17 @@ const FormProduct = ({ product, shouldCreateNewProduct }: FormProductProps) => {
         },
       })
       setShouldOpenDeleteDialog(false)
+      enqueueSnackbar(ProductMessages.deleteSuccess, { variant: 'success' })
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        // ! show error message snackbar
+        enqueueSnackbar(SERVER_ERROR, { variant: 'error' })
       } else {
-        // ! show error message snackbar
+        enqueueSnackbar(SERVER_ERROR, { variant: 'error' })
       }
       setIsLoadingRequest(false)
     } finally {
       setIsLoadingRequest(false)
-      // navigate('/products')
+      router.push('/products')
     }
   }
 
@@ -75,17 +77,16 @@ const FormProduct = ({ product, shouldCreateNewProduct }: FormProductProps) => {
         },
         data,
       })
-      showSnackBar('Pessoa física editada com sucesso', 'success')
+      enqueueSnackbar(ProductMessages.editSuccess, { variant: 'success' })
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        // ! show error message snackbar
+        enqueueSnackbar(SERVER_ERROR, { variant: 'error' })
       } else {
-        // ! show error message snackbar
+        enqueueSnackbar(SERVER_ERROR, { variant: 'error' })
       }
-      setIsLoadingRequest(false)
     } finally {
-      // setIsLoadingRequest(false)
-      // setIsEditing(false)
+      setIsLoadingRequest(false)
+      setIsEditing(false)
     }
   }
 
@@ -102,16 +103,16 @@ const FormProduct = ({ product, shouldCreateNewProduct }: FormProductProps) => {
         },
         data,
       })
+      enqueueSnackbar(ProductMessages.newSuccess, { variant: 'success' })
+      router.push('/products')
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        // ! show error message snackbar
+        enqueueSnackbar(SERVER_ERROR, { variant: 'error' })
       } else {
-        // ! show error message snackbar
+        enqueueSnackbar(SERVER_ERROR, { variant: 'error' })
       }
-      setIsLoadingRequest(false)
     } finally {
       setIsLoadingRequest(false)
-      // navigate('/products')
     }
   }
 
@@ -185,10 +186,10 @@ const FormProduct = ({ product, shouldCreateNewProduct }: FormProductProps) => {
       </Box>
       <DialogConfirm
         open={shouldOpenDeleteDialog}
-        title='Deletar Produto'
+        title={ProductMessages.deleteTitle}
         cancelMessage='cancelar'
         confirmMessage='confirmar'
-        message='Você tem certeza que deseja deletar?'
+        message={ProductMessages.deleteMessage}
         onClose={handleOnCloseDeleteDialog}
         onConfirm={handleOnConfirmDeleteDialog}
       />

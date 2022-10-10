@@ -4,6 +4,7 @@ import { Session } from 'inspector'
 import Layout from 'layouts/layout'
 import { SessionProvider } from 'next-auth/react'
 import { useRouter } from 'next/router'
+import { SnackbarProvider } from 'notistack'
 
 interface _AppProps {
   Component: any
@@ -22,10 +23,12 @@ export default function _App({ Component, pageProps }: _AppProps) {
   }
 
   return (
-    <SessionProvider session={pageProps.session}>
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
-    </SessionProvider>
+    <SnackbarProvider maxSnack={3}>
+      <SessionProvider session={pageProps.session}>
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </SessionProvider>
+    </SnackbarProvider>
   )
 }
