@@ -12,6 +12,7 @@ interface DatePickerProps {
   disabled?: boolean
   name: string
   control: Control<any, any>
+  maxDate?: DateTime
 }
 
 const ADPATER_LOCALE = process.env.NEXT_PUBLIC_APP_LOCALE
@@ -23,6 +24,7 @@ const DatePicker = ({
   disabled,
   name,
   control,
+  maxDate,
 }: DatePickerProps) => {
   return (
     <Controller
@@ -44,7 +46,7 @@ const DatePicker = ({
             renderInput={(params) => (
               <TextField fullWidth {...params} helperText={helperText} required={required} />
             )}
-            maxDate={DateTime.now()}
+            maxDate={maxDate}
           />
         </LocalizationProvider>
       )}

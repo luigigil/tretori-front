@@ -12,10 +12,6 @@ export interface BreadcrumbType {
   color?: string
 }
 
-export interface ContractType {
-  id: number
-}
-
 export interface ListItemType {
   id: number
   label: string
@@ -142,4 +138,72 @@ export interface UsersType {
   username: string
   password: string
   roles?: string
+}
+
+export interface ContractType {
+  id?: number
+  policy: string
+  size: string
+  type: string
+  version: number
+  number_of_lives: number
+  validity_start: string
+  validity_end: string
+  validity_time: number
+  inclusion_period: string
+  cutoff_date: string
+  email_on_insurancy: string
+  phone_on_insurancy: string
+  copay: true
+  adhesion: true
+  copay_perc: number
+  contributor_perc: number
+  copay_details: string
+  cost: number
+  invoice_amount: number
+  total_contract_value: number
+  first_invoice_date: string
+  renew: RenewalType
+  move: MovementType
+  legal_person: LegalPersonType
+  physical_person: PhysicalPersonType
+  acess: AccessType
+}
+
+export interface AccessType {
+  id?: number
+  system: string
+  login_tret: string
+  pass_tret: string
+  login_client: string
+  pass_client: string
+}
+
+export interface LegalPersonType {
+  id?: number
+  code?: string
+  phone: string
+  phone_secondary: string
+  address: string
+  cep: string
+  city: string
+  neighborhood: string
+  uf: string
+  email: string
+  fantasy_name: string
+  cnpj: string
+  social_reason: string
+  type: string
+  size: string
+  representatives: string
+  contracts?: [string]
+}
+
+export interface RenewalType {
+  id?: number
+  proposed_date: string
+  proposed_adjustment: string
+  closed_date: string
+  closed_value: string
+  details: string
 }
