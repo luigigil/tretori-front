@@ -20,7 +20,7 @@ import { legalPersonSchema } from './legal-person.joi.schema'
 import { LegalPersonMessages } from './legal-person.messages'
 
 interface FormLegalPersonProps {
-  customer: CustomerType
+  customer?: CustomerType
   legalPerson?: LegalPersonType
   shouldCreateNew: boolean
 }

@@ -18,7 +18,7 @@ export default function DetailPhysicalPerson() {
   return (
     <>
       <Button onClick={() => router.push('/contracts')}>Voltar</Button>
-      {!isLoading && <FormContract contract={data} shouldCreateNewContract={false}></FormContract>}
+      {!isLoading && <FormContract contract={data} shouldCreateNew={false}></FormContract>}
     </>
   )
 }

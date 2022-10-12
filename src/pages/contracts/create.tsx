@@ -14,7 +14,7 @@ export default function CreatePhysicalPerson() {
       >
         Voltar
       </Button>
-      <FormContract shouldCreateNewContract={true}></FormContract>
+      <FormContract shouldCreateNew={true}></FormContract>
     </>
   )
 }

@@ -22,7 +22,7 @@ import { physicalPersonSchema } from './physical-person.joi.schema'
 import { PhysicalPersonMessages } from './physical-person.messages'
 
 interface FormPhysicalPersonProps {
-  customer: CustomerType
+  customer?: CustomerType
   physicalPerson?: PhysicalPersonType
   shouldCreateNewPhysicalPerson: boolean
 }
