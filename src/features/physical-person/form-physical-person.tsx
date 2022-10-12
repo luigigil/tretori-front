@@ -17,16 +17,18 @@ import DatePicker from 'ui/inputs/date/date-picker'
 import FormTextField from 'ui/inputs/text-field/text-field'
 import TransferList from 'ui/inputs/transfer-list/transfer-list'
 import { REQUIRED_FIELD, SERVER_ERROR } from 'utils/messages'
-import { ListItemType, PhysicalPersonType } from 'utils/types'
+import { CustomerType, ListItemType, PhysicalPersonType } from 'utils/types'
 import { physicalPersonSchema } from './physical-person.joi.schema'
 import { PhysicalPersonMessages } from './physical-person.messages'
 
 interface FormPhysicalPersonProps {
+  customer: CustomerType
   physicalPerson?: PhysicalPersonType
   shouldCreateNewPhysicalPerson: boolean
 }
 
 const FormPhysicalPerson = ({
+  customer,
   physicalPerson,
   shouldCreateNewPhysicalPerson,
 }: FormPhysicalPersonProps) => {
@@ -96,7 +98,7 @@ const FormPhysicalPerson = ({
         headers: {
           Authorization: `Bearer ${session?.accessToken}`,
         },
-        data,
+        data: { ...data, customer },
       })
       enqueueSnackbar(PhysicalPersonMessages.editSuccess, { variant: 'success' })
     } catch (error) {
@@ -122,7 +124,7 @@ const FormPhysicalPerson = ({
         headers: {
           Authorization: `Bearer ${session?.accessToken}`,
         },
-        data,
+        data: { ...data, customer },
       })
       enqueueSnackbar(PhysicalPersonMessages.newSuccess, { variant: 'success' })
     } catch (error) {

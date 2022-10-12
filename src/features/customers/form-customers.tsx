@@ -11,6 +11,7 @@ import {
   Typography,
 } from '@mui/material'
 import axios from 'axios'
+import FormLegalPerson from 'features/legal-person/form-legal-person'
 import FormPhysicalPerson from 'features/physical-person/form-physical-person'
 import useStandardFetcher from 'hooks/useStandardFetcher'
 import { useSession } from 'next-auth/react'
@@ -47,6 +48,8 @@ const FormCustomers = ({ customer, shouldCreateNew }: FormCustomersProps) => {
   const [, setIsLoadingRequest] = useState(false)
   const [isEditing, setIsEditing] = useState(false)
   const { enqueueSnackbar } = useSnackbar()
+  const [customerIsSaved, setCustomerIsSaved] = useState(!shouldCreateNew)
+  const [savedCustomer, setSavedCustomer] = useState<CustomerType | undefined>(customer)
 
   const customerTypeSelected = useWatch({
     control,
@@ -125,7 +128,7 @@ const FormCustomers = ({ customer, shouldCreateNew }: FormCustomersProps) => {
   const handleSave = async (data: any) => {
     setIsLoadingRequest(true)
     try {
-      await axios.request({
+      const response = await axios.request({
         method: 'POST',
         url: 'customers',
         baseURL: process.env.NEXT_PUBLIC_BASE_URL,
@@ -135,16 +138,17 @@ const FormCustomers = ({ customer, shouldCreateNew }: FormCustomersProps) => {
         data,
       })
       enqueueSnackbar(CustomerMessages.newSuccess, { variant: 'success' })
+      setCustomerIsSaved(true)
+      setSavedCustomer(response.data)
+      console.log(response.data)
     } catch (error) {
       if (axios.isAxiosError(error)) {
         enqueueSnackbar(SERVER_ERROR, { variant: 'error' })
       } else {
         enqueueSnackbar(SERVER_ERROR, { variant: 'error' })
       }
-      setIsLoadingRequest(false)
     } finally {
       setIsLoadingRequest(false)
-      router.push('/customers')
     }
   }
 
@@ -286,8 +290,17 @@ const FormCustomers = ({ customer, shouldCreateNew }: FormCustomersProps) => {
         )}
         <Divider style={{ margin: 32 }} />
       </Box>
-      {shouldCreateNew && customerTypeSelected !== 'LEGAL_PERSON' && (
-        <FormPhysicalPerson shouldCreateNewPhysicalPerson={shouldCreateNew} />
+      {customerIsSaved && customerTypeSelected !== 'LEGAL_PERSON' && (
+        <FormPhysicalPerson
+          customer={savedCustomer as CustomerType}
+          shouldCreateNewPhysicalPerson={shouldCreateNew}
+        />
+      )}
+      {customerIsSaved && customerTypeSelected === 'LEGAL_PERSON' && (
+        <FormLegalPerson
+          customer={savedCustomer as CustomerType}
+          shouldCreateNew={shouldCreateNew}
+        />
       )}
       <DialogConfirm
         open={shouldOpenDeleteDialog}

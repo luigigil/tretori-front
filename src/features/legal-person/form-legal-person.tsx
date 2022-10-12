@@ -15,16 +15,17 @@ import Loading from 'ui/feedback/loading'
 import FormTextField from 'ui/inputs/text-field/text-field'
 import TransferList from 'ui/inputs/transfer-list/transfer-list'
 import { SERVER_ERROR } from 'utils/messages'
-import { LegalPersonType, ListItemType } from 'utils/types'
+import { CustomerType, LegalPersonType, ListItemType } from 'utils/types'
 import { legalPersonSchema } from './legal-person.joi.schema'
 import { LegalPersonMessages } from './legal-person.messages'
 
 interface FormLegalPersonProps {
+  customer: CustomerType
   legalPerson?: LegalPersonType
   shouldCreateNew: boolean
 }
 
-const FormLegalPerson = ({ legalPerson, shouldCreateNew }: FormLegalPersonProps) => {
+const FormLegalPerson = ({ customer, legalPerson, shouldCreateNew }: FormLegalPersonProps) => {
   const {
     handleSubmit,
     control,
@@ -91,7 +92,7 @@ const FormLegalPerson = ({ legalPerson, shouldCreateNew }: FormLegalPersonProps)
         headers: {
           Authorization: `Bearer ${session?.accessToken}`,
         },
-        data,
+        data: { ...data, customer },
       })
       enqueueSnackbar(LegalPersonMessages.editSuccess, { variant: 'success' })
     } catch (error) {
@@ -117,7 +118,7 @@ const FormLegalPerson = ({ legalPerson, shouldCreateNew }: FormLegalPersonProps)
         headers: {
           Authorization: `Bearer ${session?.accessToken}`,
         },
-        data,
+        data: { ...data, customer },
       })
       enqueueSnackbar(LegalPersonMessages.newSuccess, { variant: 'success' })
     } catch (error) {
@@ -129,7 +130,6 @@ const FormLegalPerson = ({ legalPerson, shouldCreateNew }: FormLegalPersonProps)
       setIsLoadingRequest(false)
     } finally {
       setIsLoadingRequest(false)
-      router.push('/legal-person')
     }
   }
 
