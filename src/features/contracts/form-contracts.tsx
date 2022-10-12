@@ -15,17 +15,17 @@ import DialogConfirm from 'ui/feedback/dialog/dialog-confirm'
 import DatePicker from 'ui/inputs/date/date-picker'
 import FormTextField from 'ui/inputs/text-field/text-field'
 import { SERVER_ERROR } from 'utils/messages'
-import { ContractType } from 'utils/types'
+import { ContractType, CustomerType } from 'utils/types'
 import { contractSchema } from './contract.joi.schema'
 import { ContractMessages } from './contract.messages'
 import { CONTRACT_MOVEMENT_TABLE_FIELDS, CONTRACT_RENEWAL_TABLE_FIELDS } from './info'
 
 interface FormContractProps {
   contract?: ContractType
-  shouldCreateNewContract: boolean
+  shouldCreateNew: boolean
 }
 
-const FormContract = ({ contract, shouldCreateNewContract }: FormContractProps) => {
+const FormContract = ({ contract, shouldCreateNew }: FormContractProps) => {
   const {
     handleSubmit,
     control,
@@ -37,10 +37,13 @@ const FormContract = ({ contract, shouldCreateNewContract }: FormContractProps) 
   const [shouldOpenDeleteDialog, setShouldOpenDeleteDialog] = useState(false)
   const [, setIsLoadingRequest] = useState(false)
   const [isEditing, setIsEditing] = useState(false)
+  const [selectedCustomer, setSelectedCustomer] = useState<CustomerType | undefined>(
+    contract?.customer,
+  )
 
   const [data, error, isLoading] = useStandardFetcher({
     method: 'GET',
-    url: '/physical-person',
+    url: '/customers',
   })
 
   const handleOnCloseDeleteDialog = () => {
@@ -106,6 +109,7 @@ const FormContract = ({ contract, shouldCreateNewContract }: FormContractProps) 
             invoice_amount: data.invoice_amount,
             total_contract_value: data.total_contract_value,
             first_invoice_date: data.first_invoice_date,
+            customer: selectedCustomer,
           },
           access: {
             login_client: data.login_client,
@@ -130,7 +134,7 @@ const FormContract = ({ contract, shouldCreateNewContract }: FormContractProps) 
   }
 
   // ! fix this any
-  const handleSaveContract = async (data: any) => {
+  const handleSave = async (data: any) => {
     setIsLoadingRequest(true)
     try {
       await axios.request({
@@ -162,6 +166,7 @@ const FormContract = ({ contract, shouldCreateNewContract }: FormContractProps) 
           invoice_amount: data.invoice_amount,
           total_contract_value: data.total_contract_value,
           first_invoice_date: data.first_invoice_date,
+          customer: selectedCustomer,
         },
       })
       enqueueSnackbar(ContractMessages.newSuccess, { variant: 'success' })
@@ -178,10 +183,8 @@ const FormContract = ({ contract, shouldCreateNewContract }: FormContractProps) 
   }
 
   const titlePageComponent = () => {
-    if (shouldCreateNewContract) {
-      return (
-        <TitlePage title={ContractMessages.newTitle} onSave={handleSubmit(handleSaveContract)} />
-      )
+    if (shouldCreateNew) {
+      return <TitlePage title={ContractMessages.newTitle} onSave={handleSubmit(handleSave)} />
     }
 
     return (
@@ -216,7 +219,7 @@ const FormContract = ({ contract, shouldCreateNewContract }: FormContractProps) 
             control={control}
             errors={errors}
             defaultValue={contract?.policy}
-            disabled={!isEditing && !shouldCreateNewContract}
+            disabled={!isEditing && !shouldCreateNew}
           />
 
           <FormTextField
@@ -225,7 +228,7 @@ const FormContract = ({ contract, shouldCreateNewContract }: FormContractProps) 
             control={control}
             errors={errors}
             defaultValue={contract?.size}
-            disabled={!isEditing && !shouldCreateNewContract}
+            disabled={!isEditing && !shouldCreateNew}
           />
           <FormTextField
             label={'Tipo'}
@@ -233,7 +236,7 @@ const FormContract = ({ contract, shouldCreateNewContract }: FormContractProps) 
             control={control}
             errors={errors}
             defaultValue={contract?.type}
-            disabled={!isEditing && !shouldCreateNewContract}
+            disabled={!isEditing && !shouldCreateNew}
           />
         </Box>
         <Box display='flex'>
@@ -243,7 +246,7 @@ const FormContract = ({ contract, shouldCreateNewContract }: FormContractProps) 
             control={control}
             errors={errors}
             defaultValue={contract?.version.toString()}
-            disabled={!isEditing && !shouldCreateNewContract}
+            disabled={!isEditing && !shouldCreateNew}
           />
 
           <FormTextField
@@ -252,7 +255,7 @@ const FormContract = ({ contract, shouldCreateNewContract }: FormContractProps) 
             control={control}
             errors={errors}
             defaultValue={contract?.number_of_lives.toString()}
-            disabled={!isEditing && !shouldCreateNewContract}
+            disabled={!isEditing && !shouldCreateNew}
           />
           <FormTextField
             label={'Número de vidas'}
@@ -260,7 +263,7 @@ const FormContract = ({ contract, shouldCreateNewContract }: FormContractProps) 
             control={control}
             errors={errors}
             defaultValue={contract?.number_of_lives.toString()}
-            disabled={!isEditing && !shouldCreateNewContract}
+            disabled={!isEditing && !shouldCreateNew}
           />
         </Box>
         <Box display='flex'>
@@ -269,14 +272,14 @@ const FormContract = ({ contract, shouldCreateNewContract }: FormContractProps) 
             name='validity_start'
             control={control}
             defaultValue={contract?.validity_start}
-            disabled={!isEditing && !shouldCreateNewContract}
+            disabled={!isEditing && !shouldCreateNew}
           />
           <DatePicker
             label={'Fim de Vigência'}
             name='validity_end'
             control={control}
             defaultValue={contract?.validity_end}
-            disabled={!isEditing && !shouldCreateNewContract}
+            disabled={!isEditing && !shouldCreateNew}
           />
           <FormTextField
             label={'Tempo de Vigência'}
@@ -284,7 +287,7 @@ const FormContract = ({ contract, shouldCreateNewContract }: FormContractProps) 
             control={control}
             errors={errors}
             defaultValue={contract?.validity_time.toString()}
-            disabled={!isEditing && !shouldCreateNewContract}
+            disabled={!isEditing && !shouldCreateNew}
           />
         </Box>
         <Box display='flex'>
@@ -294,7 +297,7 @@ const FormContract = ({ contract, shouldCreateNewContract }: FormContractProps) 
             control={control}
             errors={errors}
             defaultValue={contract?.inclusion_period}
-            disabled={!isEditing && !shouldCreateNewContract}
+            disabled={!isEditing && !shouldCreateNew}
           />
           <FormTextField
             label={'Data de Corte'}
@@ -302,7 +305,7 @@ const FormContract = ({ contract, shouldCreateNewContract }: FormContractProps) 
             control={control}
             errors={errors}
             defaultValue={contract?.cutoff_date}
-            disabled={!isEditing && !shouldCreateNewContract}
+            disabled={!isEditing && !shouldCreateNew}
           />
           <FormTextField
             label={'Email na Seguradora'}
@@ -310,7 +313,7 @@ const FormContract = ({ contract, shouldCreateNewContract }: FormContractProps) 
             control={control}
             errors={errors}
             defaultValue={contract?.email_on_insurancy}
-            disabled={!isEditing && !shouldCreateNewContract}
+            disabled={!isEditing && !shouldCreateNew}
           />
           <FormTextField
             label={'Telefone na Seguradora'}
@@ -318,7 +321,7 @@ const FormContract = ({ contract, shouldCreateNewContract }: FormContractProps) 
             control={control}
             errors={errors}
             defaultValue={contract?.phone_on_insurancy}
-            disabled={!isEditing && !shouldCreateNewContract}
+            disabled={!isEditing && !shouldCreateNew}
           />
         </Box>
         <Box display='flex'>
@@ -328,7 +331,7 @@ const FormContract = ({ contract, shouldCreateNewContract }: FormContractProps) 
             control={control}
             errors={errors}
             defaultValue={contract?.copay.toString()}
-            disabled={!isEditing && !shouldCreateNewContract}
+            disabled={!isEditing && !shouldCreateNew}
           />
           <FormTextField
             label={'Adesão'}
@@ -336,7 +339,7 @@ const FormContract = ({ contract, shouldCreateNewContract }: FormContractProps) 
             control={control}
             errors={errors}
             defaultValue={contract?.adhesion.toString()}
-            disabled={!isEditing && !shouldCreateNewContract}
+            disabled={!isEditing && !shouldCreateNew}
           />
           <FormTextField
             label={'Copay perc'}
@@ -344,7 +347,7 @@ const FormContract = ({ contract, shouldCreateNewContract }: FormContractProps) 
             control={control}
             errors={errors}
             defaultValue={contract?.copay_perc.toString()}
-            disabled={!isEditing && !shouldCreateNewContract}
+            disabled={!isEditing && !shouldCreateNew}
           />
           <FormTextField
             label={'Contributor perc'}
@@ -352,7 +355,7 @@ const FormContract = ({ contract, shouldCreateNewContract }: FormContractProps) 
             control={control}
             errors={errors}
             defaultValue={contract?.contributor_perc.toString()}
-            disabled={!isEditing && !shouldCreateNewContract}
+            disabled={!isEditing && !shouldCreateNew}
           />
         </Box>
         <Box display='flex'>
@@ -362,7 +365,7 @@ const FormContract = ({ contract, shouldCreateNewContract }: FormContractProps) 
             control={control}
             errors={errors}
             defaultValue={contract?.copay_details}
-            disabled={!isEditing && !shouldCreateNewContract}
+            disabled={!isEditing && !shouldCreateNew}
           />
           <FormTextField
             label={'Custo'}
@@ -370,7 +373,7 @@ const FormContract = ({ contract, shouldCreateNewContract }: FormContractProps) 
             control={control}
             errors={errors}
             defaultValue={contract?.cost.toString()}
-            disabled={!isEditing && !shouldCreateNewContract}
+            disabled={!isEditing && !shouldCreateNew}
           />
           <FormTextField
             label={'Valor da nota'}
@@ -378,7 +381,7 @@ const FormContract = ({ contract, shouldCreateNewContract }: FormContractProps) 
             control={control}
             errors={errors}
             defaultValue={contract?.invoice_amount.toString()}
-            disabled={!isEditing && !shouldCreateNewContract}
+            disabled={!isEditing && !shouldCreateNew}
           />
           <FormTextField
             label={'Valor total do contrato'}
@@ -386,32 +389,39 @@ const FormContract = ({ contract, shouldCreateNewContract }: FormContractProps) 
             control={control}
             errors={errors}
             defaultValue={contract?.total_contract_value.toString()}
-            disabled={!isEditing && !shouldCreateNewContract}
+            disabled={!isEditing && !shouldCreateNew}
           />
           <DatePicker
             label={'Data da primeira nota'}
             name='first_invoice_date'
             control={control}
             defaultValue={contract?.first_invoice_date}
-            disabled={!isEditing && !shouldCreateNewContract}
+            disabled={!isEditing && !shouldCreateNew}
           />
         </Box>
-        {!shouldCreateNewContract && (
+        {!shouldCreateNew && (
           <>
-            <Box>
-              <Typography>Pessoa Vinculada</Typography>
-              <Autocomplete
-                disablePortal
-                id='combo-box-pessoa'
-                options={data?.map((option: { name: string }) => {
-                  return {
-                    label: option.name,
-                  }
-                })}
-                sx={{ width: 300 }}
-                renderInput={(params) => <TextField {...params} label='Pessoa' />}
-              />
-            </Box>
+            {!isLoading && (
+              <>
+                <Typography>Cliente</Typography>
+                <Autocomplete
+                  disabled={!isEditing && !shouldCreateNew}
+                  defaultValue={data?.find(
+                    (item: CustomerType) => item.code === contract?.customer?.code,
+                  )}
+                  disablePortal
+                  id='combo-box-cliente'
+                  options={data}
+                  getOptionLabel={(option: any) => option.code}
+                  renderInput={(params) => <TextField {...params} />}
+                  onChange={(_, value) => {
+                    setSelectedCustomer(
+                      data.find((item: CustomerType) => item.code === value?.code),
+                    )
+                  }}
+                />
+              </>
+            )}
             <Box>
               <Typography>Acesso</Typography>
               <FormTextField
@@ -420,7 +430,7 @@ const FormContract = ({ contract, shouldCreateNewContract }: FormContractProps) 
                 control={control}
                 errors={errors}
                 defaultValue={contract?.access?.system}
-                disabled={!isEditing && !shouldCreateNewContract}
+                disabled={!isEditing && !shouldCreateNew}
               />
               <Box display='flex'>
                 <FormTextField
@@ -429,7 +439,7 @@ const FormContract = ({ contract, shouldCreateNewContract }: FormContractProps) 
                   control={control}
                   errors={errors}
                   defaultValue={contract?.access?.login_client}
-                  disabled={!isEditing && !shouldCreateNewContract}
+                  disabled={!isEditing && !shouldCreateNew}
                 />
                 <FormTextField
                   label={'Senha Cliente'}
@@ -437,7 +447,7 @@ const FormContract = ({ contract, shouldCreateNewContract }: FormContractProps) 
                   control={control}
                   errors={errors}
                   defaultValue={contract?.access?.pass_client}
-                  disabled={!isEditing && !shouldCreateNewContract}
+                  disabled={!isEditing && !shouldCreateNew}
                   type='password'
                 />
               </Box>
@@ -448,7 +458,7 @@ const FormContract = ({ contract, shouldCreateNewContract }: FormContractProps) 
                   control={control}
                   errors={errors}
                   defaultValue={contract?.access?.login_tret}
-                  disabled={!isEditing && !shouldCreateNewContract}
+                  disabled={!isEditing && !shouldCreateNew}
                 />
                 <FormTextField
                   label={'Senha Tretori'}
@@ -456,7 +466,7 @@ const FormContract = ({ contract, shouldCreateNewContract }: FormContractProps) 
                   control={control}
                   errors={errors}
                   defaultValue={contract?.access?.pass_tret}
-                  disabled={!isEditing && !shouldCreateNewContract}
+                  disabled={!isEditing && !shouldCreateNew}
                   type='password'
                 />
               </Box>

@@ -182,8 +182,7 @@ export interface ContractType {
   first_invoice_date: string
   renew?: RenewalType[]
   move?: MovementType[]
-  legal_person?: LegalPersonType
-  physical_person?: PhysicalPersonType
+  customer?: CustomerType
   access?: AccessType
 }
 
