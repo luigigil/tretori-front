@@ -34,6 +34,8 @@ export interface CustomerType {
   email: string
   customer_type: string
   contracts?: string[]
+  physical_person?: PhysicalPersonType
+  legal_person?: LegalPersonType
 }
 
 export interface PhysicalPersonType {

@@ -8,25 +8,20 @@ import {
   FormLabel,
   Radio,
   RadioGroup,
-  Typography,
 } from '@mui/material'
 import axios from 'axios'
 import FormLegalPerson from 'features/legal-person/form-legal-person'
 import FormPhysicalPerson from 'features/physical-person/form-physical-person'
-import useStandardFetcher from 'hooks/useStandardFetcher'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { useSnackbar } from 'notistack'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Controller, useForm, useWatch } from 'react-hook-form'
-import SubtitleDialog from 'ui/data-display/title/subtitle-dialog'
 import TitlePage from 'ui/data-display/title/title-page'
 import DialogConfirm from 'ui/feedback/dialog/dialog-confirm'
-import Loading from 'ui/feedback/loading'
 import FormTextField from 'ui/inputs/text-field/text-field'
-import TransferList from 'ui/inputs/transfer-list/transfer-list'
 import { SERVER_ERROR } from 'utils/messages'
-import { CustomerType, ListItemType } from 'utils/types'
+import { CustomerType } from 'utils/types'
 import { customerSchema } from './customers.joi.schema'
 import { CustomerMessages } from './customers.messages'
 
@@ -43,7 +38,6 @@ const FormCustomers = ({ customer, shouldCreateNew }: FormCustomersProps) => {
   } = useForm<CustomerType>({ resolver: joiResolver(customerSchema) })
   const { data: session } = useSession()
   const router = useRouter()
-  const [selectedContracts, setSelectedContracts] = useState<ListItemType[]>([])
   const [shouldOpenDeleteDialog, setShouldOpenDeleteDialog] = useState(false)
   const [, setIsLoadingRequest] = useState(false)
   const [isEditing, setIsEditing] = useState(false)
@@ -51,23 +45,12 @@ const FormCustomers = ({ customer, shouldCreateNew }: FormCustomersProps) => {
   const [customerIsSaved, setCustomerIsSaved] = useState(!shouldCreateNew)
   const [savedCustomer, setSavedCustomer] = useState<CustomerType | undefined>(customer)
 
-  const customerTypeSelected = useWatch({
-    control,
-    name: 'customer_type',
-  })
-
-  const [data, error, isLoading] = useStandardFetcher({
-    method: 'GET',
-    url: '/contract',
-  })
-
-  if (error) {
-    return <p>erro</p>
-  }
-
-  const onChangeSelectedContractsHandler = (selected: ListItemType[]): void => {
-    setSelectedContracts(selected)
-  }
+  const customerTypeSelected = shouldCreateNew
+    ? useWatch({
+        control,
+        name: 'customer_type',
+      })
+    : savedCustomer?.customer_type
 
   const handleOnCloseDeleteDialog = () => {
     setShouldOpenDeleteDialog(false)
@@ -274,31 +257,19 @@ const FormCustomers = ({ customer, shouldCreateNew }: FormCustomersProps) => {
             disabled={!isEditing && !shouldCreateNew}
           />
         </Box>
-
-        {isLoading && <Loading />}
-
-        {!isLoading && data.length > 0 && (
-          <>
-            <Divider style={{ marginTop: 32 }} />
-            <SubtitleDialog subtitle='Contratos' />
-            <TransferList
-              list={data}
-              listSelected={[]}
-              onChange={onChangeSelectedContractsHandler}
-            ></TransferList>
-          </>
-        )}
         <Divider style={{ margin: 32 }} />
       </Box>
       {customerIsSaved && customerTypeSelected !== 'LEGAL_PERSON' && (
         <FormPhysicalPerson
           customer={savedCustomer as CustomerType}
+          physicalPerson={savedCustomer?.physical_person}
           shouldCreateNewPhysicalPerson={shouldCreateNew}
         />
       )}
       {customerIsSaved && customerTypeSelected === 'LEGAL_PERSON' && (
         <FormLegalPerson
           customer={savedCustomer as CustomerType}
+          legalPerson={savedCustomer?.legal_person}
           shouldCreateNew={shouldCreateNew}
         />
       )}
