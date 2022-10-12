@@ -403,7 +403,7 @@ const FormContract = ({ contract, shouldCreateNewContract }: FormContractProps) 
               <Autocomplete
                 disablePortal
                 id='combo-box-pessoa'
-                options={data?.map((option) => {
+                options={data?.map((option: { name: string }) => {
                   return {
                     label: option.name,
                   }
@@ -465,12 +465,15 @@ const FormContract = ({ contract, shouldCreateNewContract }: FormContractProps) 
               <Typography>Renovações</Typography>
               <Button
                 onClick={() =>
-                  router.push({ pathname: '/renewals/create', query: { contractId: contract?.id } })
+                  router.push({
+                    pathname: '/renewals/create',
+                    query: { contractId: contract?.id },
+                  })
                 }
               >
                 Nova Renovação
               </Button>
-              <Table columns={CONTRACT_RENEWAL_TABLE_FIELDS} rows={contract?.renew}></Table>
+              <Table columns={CONTRACT_RENEWAL_TABLE_FIELDS} rows={contract?.renew || []}></Table>
             </Box>
             <Box>
               <Typography>Movimentações</Typography>
@@ -484,7 +487,7 @@ const FormContract = ({ contract, shouldCreateNewContract }: FormContractProps) 
               >
                 Nova Movimentação
               </Button>
-              <Table columns={CONTRACT_MOVEMENT_TABLE_FIELDS} rows={contract?.move}></Table>
+              <Table columns={CONTRACT_MOVEMENT_TABLE_FIELDS} rows={contract?.move || []}></Table>
             </Box>
           </>
         )}

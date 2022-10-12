@@ -178,8 +178,8 @@ export interface ContractType {
   invoice_amount: number
   total_contract_value: number
   first_invoice_date: string
-  renew?: RenewalType
-  move?: MovementType
+  renew?: RenewalType[]
+  move?: MovementType[]
   legal_person?: LegalPersonType
   physical_person?: PhysicalPersonType
   access?: AccessType

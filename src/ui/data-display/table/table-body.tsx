@@ -16,7 +16,7 @@ export default function TableBody<T>({ columns, rows, detailRoute }: TableBodyPr
 
   return (
     <Body>
-      {rows
+      {(rows as T[])
         ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
         // TODO get rid of this any
         // eslint-disable-next-line

@@ -21,7 +21,7 @@ export default function Table<T>({ columns, rows, detailRoute }: TableProps<T>) 
         <TableContainer sx={{ maxHeight: 600 }}>
           <MuiTable stickyHeader size='small' aria-label='sticky table'>
             <TableHeader columns={columns} />
-            <TableBody detailRoute={detailRoute} rows={rows} columns={columns} />
+            <TableBody detailRoute={detailRoute} rows={rows as T[]} columns={columns} />
           </MuiTable>
         </TableContainer>
         <TablePagination rows={rows} />

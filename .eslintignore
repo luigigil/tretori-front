@@ -3,3 +3,5 @@ jest.config.js
 
 # MISC
 dist/
+
+.next
