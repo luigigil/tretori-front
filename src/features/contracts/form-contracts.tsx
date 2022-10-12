@@ -1,20 +1,24 @@
+/* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { joiResolver } from '@hookform/resolvers/joi'
-import { Box, Divider } from '@mui/material'
+import { Autocomplete, Box, Button, Divider, TextField, Typography } from '@mui/material'
 import axios from 'axios'
+import useStandardFetcher from 'hooks/useStandardFetcher'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { useSnackbar } from 'notistack'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import Table from 'ui/data-display/table'
 import TitlePage from 'ui/data-display/title/title-page'
 import DialogConfirm from 'ui/feedback/dialog/dialog-confirm'
 import DatePicker from 'ui/inputs/date/date-picker'
-import FormTextField from 'ui/inputs/form/inputs/text-field'
+import FormTextField from 'ui/inputs/text-field/text-field'
 import { SERVER_ERROR } from 'utils/messages'
 import { ContractType } from 'utils/types'
 import { contractSchema } from './contract.joi.schema'
 import { ContractMessages } from './contract.messages'
+import { CONTRACT_MOVEMENT_TABLE_FIELDS, CONTRACT_RENEWAL_TABLE_FIELDS } from './info'
 
 interface FormContractProps {
   contract?: ContractType
@@ -33,6 +37,11 @@ const FormContract = ({ contract, shouldCreateNewContract }: FormContractProps) 
   const [shouldOpenDeleteDialog, setShouldOpenDeleteDialog] = useState(false)
   const [, setIsLoadingRequest] = useState(false)
   const [isEditing, setIsEditing] = useState(false)
+
+  const [data, error, isLoading] = useStandardFetcher({
+    method: 'GET',
+    url: '/physical-person',
+  })
 
   const handleOnCloseDeleteDialog = () => {
     setShouldOpenDeleteDialog(false)
@@ -74,7 +83,38 @@ const FormContract = ({ contract, shouldCreateNewContract }: FormContractProps) 
         headers: {
           Authorization: `Bearer ${session?.accessToken}`,
         },
-        data,
+        data: {
+          contract: {
+            policy: data.policy,
+            size: data.size,
+            type: data.type,
+            version: data.version,
+            number_of_lives: data.number_of_lives,
+            validity_start: data.validity_start,
+            validity_end: data.validity_end,
+            validity_time: data.validity_time,
+            inclusion_period: data.inclusion_period,
+            cutoff_date: data.cutoff_date,
+            email_on_insurancy: data.email_on_insurancy,
+            phone_on_insurancy: data.phone_on_insurancy,
+            copay: data.copay,
+            adhesion: data.adhesion,
+            copay_perc: data.copay_perc,
+            contributor_perc: data.contributor_perc,
+            copay_details: data.copay_details,
+            cost: data.cost,
+            invoice_amount: data.invoice_amount,
+            total_contract_value: data.total_contract_value,
+            first_invoice_date: data.first_invoice_date,
+          },
+          access: {
+            login_client: data.login_client,
+            login_tret: data.login_tret,
+            system: data.system,
+            pass_client: data.pass_client,
+            pass_tret: data.pass_tret,
+          },
+        },
       })
       enqueueSnackbar(ContractMessages.editSuccess, { variant: 'success' })
       setIsEditing(false)
@@ -100,7 +140,29 @@ const FormContract = ({ contract, shouldCreateNewContract }: FormContractProps) 
         headers: {
           Authorization: `Bearer ${session?.accessToken}`,
         },
-        data,
+        data: {
+          policy: data.policy,
+          size: data.size,
+          type: data.type,
+          version: data.version,
+          number_of_lives: data.number_of_lives,
+          validity_start: data.validity_start,
+          validity_end: data.validity_end,
+          validity_time: data.validity_time,
+          inclusion_period: data.inclusion_period,
+          cutoff_date: data.cutoff_date,
+          email_on_insurancy: data.email_on_insurancy,
+          phone_on_insurancy: data.phone_on_insurancy,
+          copay: data.copay,
+          adhesion: data.adhesion,
+          copay_perc: data.copay_perc,
+          contributor_perc: data.contributor_perc,
+          copay_details: data.copay_details,
+          cost: data.cost,
+          invoice_amount: data.invoice_amount,
+          total_contract_value: data.total_contract_value,
+          first_invoice_date: data.first_invoice_date,
+        },
       })
       enqueueSnackbar(ContractMessages.newSuccess, { variant: 'success' })
     } catch (error) {
@@ -146,6 +208,7 @@ const FormContract = ({ contract, shouldCreateNewContract }: FormContractProps) 
         display='flex'
         flexDirection='column'
       >
+        <Typography>Contrato</Typography>
         <Box display='flex'>
           <FormTextField
             label={'Apólice'}
@@ -333,6 +396,98 @@ const FormContract = ({ contract, shouldCreateNewContract }: FormContractProps) 
             disabled={!isEditing && !shouldCreateNewContract}
           />
         </Box>
+        {!shouldCreateNewContract && (
+          <>
+            <Box>
+              <Typography>Pessoa Vinculada</Typography>
+              <Autocomplete
+                disablePortal
+                id='combo-box-pessoa'
+                options={data?.map((option) => {
+                  return {
+                    label: option.name,
+                  }
+                })}
+                sx={{ width: 300 }}
+                renderInput={(params) => <TextField {...params} label='Pessoa' />}
+              />
+            </Box>
+            <Box>
+              <Typography>Acesso</Typography>
+              <FormTextField
+                label={'Sistema'}
+                name='system'
+                control={control}
+                errors={errors}
+                defaultValue={contract?.access?.system}
+                disabled={!isEditing && !shouldCreateNewContract}
+              />
+              <Box display='flex'>
+                <FormTextField
+                  label={'Login Cliente'}
+                  name='login_client'
+                  control={control}
+                  errors={errors}
+                  defaultValue={contract?.access?.login_client}
+                  disabled={!isEditing && !shouldCreateNewContract}
+                />
+                <FormTextField
+                  label={'Senha Cliente'}
+                  name='pass_client'
+                  control={control}
+                  errors={errors}
+                  defaultValue={contract?.access?.pass_client}
+                  disabled={!isEditing && !shouldCreateNewContract}
+                  type='password'
+                />
+              </Box>
+              <Box display='flex'>
+                <FormTextField
+                  label={'Login Tretori'}
+                  name='login_tret'
+                  control={control}
+                  errors={errors}
+                  defaultValue={contract?.access?.login_tret}
+                  disabled={!isEditing && !shouldCreateNewContract}
+                />
+                <FormTextField
+                  label={'Senha Tretori'}
+                  name='pass_tret'
+                  control={control}
+                  errors={errors}
+                  defaultValue={contract?.access?.pass_tret}
+                  disabled={!isEditing && !shouldCreateNewContract}
+                  type='password'
+                />
+              </Box>
+            </Box>
+            <Box>
+              <Typography>Renovações</Typography>
+              <Button
+                onClick={() =>
+                  router.push({ pathname: '/renewals/create', query: { contractId: contract?.id } })
+                }
+              >
+                Nova Renovação
+              </Button>
+              <Table columns={CONTRACT_RENEWAL_TABLE_FIELDS} rows={contract?.renew}></Table>
+            </Box>
+            <Box>
+              <Typography>Movimentações</Typography>
+              <Button
+                onClick={() =>
+                  router.push({
+                    pathname: '/movements/create',
+                    query: { contractId: contract?.id },
+                  })
+                }
+              >
+                Nova Movimentação
+              </Button>
+              <Table columns={CONTRACT_MOVEMENT_TABLE_FIELDS} rows={contract?.move}></Table>
+            </Box>
+          </>
+        )}
         <Divider style={{ margin: 32 }} />
       </Box>
       <DialogConfirm

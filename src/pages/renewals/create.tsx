@@ -1,8 +1,8 @@
 import { Button } from '@mui/material'
-import FormMovement from 'features/movements/form-movement'
+import FormRenewal from 'features/renewals/renewal.form'
 import { useRouter } from 'next/router'
 
-export default function CreateMovement() {
+export default function CreateRenewal() {
   const router = useRouter()
 
   return (
@@ -11,16 +11,13 @@ export default function CreateMovement() {
         onClick={() => {
           const link = router.query.contractId
             ? `/contracts/${router.query.contractId}`
-            : '/movements'
+            : '/renewals'
           router.push(link)
         }}
       >
         Voltar
       </Button>
-      <FormMovement
-        contractId={router.query.contractId?.toString() || undefined}
-        shouldCreateNewMovement={true}
-      ></FormMovement>
+      <FormRenewal contractId={router.query.contractId?.toString() || undefined}></FormRenewal>
     </>
   )
 }

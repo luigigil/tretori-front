@@ -39,9 +39,9 @@ const ClientesMenu = () => {
             <ListItemIcon>
               <Business />
             </ListItemIcon>
-            <ListItemText primary='Empresas' />
+            <ListItemText primary='Empresas' onClick={() => router.push('/legal-person')} />
           </ListItemButton>
-          <ListItemButton sx={{ pl: 4 }}>
+          <ListItemButton sx={{ pl: 4 }} onClick={() => router.push('/customers')}>
             <ListItemIcon>
               <BusinessCenter />
             </ListItemIcon>

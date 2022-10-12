@@ -21,6 +21,21 @@ export interface Severity {
   types: 'error' | 'warning' | 'info' | 'success'
 }
 
+export interface CustomerType {
+  id?: number
+  code?: string
+  phone: string
+  phone_secondary?: string
+  address?: string
+  cep?: string
+  city?: string
+  neighborhood?: string
+  uf?: string
+  email: string
+  customer_type: string
+  contracts?: string[]
+}
+
 export interface PhysicalPersonType {
   id?: number
   name: string
@@ -163,11 +178,11 @@ export interface ContractType {
   invoice_amount: number
   total_contract_value: number
   first_invoice_date: string
-  renew: RenewalType
-  move: MovementType
-  legal_person: LegalPersonType
-  physical_person: PhysicalPersonType
-  acess: AccessType
+  renew?: RenewalType
+  move?: MovementType
+  legal_person?: LegalPersonType
+  physical_person?: PhysicalPersonType
+  access?: AccessType
 }
 
 export interface AccessType {
@@ -181,22 +196,12 @@ export interface AccessType {
 
 export interface LegalPersonType {
   id?: number
-  code?: string
-  phone: string
-  phone_secondary: string
-  address: string
-  cep: string
-  city: string
-  neighborhood: string
-  uf: string
-  email: string
   fantasy_name: string
   cnpj: string
   social_reason: string
   type: string
   size: string
-  representatives: string
-  contracts?: [string]
+  representatives?: string
 }
 
 export interface RenewalType {

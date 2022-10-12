@@ -2,38 +2,54 @@
 import { joiResolver } from '@hookform/resolvers/joi'
 import { Box, Divider } from '@mui/material'
 import axios from 'axios'
+import useStandardFetcher from 'hooks/useStandardFetcher'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { useSnackbar } from 'notistack'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import SubtitleDialog from 'ui/data-display/title/subtitle-dialog'
 import TitlePage from 'ui/data-display/title/title-page'
 import DialogConfirm from 'ui/feedback/dialog/dialog-confirm'
-import DatePicker from 'ui/inputs/date/date-picker'
+import Loading from 'ui/feedback/loading'
 import FormTextField from 'ui/inputs/text-field/text-field'
-import { REQUIRED_FIELD, SERVER_ERROR } from 'utils/messages'
-import { MovementType } from 'utils/types'
-import { movementSchema } from './movement.joi.schema'
-import { MovementMessages } from './movement.messages'
+import TransferList from 'ui/inputs/transfer-list/transfer-list'
+import { SERVER_ERROR } from 'utils/messages'
+import { LegalPersonType, ListItemType } from 'utils/types'
+import { legalPersonSchema } from './legal-person.joi.schema'
+import { LegalPersonMessages } from './legal-person.messages'
 
-interface FormMovementProps {
-  contractId?: string
-  movement?: MovementType
-  shouldCreateNewMovement: boolean
+interface FormLegalPersonProps {
+  legalPerson?: LegalPersonType
+  shouldCreateNew: boolean
 }
 
-const FormMovement = ({ contractId, movement, shouldCreateNewMovement }: FormMovementProps) => {
+const FormLegalPerson = ({ legalPerson, shouldCreateNew }: FormLegalPersonProps) => {
   const {
     handleSubmit,
     control,
     formState: { errors },
-  } = useForm<MovementType>({ resolver: joiResolver(movementSchema) })
+  } = useForm<LegalPersonType>({ resolver: joiResolver(legalPersonSchema) })
   const { data: session } = useSession()
   const router = useRouter()
+  const [selectedContracts, setSelectedContracts] = useState<ListItemType[]>([])
   const [shouldOpenDeleteDialog, setShouldOpenDeleteDialog] = useState(false)
   const [, setIsLoadingRequest] = useState(false)
   const [isEditing, setIsEditing] = useState(false)
   const { enqueueSnackbar } = useSnackbar()
+
+  const [data, error, isLoading] = useStandardFetcher({
+    method: 'GET',
+    url: '/contract',
+  })
+
+  if (error) {
+    return <p>erro</p>
+  }
+
+  const onChangeSelectedContractsHandler = (selected: ListItemType[]): void => {
+    setSelectedContracts(selected)
+  }
 
   const handleOnCloseDeleteDialog = () => {
     setShouldOpenDeleteDialog(false)
@@ -44,14 +60,14 @@ const FormMovement = ({ contractId, movement, shouldCreateNewMovement }: FormMov
     try {
       await axios.request({
         method: 'DELETE',
-        url: `/move/${movement?.id}`,
+        url: `/legal-person/${legalPerson?.id}`,
         baseURL: process.env.NEXT_PUBLIC_BASE_URL,
         headers: {
           Authorization: `Bearer ${session?.accessToken}`,
         },
       })
       setShouldOpenDeleteDialog(false)
-      enqueueSnackbar(MovementMessages.deleteSuccess, { variant: 'success' })
+      enqueueSnackbar(LegalPersonMessages.deleteSuccess, { variant: 'success' })
     } catch (error) {
       if (axios.isAxiosError(error)) {
         enqueueSnackbar(SERVER_ERROR, { variant: 'error' })
@@ -60,24 +76,24 @@ const FormMovement = ({ contractId, movement, shouldCreateNewMovement }: FormMov
       }
     } finally {
       setIsLoadingRequest(false)
-      router.push('/movements')
+      router.push('/legal-person')
     }
   }
 
   // ! fix this any
-  const handleEditMovement = async (data: any) => {
+  const handleEdit = async (data: any) => {
     setIsLoadingRequest(true)
     try {
       await axios.request({
         method: 'PUT',
-        url: `/move/${movement?.id}`,
+        url: `legal-person/${legalPerson?.id}`,
         baseURL: process.env.NEXT_PUBLIC_BASE_URL,
         headers: {
           Authorization: `Bearer ${session?.accessToken}`,
         },
         data,
       })
-      enqueueSnackbar(MovementMessages.editSuccess, { variant: 'success' })
+      enqueueSnackbar(LegalPersonMessages.editSuccess, { variant: 'success' })
     } catch (error) {
       if (axios.isAxiosError(error)) {
         enqueueSnackbar(SERVER_ERROR, { variant: 'error' })
@@ -91,45 +107,44 @@ const FormMovement = ({ contractId, movement, shouldCreateNewMovement }: FormMov
   }
 
   // ! fix this any
-  const handleSaveMovement = async (data: any) => {
+  const handleSave = async (data: any) => {
     setIsLoadingRequest(true)
     try {
       await axios.request({
         method: 'POST',
-        url: `/contract/${contractId}/move`,
+        url: 'legal-person',
         baseURL: process.env.NEXT_PUBLIC_BASE_URL,
         headers: {
           Authorization: `Bearer ${session?.accessToken}`,
         },
         data,
       })
-      enqueueSnackbar(MovementMessages.newSuccess, { variant: 'success' })
+      enqueueSnackbar(LegalPersonMessages.newSuccess, { variant: 'success' })
     } catch (error) {
       if (axios.isAxiosError(error)) {
         enqueueSnackbar(SERVER_ERROR, { variant: 'error' })
       } else {
         enqueueSnackbar(SERVER_ERROR, { variant: 'error' })
       }
+      setIsLoadingRequest(false)
     } finally {
       setIsLoadingRequest(false)
-      router.push(`/contracts/${contractId}`)
+      router.push('/legal-person')
     }
   }
 
   const titlePageComponent = () => {
-    if (shouldCreateNewMovement) {
-      return (
-        <TitlePage title={MovementMessages.newTitle} onSave={handleSubmit(handleSaveMovement)} />
-      )
+    if (shouldCreateNew) {
+      return <TitlePage title={LegalPersonMessages.newTitle} onSave={handleSubmit(handleSave)} />
     }
 
     return (
       <TitlePage
-        title={isEditing ? MovementMessages.editTitle : MovementMessages.detailTitle}
+        title={isEditing ? LegalPersonMessages.editTitle : LegalPersonMessages.detailTitle}
         onDelete={() => setShouldOpenDeleteDialog(true)}
         onEdit={() => setIsEditing(true)}
         onCancel={() => setIsEditing(false)}
-        onSave={handleSubmit(handleEditMovement)}
+        onSave={handleSubmit(handleEdit)}
       />
     )
   }
@@ -149,68 +164,71 @@ const FormMovement = ({ contractId, movement, shouldCreateNewMovement }: FormMov
       >
         <Box display='flex'>
           <FormTextField
-            defaultValue={contractId}
-            label={'Contrato'}
-            name='contract'
+            label={'CNPJ'}
+            name='cnpj'
             control={control}
             errors={errors}
-            disabled
-          />
-        </Box>
-        <Box display='flex'>
-          <FormTextField
-            defaultValue={movement?.details}
-            label={'Detalhes'}
-            name='details'
-            control={control}
-            errors={errors}
-            disabled={!isEditing && !shouldCreateNewMovement}
+            defaultValue={legalPerson?.cnpj}
+            disabled={!isEditing && !shouldCreateNew}
           />
           <FormTextField
-            defaultValue={movement?.description}
-            label={'Descrição'}
-            name='description'
+            label={'Nome Fantasia'}
+            name='fantasy_name'
             control={control}
             errors={errors}
-            disabled={!isEditing && !shouldCreateNewMovement}
+            defaultValue={legalPerson?.fantasy_name}
+            disabled={!isEditing && !shouldCreateNew}
           />
-        </Box>
-        <Box display='flex'>
-          <FormTextField
-            label={'Número de Vidas'}
-            name='number_of_lives'
-            control={control}
-            errors={errors}
-            defaultValue={movement?.number_of_lives}
-            disabled={!isEditing && !shouldCreateNewMovement}
-          />
-          <FormTextField
-            label={'Ação'}
-            name='action'
-            defaultValue={movement?.action}
-            control={control}
-            errors={errors}
-            disabled={!isEditing && !shouldCreateNewMovement}
-          />
-          <DatePicker
-            required
-            helperText={errors.move_date?.type === 'required' && REQUIRED_FIELD}
-            defaultValue={movement ? movement.move_date : undefined}
-            label='Data da Movimentação'
-            disabled={!isEditing && !shouldCreateNewMovement}
-            name='move_date'
-            control={control}
-          ></DatePicker>
         </Box>
 
+        <Box display='flex'>
+          <FormTextField
+            label={'Razão Social'}
+            name='social_reason'
+            control={control}
+            errors={errors}
+            defaultValue={legalPerson?.social_reason}
+            disabled={!isEditing && !shouldCreateNew}
+          />
+          <FormTextField
+            label={'Tipo'}
+            name='type'
+            control={control}
+            errors={errors}
+            defaultValue={legalPerson?.type}
+            disabled={!isEditing && !shouldCreateNew}
+          />
+          <FormTextField
+            label={'Tamanho'}
+            name='size'
+            control={control}
+            errors={errors}
+            defaultValue={legalPerson?.size}
+            disabled={!isEditing && !shouldCreateNew}
+          />
+        </Box>
+
+        {isLoading && <Loading />}
+
+        {!isLoading && data.length > 0 && (
+          <>
+            <Divider style={{ marginTop: 32 }} />
+            <SubtitleDialog subtitle='Contratos' />
+            <TransferList
+              list={data}
+              listSelected={[]}
+              onChange={onChangeSelectedContractsHandler}
+            ></TransferList>
+          </>
+        )}
         <Divider style={{ margin: 32 }} />
       </Box>
       <DialogConfirm
         open={shouldOpenDeleteDialog}
-        title={MovementMessages.deleteTitle}
+        title={LegalPersonMessages.deleteTitle}
         cancelMessage='cancelar'
         confirmMessage='confirmar'
-        message={MovementMessages.deleteMessage}
+        message={LegalPersonMessages.deleteMessage}
         onClose={handleOnCloseDeleteDialog}
         onConfirm={handleOnConfirmDeleteDialog}
       />
@@ -218,4 +236,4 @@ const FormMovement = ({ contractId, movement, shouldCreateNewMovement }: FormMov
   )
 }
 
-export default FormMovement
+export default FormLegalPerson

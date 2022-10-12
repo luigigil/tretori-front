@@ -1,14 +1,14 @@
 import { Button } from '@mui/material'
-import FormMovement from 'features/movements/form-movement'
+import FormLegalPerson from 'features/legal-person/form-legal-person'
 import useStandardFetcher from 'hooks/useStandardFetcher'
 import { useRouter } from 'next/router'
 
-export default function DetailMovement() {
+export default function DetailLegalPerson() {
   const router = useRouter()
   const { id } = router.query
 
   const [data, error, isLoading] = useStandardFetcher({
-    url: `/move/${id}`,
+    url: `/legal-person/${id}`,
   })
 
   // ! what to do with error?
@@ -18,8 +18,8 @@ export default function DetailMovement() {
 
   return (
     <>
-      <Button onClick={() => router.push('/movements')}>Voltar</Button>
-      {!isLoading && <FormMovement movement={data} shouldCreateNewMovement={false}></FormMovement>}
+      <Button onClick={() => router.push('/legal-person')}>Voltar</Button>
+      {!isLoading && <FormLegalPerson legalPerson={data} shouldCreateNew={false}></FormLegalPerson>}
     </>
   )
 }

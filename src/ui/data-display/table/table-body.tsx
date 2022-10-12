@@ -28,11 +28,13 @@ export default function TableBody<T>({ columns, rows, detailRoute }: TableBodyPr
                 return (
                   <TableCell
                     onClick={() => {
-                      router.push(`${detailRoute}/${row.id}`)
+                      if (detailRoute) {
+                        router.push(`${detailRoute}/${row.id}`)
+                      }
                     }}
                     key={column.id}
                     align={column.align}
-                    style={{ cursor: 'pointer' }}
+                    style={{ cursor: detailRoute ? 'pointer' : 'default' }}
                   >
                     {column.format && typeof value === 'number' ? column.format(value) : value}
                   </TableCell>

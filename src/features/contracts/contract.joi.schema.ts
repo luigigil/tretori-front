@@ -2,6 +2,7 @@ import Joi from 'joi'
 
 /* eslint-disable camelcase */
 export const contractSchema = Joi.object({
+  // form contract
   id: Joi.number().allow(null),
   policy: Joi.string().min(2).max(200).required(),
   size: Joi.string().min(2).max(200).required(),
@@ -27,4 +28,10 @@ export const contractSchema = Joi.object({
   invoice_amount: Joi.number().required(),
   total_contract_value: Joi.number().required(),
   first_invoice_date: Joi.string().min(2).max(200).required(),
+  // form access
+  login_client: Joi.string().min(2).max(200),
+  login_tret: Joi.string().min(2).max(200),
+  system: Joi.string().min(2).max(200),
+  pass_client: Joi.string().min(2).max(200),
+  pass_tret: Joi.string().min(2).max(200),
 })
