@@ -21,7 +21,7 @@ export default function CrudButtons({
   const newButton = () => {
     if (onNew) {
       return (
-        <Button style={{ margin: 8 }} variant='contained' onClick={onNew}>
+        <Button id='newBtn' style={{ margin: 8 }} variant='contained' onClick={onNew}>
           Novo
         </Button>
       )
@@ -32,7 +32,7 @@ export default function CrudButtons({
     if (!isEditing) {
       if (onDelete) {
         return (
-          <Button style={{ margin: 8 }} variant='contained' onClick={onDelete}>
+          <Button id='deleteBtn' style={{ margin: 8 }} variant='contained' onClick={onDelete}>
             Deletar
           </Button>
         )
@@ -43,6 +43,7 @@ export default function CrudButtons({
     if (onEdit && onCancel) {
       return (
         <Button
+          id='editBtn'
           style={{ margin: 8 }}
           variant='contained'
           onClick={() => {
@@ -63,7 +64,7 @@ export default function CrudButtons({
 
   const saveButton = () => {
     const button = (
-      <Button style={{ margin: 8 }} variant='contained' onClick={onSave}>
+      <Button id='saveBtn' style={{ margin: 8 }} variant='contained' onClick={onSave}>
         Salvar
       </Button>
     )
@@ -71,6 +72,7 @@ export default function CrudButtons({
       if (onEdit && isEditing) {
         return (
           <Button
+            id='saveBtn'
             style={{ margin: 8 }}
             variant='contained'
             onClick={() => {

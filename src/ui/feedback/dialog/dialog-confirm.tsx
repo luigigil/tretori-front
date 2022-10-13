@@ -35,8 +35,10 @@ const DialogConfirm = ({
         <DialogContentText id='confirm-dialog-description'>{message}</DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>{cancelMessage || 'Cancelar'}</Button>
-        <Button onClick={onConfirm} autoFocus>
+        <Button id='dialog-cancel-btn' onClick={onClose}>
+          {cancelMessage || 'Cancelar'}
+        </Button>
+        <Button id='dialog-confirm-btn' onClick={onConfirm} autoFocus>
           {confirmMessage || 'Confirmar'}
         </Button>
       </DialogActions>

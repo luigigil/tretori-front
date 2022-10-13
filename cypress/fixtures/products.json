@@ -1,0 +1,16 @@
+[
+  {
+    "id": 14,
+    "name": "Seguro de vida",
+    "type": "Seguro",
+    "plan": "Basico",
+    "size": "Pequeno"
+  },
+  {
+    "id": 34,
+    "name": "Produto 1",
+    "type": "pequeno",
+    "plan": "Mensal",
+    "size": "Grande"
+  }
+]

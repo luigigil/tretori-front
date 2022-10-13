@@ -20,7 +20,7 @@ export default function TableBody<T>({ columns, rows, detailRoute }: TableBodyPr
         ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
         // TODO get rid of this any
         // eslint-disable-next-line
-        .map((row: any) => {
+        .map((row: any, index: number) => {
           return (
             <TableRow hover role='checkbox' tabIndex={-1} key={row.id}>
               {columns?.map((column: Column) => {
@@ -35,6 +35,7 @@ export default function TableBody<T>({ columns, rows, detailRoute }: TableBodyPr
                     key={column.id}
                     align={column.align}
                     style={{ cursor: detailRoute ? 'pointer' : 'default' }}
+                    id={`${index}-${column.id}`}
                   >
                     {column.format && typeof value === 'number' ? column.format(value) : value}
                   </TableCell>

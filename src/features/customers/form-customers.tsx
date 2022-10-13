@@ -123,7 +123,6 @@ const FormCustomers = ({ customer, shouldCreateNew }: FormCustomersProps) => {
       enqueueSnackbar(CustomerMessages.newSuccess, { variant: 'success' })
       setCustomerIsSaved(true)
       setSavedCustomer(response.data)
-      console.log(response.data)
     } catch (error) {
       if (axios.isAxiosError(error)) {
         enqueueSnackbar(SERVER_ERROR, { variant: 'error' })

@@ -25,6 +25,16 @@ const providers = [
       password: { label: 'Password', type: 'password' },
     },
     async authorize(credentials) {
+      if (process.env.RUNNING_TEST) {
+        return {
+          name: 'dev-admin@tretori.com',
+          email: 'dev-admin@tretori.com',
+          role: 'admin',
+          token:
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRldi1hZG1pbkB0cmV0b3JpLmNvbSIsInN1YiI6OCwicm9sZSI6ImFkbWluIiwiaWF0IjoxNjY1NjczNzY2LCJleHAiOjE2NjU2NzM4MjZ9.P8HjNf5LVv83kZCPH6Cxq0PEZ-CSFZm6WfKgSXhu-_I',
+        }
+      }
+
       try {
         const response = await axios.request({
           method: 'POST',
@@ -63,6 +73,7 @@ const callbacks = {
       token.accessToken = user.token
       token.role = user.role
     }
+
     return token
   },
   async session({ session, token }: any) {
@@ -86,7 +97,7 @@ export default NextAuth({
   session: {
     strategy: 'jwt',
     // Seconds - How long until an idle session expires and is no longer valid.
-    // maxAge: 30 * 24 * 60 * 60, // 30 days
+    maxAge: 30 * 24 * 60 * 60, // 30 days
 
     // Seconds - Throttle how frequently to write to database to extend a session.
     // Use it to limit write operations. Set to 0 to always update the database.

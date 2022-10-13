@@ -5,7 +5,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:test": "NODE_ENV=test next build",
     "start": "next start -p $PORT",
+    "start:test": "NODE_ENV=test next dev",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "fmt": "prettier --write src/**/*.{ts,tsx,css} --config ./.prettierrc",
@@ -16,7 +18,11 @@
     "lint:errors": "yarn lint:eslint --quiet",
     "verify": "yarn tsc && yarn lint && yarn build:test && yarn test",
     "verify:quick": "yarn tsc && yarn fmt && yarn lint:fix",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "cypress": "cypress open",
+    "cypress:headless": "cypress run",
+    "e2e": "start-server-and-test start http://localhost:3000 cypress",
+    "e2e:headless": "start-server-and-test start http://localhost:3000 cypress:headless"
   },
   "eslintConfig": {
     "extends": [
@@ -48,10 +54,11 @@
     "@testing-library/react": "^13.0.0",
     "@testing-library/user-event": "^13.2.1",
     "@types/jest": "^27.0.1",
-    "@types/node": "^16.7.13",
+    "@types/node": "^18.8.5",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
     "axios": "^0.27.2",
+    "dotenv": "^16.0.3",
     "eslint": "^8.22.0",
     "joi": "^17.6.0",
     "jwt-decode": "^3.1.2",
@@ -72,6 +79,7 @@
     "@types/luxon": "^3.0.0",
     "@typescript-eslint/eslint-plugin": "^5.36.2",
     "@typescript-eslint/parser": "^5.36.2",
+    "cypress": "^10.10.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-import-resolver-typescript": "^3.5.1",
     "eslint-plugin-import": "^2.26.0",
@@ -80,6 +88,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "husky": "^8.0.0",
     "lint-staged": "^13.0.3",
+    "nock": "^13.2.9",
     "pinst": "^3.0.0",
     "prettier": "^2.7.1"
   },
