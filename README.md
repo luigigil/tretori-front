@@ -43,6 +43,8 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 
 This project uses [Cypress](https://www.cypress.io/) for end-to-end testing. To run the tests, run `yarn cypress:open` and select the test you want to run.
 
+You need to start a local server to run the tests. You can do this by running `yarn start:test` in a separate terminal.
+
 Other available commands:
 
 ### `yarn cypress:headless`
