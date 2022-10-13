@@ -39,6 +39,18 @@ Instead, it will copy all the configuration files and the transitive dependencie
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
+## E2E Testing
+
+This project uses [Cypress](https://www.cypress.io/) for end-to-end testing. To run the tests, run `yarn cypress:open` and select the test you want to run.
+
+Other available commands:
+
+### `yarn cypress:headless`
+
+### `yarn test:e2e`
+
+### `yarn test:e2e:headless`
+
 ## Learn More
 
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).

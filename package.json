@@ -19,10 +19,10 @@
     "verify": "yarn tsc && yarn lint && yarn build:test && yarn test",
     "verify:quick": "yarn tsc && yarn fmt && yarn lint:fix",
     "prepare": "husky install",
-    "cypress": "cypress open",
+    "cypress:open": "cypress open",
     "cypress:headless": "cypress run",
-    "e2e": "start-server-and-test start http://localhost:3000 cypress",
-    "e2e:headless": "start-server-and-test start http://localhost:3000 cypress:headless"
+    "test:e2e": "start-server-and-test start http://localhost:3000 cypress",
+    "test:e2e:headless": "start-server-and-test start http://localhost:3000 cypress:headless"
   },
   "eslintConfig": {
     "extends": [

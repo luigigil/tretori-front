@@ -1,3 +1,4 @@
+/* eslint-disable spaced-comment */
 /// <reference types="cypress" />
 
 import fixture from '../fixtures/products.json'
@@ -9,13 +10,13 @@ describe('Product Page', () => {
       const password = Cypress.env('PW')
       const cookieName = Cypress.env('COOKIE_NAME')
 
-      cy.visit(`/login`)
+      cy.visit('/login')
 
       cy.get('#email').type(username)
       cy.get('#password').type(password)
       cy.get('#login-button').click()
 
-      cy.visit(`/`)
+      cy.visit('/')
       cy.getCookie(cookieName).should('exist')
     }
   })
