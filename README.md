@@ -45,6 +45,8 @@ This project uses [Cypress](https://www.cypress.io/) for end-to-end testing. To 
 
 You need to start a local server to run the tests. You can do this by running `yarn start:test` in a separate terminal.
 
+Make sure your `.env.test` file is configured correctly. You can copy the `.env.example` file and fill in the values. The `RUNNING_TEST` should be `true`.
+
 Other available commands:
 
 ### `yarn cypress:headless`
