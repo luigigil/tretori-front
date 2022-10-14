@@ -1,0 +1,28 @@
+[
+  {
+    "id": 4,
+    "code": "0e2f07f5-5273-4b60-bcce-ffaceb80b40a",
+    "phone": "61213123132132",
+    "phone_secondary": "6132132132132",
+    "address": "asdsads",
+    "cep": "1231231",
+    "city": "asdasd",
+    "neighborhood": "asdasd",
+    "uf": "sd",
+    "email": "asdsasa@adasdsa.com",
+    "customer_type": "PHYSICAL_PERSON"
+  },
+  {
+    "id": 5,
+    "code": "0e2f07f5-5273-4b60-bcce-ffaceb80b40a",
+    "phone": "61213123132132",
+    "phone_secondary": "6132132132132",
+    "address": "asdsads",
+    "cep": "1231231",
+    "city": "asdasd",
+    "neighborhood": "asdasd",
+    "uf": "sd",
+    "email": "asdsasa@adasdsa.com",
+    "customer_type": "LEGAL_PERSON"
+  }
+]

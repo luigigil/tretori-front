@@ -1,0 +1,23 @@
+{
+  "id": 6,
+  "code": "3b64bfb1-3bff-41fd-afe3-8de99414cb0b",
+  "phone": "asdas",
+  "phone_secondary": "dasd",
+  "address": "dsad",
+  "cep": "sadsa",
+  "city": "sadas",
+  "neighborhood": "dsad",
+  "uf": "sadsa",
+  "email": "sadsad",
+  "customer_type": "LEGAL_PERSON",
+  "physical_person": null,
+  "legal_person": {
+    "id": 3,
+    "fantasy_name": "asdas",
+    "cnpj": "12312312",
+    "social_reason": "dasd",
+    "type": "asdas",
+    "size": "dsadasdas",
+    "representatives": null
+  }
+}

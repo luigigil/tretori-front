@@ -2,22 +2,18 @@
 import { joiResolver } from '@hookform/resolvers/joi'
 import { Box, Divider } from '@mui/material'
 import axios from 'axios'
-import useStandardFetcher from 'hooks/useStandardFetcher'
 import { DateTime } from 'luxon'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { useSnackbar } from 'notistack'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import SubtitleDialog from 'ui/data-display/title/subtitle-dialog'
 import TitlePage from 'ui/data-display/title/title-page'
 import DialogConfirm from 'ui/feedback/dialog/dialog-confirm'
-import Loading from 'ui/feedback/loading'
 import DatePicker from 'ui/inputs/date/date-picker'
 import FormTextField from 'ui/inputs/text-field/text-field'
-import TransferList from 'ui/inputs/transfer-list/transfer-list'
 import { REQUIRED_FIELD, SERVER_ERROR } from 'utils/messages'
-import { CustomerType, ListItemType, PhysicalPersonType } from 'utils/types'
+import { CustomerType, PhysicalPersonType } from 'utils/types'
 import { physicalPersonSchema } from './physical-person.joi.schema'
 import { PhysicalPersonMessages } from './physical-person.messages'
 
@@ -39,24 +35,10 @@ const FormPhysicalPerson = ({
   } = useForm<PhysicalPersonType>({ resolver: joiResolver(physicalPersonSchema) })
   const { data: session } = useSession()
   const router = useRouter()
-  const [selectedContracts, setSelectedContracts] = useState<ListItemType[]>([])
   const [shouldOpenDeleteDialog, setShouldOpenDeleteDialog] = useState(false)
   const [, setIsLoadingRequest] = useState(false)
   const [isEditing, setIsEditing] = useState(false)
   const { enqueueSnackbar } = useSnackbar()
-
-  const [data, error, isLoading] = useStandardFetcher({
-    method: 'GET',
-    url: '/contract',
-  })
-
-  if (error) {
-    return <p>erro</p>
-  }
-
-  const onChangeSelectedContractsHandler = (selected: ListItemType[]): void => {
-    setSelectedContracts(selected)
-  }
 
   const handleOnCloseDeleteDialog = () => {
     setShouldOpenDeleteDialog(false)
@@ -88,7 +70,7 @@ const FormPhysicalPerson = ({
   }
 
   // ! fix this any
-  const handleEditPhysicalPerson = async (data: any) => {
+  const handleEdit = async (data: any) => {
     setIsLoadingRequest(true)
     try {
       await axios.request({
@@ -114,7 +96,7 @@ const FormPhysicalPerson = ({
   }
 
   // ! fix this any
-  const handleSavePhysicalPerson = async (data: any) => {
+  const handleSave = async (data: any) => {
     setIsLoadingRequest(true)
     try {
       await axios.request({
@@ -136,7 +118,6 @@ const FormPhysicalPerson = ({
       setIsLoadingRequest(false)
     } finally {
       setIsLoadingRequest(false)
-      router.push('/physical-person')
     }
   }
 
@@ -144,19 +125,21 @@ const FormPhysicalPerson = ({
     if (shouldCreateNewPhysicalPerson) {
       return (
         <TitlePage
+          id='physical-person-title'
           title={PhysicalPersonMessages.newTitle}
-          onSave={handleSubmit(handleSavePhysicalPerson)}
+          onSave={handleSubmit(handleSave)}
         />
       )
     }
 
     return (
       <TitlePage
+        id='physical-person-title'
         title={isEditing ? PhysicalPersonMessages.editTitle : PhysicalPersonMessages.detailTitle}
         onDelete={() => setShouldOpenDeleteDialog(true)}
         onEdit={() => setIsEditing(true)}
         onCancel={() => setIsEditing(false)}
-        onSave={handleSubmit(handleEditPhysicalPerson)}
+        onSave={handleSubmit(handleEdit)}
       />
     )
   }
@@ -229,20 +212,6 @@ const FormPhysicalPerson = ({
             control={control}
           ></DatePicker>
         </Box>
-
-        {isLoading && <Loading />}
-
-        {!isLoading && data.length > 0 && (
-          <>
-            <Divider style={{ marginTop: 32 }} />
-            <SubtitleDialog subtitle='Contratos' />
-            <TransferList
-              list={data}
-              listSelected={[]}
-              onChange={onChangeSelectedContractsHandler}
-            ></TransferList>
-          </>
-        )}
         <Divider style={{ margin: 32 }} />
       </Box>
       <DialogConfirm

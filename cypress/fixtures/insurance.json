@@ -1,0 +1,19 @@
+{
+  "id": 1,
+  "code": "string",
+  "email": "string",
+  "phone": "string",
+  "phone_secondary": "string",
+  "address": "string",
+  "cep": "string",
+  "city": "string",
+  "neighborhood": "string",
+  "uf": "string",
+  "fantasy_name": "string",
+  "cnpj": "string",
+  "social_reason": "string",
+  "type": "string",
+  "size": "string",
+  "representatives": "string",
+  "contracts": "[string]"
+}

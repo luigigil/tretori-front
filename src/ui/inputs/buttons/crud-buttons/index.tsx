@@ -2,6 +2,7 @@ import { Button } from '@mui/material'
 import { useState } from 'react'
 
 interface CrudButtonsProps {
+  id?: string
   onNew?: () => void
   onEdit?: () => void
   onDelete?: () => void
@@ -10,6 +11,7 @@ interface CrudButtonsProps {
 }
 
 export default function CrudButtons({
+  id,
   onNew,
   onEdit,
   onDelete,
@@ -89,11 +91,11 @@ export default function CrudButtons({
     }
   }
   return (
-    <>
+    <div id={id}>
       {newButton()}
       {deleteButton()}
       {editButton()}
       {saveButton()}
-    </>
+    </div>
   )
 }

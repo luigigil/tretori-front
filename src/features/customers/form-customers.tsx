@@ -136,11 +136,18 @@ const FormCustomers = ({ customer, shouldCreateNew }: FormCustomersProps) => {
 
   const titlePageComponent = () => {
     if (shouldCreateNew) {
-      return <TitlePage title={CustomerMessages.newTitle} onSave={handleSubmit(handleSave)} />
+      return (
+        <TitlePage
+          id='customers-title'
+          title={CustomerMessages.newTitle}
+          onSave={handleSubmit(handleSave)}
+        />
+      )
     }
 
     return (
       <TitlePage
+        id='customers-title'
         title={isEditing ? CustomerMessages.editTitle : CustomerMessages.detailTitle}
         onDelete={() => setShouldOpenDeleteDialog(true)}
         onEdit={() => setIsEditing(true)}
@@ -175,10 +182,12 @@ const FormCustomers = ({ customer, shouldCreateNew }: FormCustomersProps) => {
                 <RadioGroup value={value} onChange={onChange}>
                   <FormControlLabel
                     value='PHYSICAL_PERSON'
+                    id='radio-physical-person'
                     control={<Radio />}
                     label='Pessoa Física'
                   />
                   <FormControlLabel
+                    id='radio-legal-person'
                     value='LEGAL_PERSON'
                     control={<Radio />}
                     label='Pessoa Jurídica'

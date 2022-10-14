@@ -73,7 +73,6 @@ const callbacks = {
       token.accessToken = user.token
       token.role = user.role
     }
-
     return token
   },
   async session({ session, token }: any) {
@@ -98,10 +97,5 @@ export default NextAuth({
     strategy: 'jwt',
     // Seconds - How long until an idle session expires and is no longer valid.
     maxAge: 30 * 24 * 60 * 60, // 30 days
-
-    // Seconds - Throttle how frequently to write to database to extend a session.
-    // Use it to limit write operations. Set to 0 to always update the database.
-    // Note: This option is ignored if using JSON Web Tokens
-    // updateAge: 24 * 60 * 60, // 24 hours
   },
 })

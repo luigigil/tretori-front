@@ -3,6 +3,7 @@ import { Box } from '@mui/system'
 import CrudButtons from 'ui/inputs/buttons/crud-buttons'
 
 interface TitlePageProps {
+  id?: string
   title: string
   onNew?: () => void
   onEdit?: () => void
@@ -15,7 +16,7 @@ const TitlePage = (props: TitlePageProps) => {
   const { title } = props
 
   return (
-    <Box my={4}>
+    <Box id={props.id} my={4}>
       <Grid
         container
         rowSpacing={1}
@@ -30,7 +31,7 @@ const TitlePage = (props: TitlePageProps) => {
           </Typography>
         </Grid>
         <Grid>
-          <CrudButtons {...props} />
+          <CrudButtons {...props} id={`${props.id}-crud-buttons`} />
         </Grid>
       </Grid>
       <Divider />

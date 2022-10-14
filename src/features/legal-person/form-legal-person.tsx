@@ -2,20 +2,16 @@
 import { joiResolver } from '@hookform/resolvers/joi'
 import { Box, Divider } from '@mui/material'
 import axios from 'axios'
-import useStandardFetcher from 'hooks/useStandardFetcher'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { useSnackbar } from 'notistack'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import SubtitleDialog from 'ui/data-display/title/subtitle-dialog'
 import TitlePage from 'ui/data-display/title/title-page'
 import DialogConfirm from 'ui/feedback/dialog/dialog-confirm'
-import Loading from 'ui/feedback/loading'
 import FormTextField from 'ui/inputs/text-field/text-field'
-import TransferList from 'ui/inputs/transfer-list/transfer-list'
 import { SERVER_ERROR } from 'utils/messages'
-import { CustomerType, LegalPersonType, ListItemType } from 'utils/types'
+import { CustomerType, LegalPersonType } from 'utils/types'
 import { legalPersonSchema } from './legal-person.joi.schema'
 import { LegalPersonMessages } from './legal-person.messages'
 
@@ -33,24 +29,10 @@ const FormLegalPerson = ({ customer, legalPerson, shouldCreateNew }: FormLegalPe
   } = useForm<LegalPersonType>({ resolver: joiResolver(legalPersonSchema) })
   const { data: session } = useSession()
   const router = useRouter()
-  const [selectedContracts, setSelectedContracts] = useState<ListItemType[]>([])
   const [shouldOpenDeleteDialog, setShouldOpenDeleteDialog] = useState(false)
   const [, setIsLoadingRequest] = useState(false)
   const [isEditing, setIsEditing] = useState(false)
   const { enqueueSnackbar } = useSnackbar()
-
-  const [data, error, isLoading] = useStandardFetcher({
-    method: 'GET',
-    url: '/contract',
-  })
-
-  if (error) {
-    return <p>erro</p>
-  }
-
-  const onChangeSelectedContractsHandler = (selected: ListItemType[]): void => {
-    setSelectedContracts(selected)
-  }
 
   const handleOnCloseDeleteDialog = () => {
     setShouldOpenDeleteDialog(false)
@@ -135,11 +117,18 @@ const FormLegalPerson = ({ customer, legalPerson, shouldCreateNew }: FormLegalPe
 
   const titlePageComponent = () => {
     if (shouldCreateNew) {
-      return <TitlePage title={LegalPersonMessages.newTitle} onSave={handleSubmit(handleSave)} />
+      return (
+        <TitlePage
+          id='legal-person-title'
+          title={LegalPersonMessages.newTitle}
+          onSave={handleSubmit(handleSave)}
+        />
+      )
     }
 
     return (
       <TitlePage
+        id='legal-person-title'
         title={isEditing ? LegalPersonMessages.editTitle : LegalPersonMessages.detailTitle}
         onDelete={() => setShouldOpenDeleteDialog(true)}
         onEdit={() => setIsEditing(true)}
@@ -207,20 +196,6 @@ const FormLegalPerson = ({ customer, legalPerson, shouldCreateNew }: FormLegalPe
             disabled={!isEditing && !shouldCreateNew}
           />
         </Box>
-
-        {isLoading && <Loading />}
-
-        {!isLoading && data.length > 0 && (
-          <>
-            <Divider style={{ marginTop: 32 }} />
-            <SubtitleDialog subtitle='Contratos' />
-            <TransferList
-              list={data}
-              listSelected={[]}
-              onChange={onChangeSelectedContractsHandler}
-            ></TransferList>
-          </>
-        )}
         <Divider style={{ margin: 32 }} />
       </Box>
       <DialogConfirm

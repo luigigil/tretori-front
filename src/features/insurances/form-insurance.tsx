@@ -50,7 +50,7 @@ const FormInsurance = ({ insurance, shouldCreateNewInsurance }: FormInsurancePro
         },
       })
       setShouldOpenDeleteDialog(false)
-      enqueueSnackbar(InsuranceMessages.newSuccess, { variant: 'success' })
+      enqueueSnackbar(InsuranceMessages.deleteSuccess, { variant: 'success' })
     } catch (error) {
       if (axios.isAxiosError(error)) {
         enqueueSnackbar(SERVER_ERROR, { variant: 'error' })

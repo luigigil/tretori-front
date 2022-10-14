@@ -44,7 +44,13 @@ const DatePicker = ({
               onChange(newValue?.toFormat('yyyy-MM-dd'))
             }}
             renderInput={(params) => (
-              <TextField fullWidth {...params} helperText={helperText} required={required} />
+              <TextField
+                fullWidth
+                {...params}
+                helperText={helperText}
+                required={required}
+                id={`datepicker-${name}`}
+              />
             )}
             maxDate={maxDate}
           />
