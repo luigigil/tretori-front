@@ -23,7 +23,7 @@
     "cypress:headless": "cypress run",
     "test:e2e": "yarn start:test cypress",
     "test:e2e:headless": "start-server-and-test start http://localhost:3000 cypress:headless",
-    "test:ci": "NODE_ENV=test RUNNING_TEST=true REACT_APP_ENV=test NEXT_PUBLIC_BASE_URL=http://localhost:4200 NEXT_PUBLIC_APP_LOCALE=pt-br NEXTAUTH_URL=http://localhost:3000 NEXTAUTH_SECRET=secret next dev"
+    "test:ci": "NODE_ENV=test RUNNING_TEST=true REACT_APP_ENV=test NEXT_PUBLIC_BASE_URL=http://localhost:4200 NEXT_PUBLIC_APP_LOCALE=pt-br NEXTAUTH_URL=http://localhost:3000 NEXTAUTH_SECRET=secret next start -p 3000"
   },
   "eslintConfig": {
     "extends": [

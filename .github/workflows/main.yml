@@ -13,5 +13,9 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v4 # use the explicit version number
         with:
-          build: yarn install
+          build: yarn build
           start: yarn test:ci
+          record: false
+        env:
+          NODE_ENV: test
+          RUNNING_TEST: true
