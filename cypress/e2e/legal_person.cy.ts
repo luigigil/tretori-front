@@ -2,24 +2,12 @@
 /// <reference types="cypress" />
 
 import fixture from '../fixtures/legal-people.json'
+import useSessionInterceptor from '../helpers/useSessionInterceptor'
 
 describe('Customer - Legal person', () => {
   const baseUrl = Cypress.env('NEXT_PUBLIC_BASE_URL')
-  before(() => {
-    {
-      const username = Cypress.env('USER')
-      const password = Cypress.env('PW')
-      const cookieName = Cypress.env('COOKIE_NAME')
-
-      cy.visit('/login')
-
-      cy.get('#email').type(username)
-      cy.get('#password').type(password)
-      cy.get('#login-button').click()
-
-      cy.visit('/')
-      cy.getCookie(cookieName).should('exist')
-    }
+  beforeEach(() => {
+    useSessionInterceptor()
   })
 
   it('should show a list of Legal people', () => {
@@ -118,7 +106,7 @@ describe('Customer - Legal person', () => {
     cy.get('#notistack-snackbar').should('have.text', 'Pessoa Jurídica editada com sucesso')
   })
 
-  it.only('should delete an existing legal person', () => {
+  it('should delete an existing legal person', () => {
     cy.intercept('GET', `${baseUrl}/legal-person`, { fixture: 'legal-people.json' }).as(
       'getLegalPeople',
     )
