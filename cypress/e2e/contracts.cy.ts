@@ -45,7 +45,7 @@ describe('Contracts Page', () => {
     cy.get('[name="number_of_lives"]').type(contractFixture.number_of_lives.toString())
     cy.get('[name="validity_time"]').type(contractFixture.validity_time.toString())
     cy.get('[name="inclusion_period"]').type(contractFixture.inclusion_period)
-    cy.get('[name="cutoff_date"]').type(contractFixture.cutoff_date)
+    cy.get('#datepicker-cutoff_date').type(contractFixture.cutoff_date)
     cy.get('[name="email_on_insurancy"]').type(contractFixture.email_on_insurancy)
     cy.get('[name="phone_on_insurancy"]').type(contractFixture.phone_on_insurancy)
     cy.get('[name="copay"]').type(contractFixture.copay.toString())
@@ -67,7 +67,7 @@ describe('Contracts Page', () => {
     cy.get('#notistack-snackbar').should('have.text', 'Contrato adicionado com sucesso')
   })
 
-  it.only('should view an existing contract', () => {
+  it('should view an existing contract', () => {
     cy.intercept('GET', `${baseUrl}/contract`, { fixture: 'contracts.json' }).as('getContracts')
     cy.intercept('GET', `${baseUrl}/customers`, { fixture: 'customers.json' }).as('getCustomers')
     cy.intercept('GET', `${baseUrl}/contract/*`, {
@@ -93,7 +93,10 @@ describe('Contracts Page', () => {
     )
     cy.get('[name="validity_time"]').should('have.value', contractFixture.validity_time.toString())
     cy.get('[name="inclusion_period"]').should('have.value', contractFixture.inclusion_period)
-    cy.get('[name="cutoff_date"]').should('have.value', contractFixture.cutoff_date)
+    cy.get('#datepicker-cutoff_date').should(
+      'have.value',
+      DateTime.fromISO(contractFixture.cutoff_date).toFormat('dd/LL/yyyy'),
+    )
     cy.get('[name="email_on_insurancy"]').should('have.value', contractFixture.email_on_insurancy)
     cy.get('[name="phone_on_insurancy"]').should('have.value', contractFixture.phone_on_insurancy)
     cy.get('[name="copay"]').should('have.value', contractFixture.copay.toString())
@@ -387,7 +390,7 @@ describe('Contracts Page', () => {
     cy.get('[name="inclusion_period"]')
       .clear({ force: true })
       .type(contractFixture.inclusion_period, { force: true })
-    cy.get('[name="cutoff_date"]')
+    cy.get('#datepicker-cutoff_date')
       .clear({ force: true })
       .type(contractFixture.cutoff_date, { force: true })
     cy.get('[name="email_on_insurancy"]')
