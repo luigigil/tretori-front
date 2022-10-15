@@ -67,7 +67,7 @@ describe('Contracts Page', () => {
     cy.get('#notistack-snackbar').should('have.text', 'Contrato adicionado com sucesso')
   })
 
-  it('should view an existing contract', () => {
+  it.only('should view an existing contract', () => {
     cy.intercept('GET', `${baseUrl}/contract`, { fixture: 'contracts.json' }).as('getContracts')
     cy.intercept('GET', `${baseUrl}/customers`, { fixture: 'customers.json' }).as('getCustomers')
     cy.intercept('GET', `${baseUrl}/contract/*`, {
@@ -115,15 +115,15 @@ describe('Contracts Page', () => {
     )
     cy.get('#datepicker-validity_start').should(
       'have.value',
-      DateTime.fromISO(contractFixture.validity_start).minus({ day: 1 }).toFormat('dd/LL/yyyy'),
+      DateTime.fromISO(contractFixture.validity_start).toFormat('dd/LL/yyyy'),
     )
     cy.get('#datepicker-validity_end').should(
       'have.value',
-      DateTime.fromISO(contractFixture.validity_end).minus({ day: 1 }).toFormat('dd/LL/yyyy'),
+      DateTime.fromISO(contractFixture.validity_end).toFormat('dd/LL/yyyy'),
     )
     cy.get('#datepicker-first_invoice_date').should(
       'have.value',
-      DateTime.fromISO(contractFixture.first_invoice_date).minus({ day: 1 }).toFormat('dd/LL/yyyy'),
+      DateTime.fromISO(contractFixture.first_invoice_date).toFormat('dd/LL/yyyy'),
     )
 
     // assert customer

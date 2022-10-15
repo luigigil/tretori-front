@@ -1,18 +1,18 @@
 import { TextField } from '@mui/material'
 import { DatePicker as MuiDatePicker, LocalizationProvider } from '@mui/x-date-pickers'
-import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { DateTime } from 'luxon'
 import { Control, Controller } from 'react-hook-form'
 
 interface DatePickerProps {
   required?: boolean
   helperText?: boolean | string
-  defaultValue?: string
+  defaultValue?: Date
   label?: string
   disabled?: boolean
   name: string
   control: Control<any, any>
-  maxDate?: DateTime
+  maxDate?: Date
 }
 
 const ADPATER_LOCALE = process.env.NEXT_PUBLIC_APP_LOCALE
@@ -32,16 +32,18 @@ const DatePicker = ({
       defaultValue={defaultValue}
       control={control}
       render={({ field: { onChange, value } }) => (
-        <LocalizationProvider dateAdapter={AdapterLuxon} adapterLocale={ADPATER_LOCALE}>
+        <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={ADPATER_LOCALE}>
           <MuiDatePicker
             value={value}
             disabled={disabled}
-            inputFormat='dd/LL/yyyy'
+            inputFormat='DD/MM/YYYY'
             openTo='year'
             views={['year', 'month', 'day']}
             label={label}
-            onChange={(newValue: DateTime | null) => {
-              onChange(newValue?.toFormat('yyyy-MM-dd'))
+            onChange={(newValue: Date | null) => {
+              if (newValue) {
+                onChange(DateTime.fromJSDate(newValue).toFormat('yyyy-LL-dd'))
+              }
             }}
             renderInput={(params) => (
               <TextField
