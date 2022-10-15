@@ -3,36 +3,17 @@ import Container from '@mui/material/Container'
 import CssBaseline from '@mui/material/CssBaseline'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import Toolbar from '@mui/material/Toolbar'
-import { getSession } from 'next-auth/react'
-import { useRouter } from 'next/router'
-import { PropsWithChildren, useEffect, useState } from 'react'
-import Loading from 'ui/feedback/loading'
+import { PropsWithChildren, useState } from 'react'
 import AppBarContainer from '../layouts/app-bar-container'
 import Copyright from '../layouts/copyright'
 import DrawerContainer from '../layouts/drawer-container'
 
 const mdTheme = createTheme()
 export default function Layout({ children }: PropsWithChildren) {
-  const [isLoading, setIsLoading] = useState(false)
   const [open, setOpen] = useState(true)
-  const router = useRouter()
-
-  useEffect(() => {
-    getSession().then((session) => {
-      if (!session) {
-        router.push('/login')
-      } else {
-        setIsLoading(false)
-      }
-    })
-  }, [])
 
   const toggleDrawer = () => {
     setOpen(!open)
-  }
-
-  if (isLoading) {
-    return <Loading />
   }
 
   return (

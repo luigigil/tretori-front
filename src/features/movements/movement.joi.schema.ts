@@ -8,5 +8,4 @@ export const movementSchema = Joi.object({
   number_of_lives: Joi.string().min(1).max(3).required(),
   description: Joi.string().min(2).max(200).required(),
   details: Joi.string().min(2).max(200).required(),
-  contract: Joi.string().min(1).max(200).required(),
 })

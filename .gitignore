@@ -29,7 +29,6 @@ yarn-error.log*
 
 .next
 
-tsconfig.tsbuildinfo
 /test-results/
-/playwright-report/
-/playwright/.cache/
+cypress/screenshots/
+cypress/videos/

@@ -11,27 +11,9 @@ import Paper from '@mui/material/Paper'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
-import { GetServerSideProps } from 'next'
-import { getSession, signIn, useSession } from 'next-auth/react'
+import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { FormEvent } from 'react'
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await getSession({ req: context.req })
-
-  if (session) {
-    return {
-      redirect: {
-        destination: '/login',
-        permanent: false,
-      },
-    }
-  }
-
-  return {
-    props: {},
-  }
-}
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function Copyright(props: any) {
@@ -50,13 +32,7 @@ function Copyright(props: any) {
 const theme = createTheme()
 
 export default function SignInSide() {
-  const { data: session } = useSession()
   const router = useRouter()
-
-  if (session) {
-    router.push('/')
-    return
-  }
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -66,13 +42,12 @@ export default function SignInSide() {
       redirect: false,
       username: data.get('email') as string,
       password: data.get('password') as string,
+      callbackUrl: `${window.location.origin}`,
     })
-
-    if (result?.error) {
+    if (result?.url) {
+      router.push(result?.url)
       return
     }
-
-    router.push('/')
   }
 
   return (

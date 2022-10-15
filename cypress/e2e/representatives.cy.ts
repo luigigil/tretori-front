@@ -1,28 +1,17 @@
 /* eslint-disable spaced-comment */
 /// <reference types="cypress" />
 
+import { DateTime } from 'luxon'
 import fixture from '../fixtures/representatives.json'
+import useSessionInterceptor from '../helpers/useSessionInterceptor'
 
 describe('Representative Page', () => {
   const baseUrl = Cypress.env('NEXT_PUBLIC_BASE_URL')
-  before(() => {
-    {
-      const username = Cypress.env('USER')
-      const password = Cypress.env('PW')
-      const cookieName = Cypress.env('COOKIE_NAME')
-
-      cy.visit('/login')
-
-      cy.get('#email').type(username)
-      cy.get('#password').type(password)
-      cy.get('#login-button').click()
-
-      cy.visit('/')
-      cy.getCookie(cookieName).should('exist')
-    }
+  beforeEach(() => {
+    useSessionInterceptor()
   })
 
-  it('should show a list representative', () => {
+  it('should show a list of representatives', () => {
     cy.intercept('GET', `${baseUrl}/representative`, { fixture: 'representatives.json' }).as(
       'getRepresentatives',
     )
@@ -92,7 +81,10 @@ describe('Representative Page', () => {
     cy.get('[name="description"]').should('have.value', fixture[0].description)
     cy.get('[name="email"]').should('have.value', fixture[0].email)
     cy.get('[name="phone"]').should('have.value', fixture[0].phone)
-    cy.get('#datepicker-birthdate').should('have.value', '01/02/2022') // ! THIS NEEDS TO BE FIXED ASAP
+    cy.get('#datepicker-birthdate').should(
+      'have.value',
+      DateTime.fromISO(fixture[0].birthdate).toFormat('dd/LL/yyyy'),
+    )
     cy.get('[name="insurance"]').should('have.value', fixture[0].insurance)
     cy.get('[name="company"]').should('have.value', fixture[0].company)
   })

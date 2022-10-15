@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { joiResolver } from '@hookform/resolvers/joi'
-import { Box, Divider } from '@mui/material'
+import { Box, Divider, Typography } from '@mui/material'
 import axios from 'axios'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
@@ -148,14 +148,9 @@ const FormMovement = ({ contractId, movement, shouldCreateNewMovement }: FormMov
         flexDirection='column'
       >
         <Box display='flex'>
-          <FormTextField
-            defaultValue={contractId}
-            label={'Contrato'}
-            name='contract'
-            control={control}
-            errors={errors}
-            disabled
-          />
+          <Typography>
+            <b>{contractId}</b>
+          </Typography>
         </Box>
         <Box display='flex'>
           <FormTextField

@@ -1,16 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from 'axios'
-import jwtDecode from 'jwt-decode'
 import NextAuth from 'next-auth'
 import Credentials from 'next-auth/providers/credentials'
-
-function parseJwt(token: string): any {
-  if (!token) {
-    return
-  }
-
-  return jwtDecode(token)
-}
 
 const providers = [
   Credentials({
@@ -49,12 +40,13 @@ const providers = [
         if (!response.data.access_token) {
           throw new Error('Token was not sent')
         }
-        const decoded = parseJwt(response.data.access_token)
 
+        const userData = response.data
         const user = {
-          name: decoded.username,
-          email: decoded.username,
-          role: decoded.role,
+          id: userData.id,
+          name: userData.username,
+          email: userData.username,
+          role: userData.role,
           token: response.data.access_token,
         }
 
@@ -79,7 +71,6 @@ const callbacks = {
     // Send properties to the client, like an access_token from a provider.
     if (token) {
       session.accessToken = token.accessToken
-      session.user.role = token.role
     }
     return session
   },
@@ -88,14 +79,13 @@ const callbacks = {
 export default NextAuth({
   providers,
   callbacks,
-  pages: {
-    error: '/login',
-    signIn: '/login',
-    signOut: '/login',
-  },
   session: {
     strategy: 'jwt',
-    // Seconds - How long until an idle session expires and is no longer valid.
     maxAge: 30 * 24 * 60 * 60, // 30 days
+    updateAge: 24 * 60 * 60, // 24 hours
   },
+  jwt: {
+    secret: 'INp8IvdIyeMcoGAgFGoA61DdBglwwSqnXJZkgz8PSnw',
+  },
+  debug: process.env.NODE_ENV !== 'production',
 })

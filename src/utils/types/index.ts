@@ -41,7 +41,7 @@ export interface CustomerType {
 export interface PhysicalPersonType {
   id?: number
   name: string
-  birthdate: string
+  birthdate: Date
   cpf: string
   rg: string
   rg_emissor: string
@@ -94,7 +94,7 @@ export interface RepresentativeType {
   description: string
   email: string
   phone: string
-  birthdate: string
+  birthdate: Date
   insurance: string
   company: string
 }
@@ -121,7 +121,7 @@ export interface InsuranceType {
 
 export interface MovementType {
   id?: number
-  move_date: string
+  move_date: Date
   action: string
   number_of_lives: string
   description: string
@@ -164,11 +164,8 @@ export interface ContractType {
   type: string
   version: number
   number_of_lives: number
-  validity_start: string
-  validity_end: string
   validity_time: number
   inclusion_period: string
-  cutoff_date: string
   email_on_insurancy: string
   phone_on_insurancy: string
   copay: true
@@ -179,7 +176,10 @@ export interface ContractType {
   cost: number
   invoice_amount: number
   total_contract_value: number
-  first_invoice_date: string
+  validity_start: Date
+  validity_end: Date
+  cutoff_date: Date
+  first_invoice_date: Date
   renew?: RenewalType[]
   move?: MovementType[]
   customer?: CustomerType
@@ -207,9 +207,9 @@ export interface LegalPersonType {
 
 export interface RenewalType {
   id?: number
-  proposed_date: string
+  proposed_date: Date
   proposed_adjustment: string
-  closed_date: string
+  closed_date: Date
   closed_value: string
   details: string
 }

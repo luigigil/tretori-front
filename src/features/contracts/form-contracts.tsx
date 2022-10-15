@@ -62,7 +62,7 @@ const FormContract = ({ contract, shouldCreateNew }: FormContractProps) => {
         },
       })
       setShouldOpenDeleteDialog(false)
-      enqueueSnackbar(ContractMessages.newSuccess, { variant: 'success' })
+      enqueueSnackbar(ContractMessages.deleteSuccess, { variant: 'success' })
     } catch (error) {
       if (axios.isAxiosError(error)) {
         enqueueSnackbar(SERVER_ERROR, { variant: 'error' })
@@ -257,14 +257,6 @@ const FormContract = ({ contract, shouldCreateNew }: FormContractProps) => {
             defaultValue={contract?.number_of_lives.toString()}
             disabled={!isEditing && !shouldCreateNew}
           />
-          <FormTextField
-            label={'Número de vidas'}
-            name='number_of_lives'
-            control={control}
-            errors={errors}
-            defaultValue={contract?.number_of_lives.toString()}
-            disabled={!isEditing && !shouldCreateNew}
-          />
         </Box>
         <Box display='flex'>
           <DatePicker
@@ -299,11 +291,10 @@ const FormContract = ({ contract, shouldCreateNew }: FormContractProps) => {
             defaultValue={contract?.inclusion_period}
             disabled={!isEditing && !shouldCreateNew}
           />
-          <FormTextField
+          <DatePicker
             label={'Data de Corte'}
             name='cutoff_date'
             control={control}
-            errors={errors}
             defaultValue={contract?.cutoff_date}
             disabled={!isEditing && !shouldCreateNew}
           />
@@ -474,6 +465,7 @@ const FormContract = ({ contract, shouldCreateNew }: FormContractProps) => {
             <Box>
               <Typography>Renovações</Typography>
               <Button
+                id='add-renewal-btn'
                 onClick={() =>
                   router.push({
                     pathname: '/renewals/create',
@@ -488,6 +480,7 @@ const FormContract = ({ contract, shouldCreateNew }: FormContractProps) => {
             <Box>
               <Typography>Movimentações</Typography>
               <Button
+                id='add-movement-btn'
                 onClick={() =>
                   router.push({
                     pathname: '/movements/create',

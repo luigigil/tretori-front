@@ -2,7 +2,7 @@ import { Button } from '@mui/material'
 import FormProduct from 'features/products/form-product'
 import { useRouter } from 'next/router'
 
-export default function CreatePhysicalPerson() {
+export default function CreateProducts() {
   const router = useRouter()
 
   return (
