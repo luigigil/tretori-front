@@ -2,7 +2,6 @@
 import { joiResolver } from '@hookform/resolvers/joi'
 import { Box, Divider } from '@mui/material'
 import axios from 'axios'
-import { DateTime } from 'luxon'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { useSnackbar } from 'notistack'
@@ -202,7 +201,7 @@ const FormPhysicalPerson = ({
             disabled={!isEditing && !shouldCreateNewPhysicalPerson}
           />
           <DatePicker
-            maxDate={DateTime.now()}
+            maxDate={new Date()}
             required
             helperText={errors.birthdate?.type === 'required' && REQUIRED_FIELD}
             defaultValue={physicalPerson ? physicalPerson.birthdate : undefined}

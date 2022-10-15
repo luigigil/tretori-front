@@ -41,7 +41,7 @@ export interface CustomerType {
 export interface PhysicalPersonType {
   id?: number
   name: string
-  birthdate: string
+  birthdate: Date
   cpf: string
   rg: string
   rg_emissor: string
@@ -94,7 +94,7 @@ export interface RepresentativeType {
   description: string
   email: string
   phone: string
-  birthdate: string
+  birthdate: Date
   insurance: string
   company: string
 }
@@ -121,7 +121,7 @@ export interface InsuranceType {
 
 export interface MovementType {
   id?: number
-  move_date: string
+  move_date: Date
   action: string
   number_of_lives: string
   description: string
@@ -207,9 +207,9 @@ export interface LegalPersonType {
 
 export interface RenewalType {
   id?: number
-  proposed_date: string
+  proposed_date: Date
   proposed_adjustment: string
-  closed_date: string
+  closed_date: Date
   closed_value: string
   details: string
 }
