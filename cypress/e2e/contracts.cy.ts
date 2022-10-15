@@ -67,7 +67,7 @@ describe('Contracts Page', () => {
     cy.get('#notistack-snackbar').should('have.text', 'Contrato adicionado com sucesso')
   })
 
-  it('should view an existing contract', () => {
+  it.only('should view an existing contract', () => {
     cy.intercept('GET', `${baseUrl}/contract`, { fixture: 'contracts.json' }).as('getContracts')
     cy.intercept('GET', `${baseUrl}/customers`, { fixture: 'customers.json' }).as('getCustomers')
     cy.intercept('GET', `${baseUrl}/contract/*`, {
