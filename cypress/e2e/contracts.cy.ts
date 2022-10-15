@@ -344,7 +344,7 @@ describe('Contracts Page', () => {
     cy.get('#notistack-snackbar').should('have.text', 'Contrato editado com sucesso')
   })
 
-  it.only('should edit a contract', () => {
+  it('should edit a contract', () => {
     cy.intercept('GET', `${baseUrl}/contract/*`, {
       statusCode: 200,
       fixture: 'contract.json',

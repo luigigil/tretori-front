@@ -21,7 +21,7 @@
     "prepare": "husky install",
     "cypress:open": "cypress open",
     "cypress:headless": "cypress run",
-    "test:e2e": "start-server-and-test start http://localhost:3000 cypress",
+    "test:e2e": "yarn start:test cypress",
     "test:e2e:headless": "start-server-and-test start http://localhost:3000 cypress:headless"
   },
   "eslintConfig": {
