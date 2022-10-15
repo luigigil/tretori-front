@@ -19,3 +19,8 @@ jobs:
         env:
           NODE_ENV: test
           RUNNING_TEST: true
+          REACT_APP_ENV: test
+          NEXT_PUBLIC_BASE_URL: http://localhost:4200
+          NEXT_PUBLIC_APP_LOCALE: pt-br
+          NEXTAUTH_URL: http://localhost:3000
+          NEXTAUTH_SECRET: secret
