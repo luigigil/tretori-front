@@ -45,7 +45,6 @@ describe('Contracts Page', () => {
     cy.get('[name="number_of_lives"]').type(contractFixture.number_of_lives.toString())
     cy.get('[name="validity_time"]').type(contractFixture.validity_time.toString())
     cy.get('[name="inclusion_period"]').type(contractFixture.inclusion_period)
-    cy.get('#datepicker-cutoff_date').type(contractFixture.cutoff_date)
     cy.get('[name="email_on_insurancy"]').type(contractFixture.email_on_insurancy)
     cy.get('[name="phone_on_insurancy"]').type(contractFixture.phone_on_insurancy)
     cy.get('[name="copay"]').type(contractFixture.copay.toString())
@@ -56,9 +55,10 @@ describe('Contracts Page', () => {
     cy.get('[name="cost"]').type(contractFixture.cost.toString())
     cy.get('[name="invoice_amount"]').type(contractFixture.invoice_amount.toString())
     cy.get('[name="total_contract_value"]').type(contractFixture.total_contract_value.toString())
-    cy.get('#datepicker-validity_start').clear().type('15/10/2022')
-    cy.get('#datepicker-validity_end').clear().type('15/10/2022')
-    cy.get('#datepicker-first_invoice_date').clear().type('15/10/2022')
+    cy.get('#datepicker-cutoff_date').clear().type('15/12/2022')
+    cy.get('#datepicker-validity_start').clear().type('15/12/2022')
+    cy.get('#datepicker-validity_end').clear().type('15/12/2022')
+    cy.get('#datepicker-first_invoice_date').clear().type('15/12/2022')
 
     cy.get('#saveBtn').click()
 

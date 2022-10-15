@@ -164,11 +164,8 @@ export interface ContractType {
   type: string
   version: number
   number_of_lives: number
-  validity_start: Date
-  validity_end: Date
   validity_time: number
   inclusion_period: string
-  cutoff_date: Date
   email_on_insurancy: string
   phone_on_insurancy: string
   copay: true
@@ -179,6 +176,9 @@ export interface ContractType {
   cost: number
   invoice_amount: number
   total_contract_value: number
+  validity_start: Date
+  validity_end: Date
+  cutoff_date: Date
   first_invoice_date: Date
   renew?: RenewalType[]
   move?: MovementType[]

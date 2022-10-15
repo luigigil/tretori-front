@@ -3,6 +3,7 @@ import { DatePicker as MuiDatePicker, LocalizationProvider } from '@mui/x-date-p
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { DateTime } from 'luxon'
 import { Control, Controller } from 'react-hook-form'
+import dayjs from 'dayjs'
 
 interface DatePickerProps {
   required?: boolean
@@ -40,9 +41,10 @@ const DatePicker = ({
             openTo='year'
             views={['year', 'month', 'day']}
             label={label}
-            onChange={(newValue: Date | null) => {
-              if (newValue) {
-                onChange(DateTime.fromJSDate(newValue).toFormat('yyyy-LL-dd'))
+            onChange={(newValue) => {
+              if (dayjs(newValue).isValid()) {
+                console.log(newValue)
+                onChange(newValue?.toISOString())
               }
             }}
             renderInput={(params) => (
@@ -54,7 +56,7 @@ const DatePicker = ({
                 id={`datepicker-${name}`}
               />
             )}
-            maxDate={maxDate}
+            maxDate={dayjs(maxDate)}
           />
         </LocalizationProvider>
       )}

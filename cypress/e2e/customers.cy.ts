@@ -75,6 +75,7 @@ describe('Customers Page', () => {
 
     cy.wait(['@savePhysicalPerson'])
 
+    cy.wait(5000)
     cy.get('#notistack-snackbar').should('have.text', 'Pessoa Física adicionada com sucesso')
   })
 
@@ -117,6 +118,7 @@ describe('Customers Page', () => {
 
     cy.wait(['@saveLegalPerson'])
 
+    cy.wait(5000)
     cy.get('#notistack-snackbar').should('have.text', 'Pessoa Jurídica adicionada com sucesso')
   })
 
@@ -252,6 +254,7 @@ describe('Customers Page', () => {
 
     cy.wait(['@editPhysicalPerson'])
 
+    cy.wait(5000)
     cy.get('#notistack-snackbar').should('have.text', 'Pessoa Física editada com sucesso')
   })
 
@@ -307,6 +310,7 @@ describe('Customers Page', () => {
 
     cy.wait(['@editLegalPerson'])
 
+    cy.wait(5000)
     cy.get('#notistack-snackbar').should('have.text', 'Pessoa Jurídica editada com sucesso')
   })
 
