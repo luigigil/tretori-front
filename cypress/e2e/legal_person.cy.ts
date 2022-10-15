@@ -39,4 +39,28 @@ describe('Customer - Legal person', () => {
     cy.get('#1-fantasy_name').should('have.text', fixture[1].fantasy_name)
     cy.get('#1-social_reason').should('have.text', fixture[1].social_reason)
   })
+
+  it('Should create a new Legal Person', () => {
+    cy.intercept('GET', `${baseUrl}/legal-person`, { fixture: 'legal-people.json' }).as(
+      'getLegalPerson',
+    )
+    cy.intercept('POST', `${baseUrl}/legal-person`, { statusCode: 201 }).as('saveLegalPerson')
+
+    cy.visit('/legal-person')
+    cy.wait(['@getLegalPerson'])
+
+    cy.get('#newBtn').click()
+
+    cy.get('[name="cnpj"]').type('23789000000100')
+    cy.get('[name="fantasy_name"]').type('Akts')
+    cy.get('[name="social_reason"]').type('Teste')
+    cy.get('[name="type"]').type('Fornecedor')
+    cy.get('[name="size"]').type('Micro')
+
+    cy.get('#saveBtn').click()
+
+    cy.wait(['@saveLegalPerson'])
+
+    cy.get('#notistack-snackbar').should('have.text', 'Pessoa Jurídica adicionada com sucesso')
+  })
 })
