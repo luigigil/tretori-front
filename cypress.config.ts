@@ -9,4 +9,5 @@ export default defineConfig({
     chromeWebSecurity: false,
     specPattern: ['**/login.cy.ts', '**/*.cy.ts'],
   },
+  video: false,
 })
