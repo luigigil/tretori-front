@@ -63,4 +63,31 @@ describe('Customer - Legal person', () => {
 
     cy.get('#notistack-snackbar').should('have.text', 'Pessoa Jurídica adicionada com sucesso')
   })
+
+  it.only('should view an existing Legal person', () => {
+    cy.intercept('GET', `${baseUrl}/legal-person`, { fixture: 'legal-people.json' }).as(
+      'getLegalPeople',
+    )
+    cy.intercept('GET', `${baseUrl}/legal-person/*`, {
+      statusCode: 200,
+      fixture: 'legal-person.json',
+    }).as('getLegalPerson')
+
+    cy.visit('/legal-person')
+    cy.wait(['@getLegalPeople'])
+
+    cy.get('#0-cnpj').click()
+
+    cy.wait(['@getLegalPerson'])
+
+    cy.get('[name="cnpj"]').should('have.value', fixture[0].cnpj)
+    cy.get('[name="fantasy_name"]').should('have.value', fixture[0].fantasy_name)
+    cy.get('[name="social_reason"]').should('have.value', fixture[0].social_reason)
+    cy.get('[name="type"]').should('have.value', fixture[0].type)
+    cy.get('[name="size"]').should('have.value', fixture[0].size)
+  })
+
+  it('should edit an existing Legal person', () => {})
+
+  it('should delete an existing legal person', () => {})
 })
