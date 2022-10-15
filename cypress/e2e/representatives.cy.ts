@@ -1,6 +1,7 @@
 /* eslint-disable spaced-comment */
 /// <reference types="cypress" />
 
+import { DateTime } from 'luxon'
 import fixture from '../fixtures/representatives.json'
 import useSessionInterceptor from '../helpers/useSessionInterceptor'
 
@@ -80,7 +81,10 @@ describe('Representative Page', () => {
     cy.get('[name="description"]').should('have.value', fixture[0].description)
     cy.get('[name="email"]').should('have.value', fixture[0].email)
     cy.get('[name="phone"]').should('have.value', fixture[0].phone)
-    cy.get('#datepicker-birthdate').should('have.value', '01/02/2022') // ! THIS NEEDS TO BE FIXED ASAP
+    cy.get('#datepicker-birthdate').should(
+      'have.value',
+      DateTime.fromISO(fixture[0].birthdate).minus({ day: 1 }).toFormat('dd/LL/yyyy'),
+    )
     cy.get('[name="insurance"]').should('have.value', fixture[0].insurance)
     cy.get('[name="company"]').should('have.value', fixture[0].company)
   })

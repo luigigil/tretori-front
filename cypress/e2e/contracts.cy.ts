@@ -4,6 +4,7 @@
 import fixture from '../fixtures/contracts.json'
 import contractFixture from '../fixtures/contract.json'
 import useSessionInterceptor from '../helpers/useSessionInterceptor'
+import { DateTime } from 'luxon'
 
 describe('Contracts Page', () => {
   const baseUrl = Cypress.env('NEXT_PUBLIC_BASE_URL')
@@ -55,9 +56,9 @@ describe('Contracts Page', () => {
     cy.get('[name="cost"]').type(contractFixture.cost.toString())
     cy.get('[name="invoice_amount"]').type(contractFixture.invoice_amount.toString())
     cy.get('[name="total_contract_value"]').type(contractFixture.total_contract_value.toString())
-    cy.get('#datepicker-validity_start').type('15/10/2022')
-    cy.get('#datepicker-validity_end').type('15/10/2022')
-    cy.get('#datepicker-first_invoice_date').type('15/10/2022')
+    cy.get('#datepicker-validity_start').clear().type('15/10/2022')
+    cy.get('#datepicker-validity_end').clear().type('15/10/2022')
+    cy.get('#datepicker-first_invoice_date').clear().type('15/10/2022')
 
     cy.get('#saveBtn').click()
 
@@ -112,9 +113,18 @@ describe('Contracts Page', () => {
       'have.value',
       contractFixture.total_contract_value.toString(),
     )
-    cy.get('#datepicker-validity_start').should('have.value', '11/10/2022') // ! THIS SHOULD BE FIXED ASAP
-    cy.get('#datepicker-validity_end').should('have.value', '11/10/2022') // ! THIS SHOULD BE FIXED ASAP
-    cy.get('#datepicker-first_invoice_date').should('have.value', '11/10/2022') // ! THIS SHOULD BE FIXED ASAP
+    cy.get('#datepicker-validity_start').should(
+      'have.value',
+      DateTime.fromISO(contractFixture.validity_start).minus({ day: 1 }).toFormat('dd/LL/yyyy'),
+    )
+    cy.get('#datepicker-validity_end').should(
+      'have.value',
+      DateTime.fromISO(contractFixture.validity_end).minus({ day: 1 }).toFormat('dd/LL/yyyy'),
+    )
+    cy.get('#datepicker-first_invoice_date').should(
+      'have.value',
+      DateTime.fromISO(contractFixture.first_invoice_date).minus({ day: 1 }).toFormat('dd/LL/yyyy'),
+    )
 
     // assert customer
     cy.get('#combo-box-cliente').should('have.value', contractFixture.customer.code)
@@ -352,7 +362,6 @@ describe('Contracts Page', () => {
     cy.intercept('GET', `${baseUrl}/contract`, { fixture: 'contracts.json' }).as('getContracts')
     cy.intercept('GET', `${baseUrl}/customers`, { fixture: 'customers.json' }).as('getCustomers')
     cy.intercept('PUT', `${baseUrl}/contract/*`, { statusCode: 200 }).as('editContract')
-
     cy.visit('/contracts')
     cy.wait(['@getContracts'])
 
