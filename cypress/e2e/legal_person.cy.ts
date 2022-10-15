@@ -118,5 +118,26 @@ describe('Customer - Legal person', () => {
     cy.get('#notistack-snackbar').should('have.text', 'Pessoa Jurídica editada com sucesso')
   })
 
-  it('should delete an existing legal person', () => {})
+  it.only('should delete an existing legal person', () => {
+    cy.intercept('GET', `${baseUrl}/legal-person`, { fixture: 'legal-people.json' }).as(
+      'getLegalPeople',
+    )
+    cy.intercept('GET', `${baseUrl}/legal-person/*`, {
+      statusCode: 200,
+      fixture: 'legal-person.json',
+    }).as('getLegalPerson')
+    cy.intercept('DELETE', `${baseUrl}/legal-person/*`, { statusCode: 200 }).as('deleteLegalPerson')
+
+    cy.visit('/legal-person')
+    cy.wait(['@getLegalPeople'])
+
+    cy.get('#0-cnpj').click()
+    cy.wait(['@getLegalPerson'])
+
+    cy.get('#deleteBtn').click()
+    cy.get('#dialog-confirm-btn').click()
+    cy.wait(['@deleteLegalPerson'])
+
+    cy.get('#notistack-snackbar').should('have.text', 'Pessoa Jurídica deletada com sucesso!')
+  })
 })
