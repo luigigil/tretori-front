@@ -291,11 +291,10 @@ const FormContract = ({ contract, shouldCreateNew }: FormContractProps) => {
             defaultValue={contract?.inclusion_period}
             disabled={!isEditing && !shouldCreateNew}
           />
-          <FormTextField
+          <DatePicker
             label={'Data de Corte'}
             name='cutoff_date'
             control={control}
-            errors={errors}
             defaultValue={contract?.cutoff_date}
             disabled={!isEditing && !shouldCreateNew}
           />

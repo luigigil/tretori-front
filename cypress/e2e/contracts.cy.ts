@@ -4,6 +4,7 @@
 import fixture from '../fixtures/contracts.json'
 import contractFixture from '../fixtures/contract.json'
 import useSessionInterceptor from '../helpers/useSessionInterceptor'
+import { DateTime } from 'luxon'
 
 describe('Contracts Page', () => {
   const baseUrl = Cypress.env('NEXT_PUBLIC_BASE_URL')
@@ -44,7 +45,6 @@ describe('Contracts Page', () => {
     cy.get('[name="number_of_lives"]').type(contractFixture.number_of_lives.toString())
     cy.get('[name="validity_time"]').type(contractFixture.validity_time.toString())
     cy.get('[name="inclusion_period"]').type(contractFixture.inclusion_period)
-    cy.get('[name="cutoff_date"]').type(contractFixture.cutoff_date)
     cy.get('[name="email_on_insurancy"]').type(contractFixture.email_on_insurancy)
     cy.get('[name="phone_on_insurancy"]').type(contractFixture.phone_on_insurancy)
     cy.get('[name="copay"]').type(contractFixture.copay.toString())
@@ -55,9 +55,10 @@ describe('Contracts Page', () => {
     cy.get('[name="cost"]').type(contractFixture.cost.toString())
     cy.get('[name="invoice_amount"]').type(contractFixture.invoice_amount.toString())
     cy.get('[name="total_contract_value"]').type(contractFixture.total_contract_value.toString())
-    cy.get('#datepicker-validity_start').type('15/10/2022')
-    cy.get('#datepicker-validity_end').type('15/10/2022')
-    cy.get('#datepicker-first_invoice_date').type('15/10/2022')
+    cy.get('#datepicker-cutoff_date').clear().type('15/12/2022')
+    cy.get('#datepicker-validity_start').clear().type('15/12/2022')
+    cy.get('#datepicker-validity_end').clear().type('15/12/2022')
+    cy.get('#datepicker-first_invoice_date').clear().type('15/12/2022')
 
     cy.get('#saveBtn').click()
 
@@ -92,7 +93,10 @@ describe('Contracts Page', () => {
     )
     cy.get('[name="validity_time"]').should('have.value', contractFixture.validity_time.toString())
     cy.get('[name="inclusion_period"]').should('have.value', contractFixture.inclusion_period)
-    cy.get('[name="cutoff_date"]').should('have.value', contractFixture.cutoff_date)
+    cy.get('#datepicker-cutoff_date').should(
+      'have.value',
+      DateTime.fromISO(contractFixture.cutoff_date).toFormat('dd/LL/yyyy'),
+    )
     cy.get('[name="email_on_insurancy"]').should('have.value', contractFixture.email_on_insurancy)
     cy.get('[name="phone_on_insurancy"]').should('have.value', contractFixture.phone_on_insurancy)
     cy.get('[name="copay"]').should('have.value', contractFixture.copay.toString())
@@ -112,9 +116,18 @@ describe('Contracts Page', () => {
       'have.value',
       contractFixture.total_contract_value.toString(),
     )
-    cy.get('#datepicker-validity_start').should('have.value', '11/10/2022') // ! THIS SHOULD BE FIXED ASAP
-    cy.get('#datepicker-validity_end').should('have.value', '11/10/2022') // ! THIS SHOULD BE FIXED ASAP
-    cy.get('#datepicker-first_invoice_date').should('have.value', '11/10/2022') // ! THIS SHOULD BE FIXED ASAP
+    cy.get('#datepicker-validity_start').should(
+      'have.value',
+      DateTime.fromISO(contractFixture.validity_start).toFormat('dd/LL/yyyy'),
+    )
+    cy.get('#datepicker-validity_end').should(
+      'have.value',
+      DateTime.fromISO(contractFixture.validity_end).toFormat('dd/LL/yyyy'),
+    )
+    cy.get('#datepicker-first_invoice_date').should(
+      'have.value',
+      DateTime.fromISO(contractFixture.first_invoice_date).toFormat('dd/LL/yyyy'),
+    )
 
     // assert customer
     cy.get('#combo-box-cliente').should('have.value', contractFixture.customer.code)
@@ -344,7 +357,7 @@ describe('Contracts Page', () => {
     cy.get('#notistack-snackbar').should('have.text', 'Contrato editado com sucesso')
   })
 
-  it.only('should edit a contract', () => {
+  it('should edit a contract', () => {
     cy.intercept('GET', `${baseUrl}/contract/*`, {
       statusCode: 200,
       fixture: 'contract.json',
@@ -352,7 +365,6 @@ describe('Contracts Page', () => {
     cy.intercept('GET', `${baseUrl}/contract`, { fixture: 'contracts.json' }).as('getContracts')
     cy.intercept('GET', `${baseUrl}/customers`, { fixture: 'customers.json' }).as('getCustomers')
     cy.intercept('PUT', `${baseUrl}/contract/*`, { statusCode: 200 }).as('editContract')
-
     cy.visit('/contracts')
     cy.wait(['@getContracts'])
 
@@ -378,7 +390,7 @@ describe('Contracts Page', () => {
     cy.get('[name="inclusion_period"]')
       .clear({ force: true })
       .type(contractFixture.inclusion_period, { force: true })
-    cy.get('[name="cutoff_date"]')
+    cy.get('#datepicker-cutoff_date')
       .clear({ force: true })
       .type(contractFixture.cutoff_date, { force: true })
     cy.get('[name="email_on_insurancy"]')

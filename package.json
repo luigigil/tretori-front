@@ -21,8 +21,9 @@
     "prepare": "husky install",
     "cypress:open": "cypress open",
     "cypress:headless": "cypress run",
-    "test:e2e": "start-server-and-test start http://localhost:3000 cypress",
-    "test:e2e:headless": "start-server-and-test start http://localhost:3000 cypress:headless"
+    "test:e2e": "yarn start:test cypress",
+    "test:e2e:headless": "start-server-and-test start http://localhost:3000 cypress:headless",
+    "test:ci": "next start -p 3000"
   },
   "eslintConfig": {
     "extends": [
@@ -47,6 +48,7 @@
     "@emotion/react": "^11.10.0",
     "@emotion/styled": "^11.10.0",
     "@hookform/resolvers": "^2.9.7",
+    "@joi/date": "^2.1.0",
     "@mui/icons-material": "^5.8.4",
     "@mui/material": "^5.10.1",
     "@mui/x-date-pickers": "^5.0.0-beta.7",
@@ -58,6 +60,7 @@
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
     "axios": "^0.27.2",
+    "dayjs": "^1.11.5",
     "dotenv": "^16.0.3",
     "eslint": "^8.22.0",
     "joi": "^17.6.0",
