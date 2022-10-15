@@ -12,6 +12,7 @@ export default function useStandardFetcher(params: AxiosRequestConfig<any>) {
   const [isLoading, setIsLoading] = useState<boolean>(true)
 
   const fetchData = async (): Promise<void> => {
+    console.log(session)
     try {
       let _session
 

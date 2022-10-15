@@ -3,7 +3,7 @@ import FormProduct from 'features/products/form-product'
 import useStandardFetcher from 'hooks/useStandardFetcher'
 import { useRouter } from 'next/router'
 
-export default function DetailPhysicalPerson() {
+export default function DetailProducts() {
   const router = useRouter()
   const { id } = router.query
 

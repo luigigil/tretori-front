@@ -4,21 +4,13 @@
 import fixture from '../fixtures/customers.json'
 import legalPersonCustomerFixture from '../fixtures/customer-legal-person.json'
 import physicalPersonCustomerFixture from '../fixtures/customer-physical-person.json'
+import useSessionInterceptor from '../helpers/useSessionInterceptor'
 
 describe('Customers Page', () => {
   const baseUrl = Cypress.env('NEXT_PUBLIC_BASE_URL')
 
-  before(() => {
-    {
-      cy.intercept('GET', '/api/auth/session', {
-        body: {
-          user: { name: 'dev-admin@tretori.com', email: 'dev-admin@tretori.com', role: 'admin' },
-          expires: '2099-11-13T11:28:20.616Z',
-          accessToken:
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRldi1hZG1pbkB0cmV0b3JpLmNvbSIsInN1YiI6OCwicm9sZSI6ImFkbWluIiwiaWF0IjoxNjY1NjczNzY2LCJleHAiOjE2NjU2NzM4MjZ9.P8HjNf5LVv83kZCPH6Cxq0PEZ-CSFZm6WfKgSXhu-_I',
-        },
-      }).as('getSession')
-    }
+  beforeEach(() => {
+    useSessionInterceptor()
   })
 
   it('should show a list of customers', () => {

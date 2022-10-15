@@ -2,27 +2,15 @@
 /// <reference types="cypress" />
 
 import fixture from '../fixtures/products.json'
+import useSessionInterceptor from '../helpers/useSessionInterceptor'
 
 describe('Product Page', () => {
   const baseUrl = Cypress.env('NEXT_PUBLIC_BASE_URL')
-  before(() => {
-    {
-      const username = Cypress.env('USER')
-      const password = Cypress.env('PW')
-      const cookieName = Cypress.env('COOKIE_NAME')
-
-      cy.visit('/login')
-
-      cy.get('#email').type(username)
-      cy.get('#password').type(password)
-      cy.get('#login-button').click()
-
-      cy.visit('/')
-      cy.getCookie(cookieName).should('exist')
-    }
+  beforeEach(() => {
+    useSessionInterceptor()
   })
 
-  it('should show a list products', () => {
+  it('should show a list of products', () => {
     cy.intercept('GET', `${baseUrl}/product`, { fixture: 'products.json' }).as('getProducts')
     cy.visit('/products')
     cy.wait(['@getProducts'])
