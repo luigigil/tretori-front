@@ -16,7 +16,6 @@ const Auth = ({ children }: PropsWithChildren) => {
   const isUser = !!session?.user
   const router = useRouter()
   const loading = status === 'loading'
-  console.log(session, status, isUser, loading)
   useEffect(() => {
     if (loading) return // Do nothing while loading
     if (!isUser) router.push('/login') // If not authenticated, force log in

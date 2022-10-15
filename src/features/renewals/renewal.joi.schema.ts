@@ -8,5 +8,4 @@ export const renewalSchema = Joi.object({
   closed_date: Joi.any().required(),
   closed_value: Joi.string().min(2).max(200).required(),
   details: Joi.string().min(2).max(200).required(),
-  contract: Joi.string().min(1).max(200).required(),
 })
