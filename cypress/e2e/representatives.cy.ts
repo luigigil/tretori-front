@@ -83,7 +83,7 @@ describe('Representative Page', () => {
     cy.get('[name="phone"]').should('have.value', fixture[0].phone)
     cy.get('#datepicker-birthdate').should(
       'have.value',
-      DateTime.fromISO(fixture[0].birthdate).minus({ day: 1 }).toFormat('dd/LL/yyyy'),
+      DateTime.fromISO(fixture[0].birthdate).toFormat('dd/LL/yyyy'),
     )
     cy.get('[name="insurance"]').should('have.value', fixture[0].insurance)
     cy.get('[name="company"]').should('have.value', fixture[0].company)
