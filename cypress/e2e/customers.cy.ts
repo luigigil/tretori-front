@@ -339,7 +339,7 @@ describe('Customers Page', () => {
 
     cy.wait(['@deleteCustomer'])
 
-    cy.get('#notistack-snackbar').should('have.text', 'Cliente deletado com sucesso!')
+    cy.get('#notistack-snackbar').should('have.text', 'Cliente deletada com sucesso!')
   })
 
   it('should delete an existing legal person customer', () => {
