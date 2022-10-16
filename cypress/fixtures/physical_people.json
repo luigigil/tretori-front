@@ -1,0 +1,20 @@
+[
+  {
+    "id": 2,
+    "name": "Jose",
+    "birthdate": "2002-10-12",
+    "cpf": "00100200344",
+    "rg": "1222333",
+    "rg_emissor": "SSP",
+    "rg_emissor_uf": "SP"
+  },
+  {
+    "id": 123,
+    "name": "Maria",
+    "birthdate": "1992-10-12",
+    "cpf": "00200300455",
+    "rg": "3444555",
+    "rg_emissor": "SSP",
+    "rg_emissor_uf": "RJ"
+  }
+]
