@@ -8,7 +8,7 @@ export default function DetailPhysicalPerson() {
   const { id } = router.query
 
   const [data, error, isLoading] = useStandardFetcher({
-    url: `/contract/${id}`,
+    url: `/contracts/${id}`,
   })
 
   if (error) {

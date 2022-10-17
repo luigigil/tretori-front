@@ -63,13 +63,14 @@ const callbacks = {
     // Persist the OAuth access_token to the token right after signin
     if (user) {
       token.accessToken = user.token
-      token.role = user.role
+      token.user = user
     }
     return token
   },
   async session({ session, token }: any) {
     // Send properties to the client, like an access_token from a provider.
     if (token) {
+      session.user = token.user
       session.accessToken = token.accessToken
     }
     return session

@@ -8,7 +8,7 @@ export default function ListProducts() {
   const router = useRouter()
   const [data, error, isLoading] = useStandardFetcher({
     method: 'GET',
-    url: '/contract',
+    url: '/contracts',
   })
 
   if (error) {

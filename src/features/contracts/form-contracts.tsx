@@ -55,7 +55,7 @@ const FormContract = ({ contract, shouldCreateNew }: FormContractProps) => {
     try {
       await axios.request({
         method: 'DELETE',
-        url: `/contract/${contract?.id}`,
+        url: `/contracts/${contract?.id}`,
         baseURL: process.env.NEXT_PUBLIC_BASE_URL,
         headers: {
           Authorization: `Bearer ${session?.accessToken}`,
@@ -81,7 +81,7 @@ const FormContract = ({ contract, shouldCreateNew }: FormContractProps) => {
     try {
       await axios.request({
         method: 'PUT',
-        url: `/contract/${contract?.id}`,
+        url: `/contracts/${contract?.id}`,
         baseURL: process.env.NEXT_PUBLIC_BASE_URL,
         headers: {
           Authorization: `Bearer ${session?.accessToken}`,
@@ -139,7 +139,7 @@ const FormContract = ({ contract, shouldCreateNew }: FormContractProps) => {
     try {
       await axios.request({
         method: 'POST',
-        url: '/contract',
+        url: '/contracts',
         baseURL: process.env.NEXT_PUBLIC_BASE_URL,
         headers: {
           Authorization: `Bearer ${session?.accessToken}`,

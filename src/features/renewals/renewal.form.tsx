@@ -37,7 +37,7 @@ const FormRenewal = ({ contractId, renewal }: FormRenewalProps) => {
     try {
       await axios.request({
         method: 'POST',
-        url: `/contract/${contractId}/renew`,
+        url: `/contracts/${contractId}/renew`,
         baseURL: process.env.NEXT_PUBLIC_BASE_URL,
         headers: {
           Authorization: `Bearer ${session?.accessToken}`,

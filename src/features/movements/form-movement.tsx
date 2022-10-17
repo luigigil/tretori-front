@@ -96,7 +96,7 @@ const FormMovement = ({ contractId, movement, shouldCreateNewMovement }: FormMov
     try {
       await axios.request({
         method: 'POST',
-        url: `/contract/${contractId}/move`,
+        url: `/contracts/${contractId}/move`,
         baseURL: process.env.NEXT_PUBLIC_BASE_URL,
         headers: {
           Authorization: `Bearer ${session?.accessToken}`,
