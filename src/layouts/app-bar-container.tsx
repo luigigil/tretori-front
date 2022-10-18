@@ -19,7 +19,7 @@ const AppBarContainer = ({ open, handleDrawerOpen }: AppBarContainerProps) => {
   }
 
   return (
-    <AppBar position='absolute' open={open}>
+    <AppBar position='absolute' open={open} style={{ background: '#182340' }}>
       <Toolbar
         sx={{
           pr: '24px', // keep right padding when drawer closed
@@ -38,7 +38,7 @@ const AppBarContainer = ({ open, handleDrawerOpen }: AppBarContainerProps) => {
           <MenuIcon />
         </IconButton>
         <Typography component='h1' variant='h6' color='inherit' noWrap sx={{ flexGrow: 1 }}>
-          Dashboard
+          Tretori
         </Typography>
         {session && (
           <IconButton color='inherit' onClick={handleSignout}>
