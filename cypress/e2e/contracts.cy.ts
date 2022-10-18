@@ -13,7 +13,7 @@ describe('Contracts Page', () => {
   })
 
   it('should show a list contract', () => {
-    cy.intercept('GET', `${baseUrl}/contract`, { fixture: 'contracts.json' }).as('getContracts')
+    cy.intercept('GET', `${baseUrl}/contracts`, { fixture: 'contracts.json' }).as('getContracts')
     cy.visit('/contracts')
     cy.wait(['@getContracts'])
 
@@ -30,8 +30,8 @@ describe('Contracts Page', () => {
 
   it('should create a new contract', () => {
     cy.intercept('GET', `${baseUrl}/customers`, { fixture: 'customers.json' }).as('getCustomers')
-    cy.intercept('GET', `${baseUrl}/contract`, { fixture: 'contracts.json' }).as('getContracts')
-    cy.intercept('POST', `${baseUrl}/contract`, { statusCode: 201 }).as('saveContract')
+    cy.intercept('GET', `${baseUrl}/contracts`, { fixture: 'contracts.json' }).as('getContracts')
+    cy.intercept('POST', `${baseUrl}/contracts`, { statusCode: 201 }).as('saveContract')
 
     cy.visit('/contracts')
     cy.wait(['@getContracts'])
@@ -68,9 +68,9 @@ describe('Contracts Page', () => {
   })
 
   it('should view an existing contract', () => {
-    cy.intercept('GET', `${baseUrl}/contract`, { fixture: 'contracts.json' }).as('getContracts')
+    cy.intercept('GET', `${baseUrl}/contracts`, { fixture: 'contracts.json' }).as('getContracts')
     cy.intercept('GET', `${baseUrl}/customers`, { fixture: 'customers.json' }).as('getCustomers')
-    cy.intercept('GET', `${baseUrl}/contract/*`, {
+    cy.intercept('GET', `${baseUrl}/contracts/*`, {
       statusCode: 200,
       fixture: 'contract.json',
     }).as('getContract')
@@ -174,12 +174,12 @@ describe('Contracts Page', () => {
   })
 
   it('should add a renewal', () => {
-    cy.intercept('POST', `${baseUrl}/contract/*/renew`, { statusCode: 201 }).as('createRenewal')
-    cy.intercept('GET', `${baseUrl}/contract/*`, {
+    cy.intercept('POST', `${baseUrl}/contracts/*/renew`, { statusCode: 201 }).as('createRenewal')
+    cy.intercept('GET', `${baseUrl}/contracts/*`, {
       statusCode: 200,
       fixture: 'contract.json',
     }).as('getContract')
-    cy.intercept('GET', `${baseUrl}/contract`, { fixture: 'contracts.json' }).as('getContracts')
+    cy.intercept('GET', `${baseUrl}/contracts`, { fixture: 'contracts.json' }).as('getContracts')
     cy.intercept('GET', `${baseUrl}/customers`, { fixture: 'customers.json' }).as('getCustomers')
 
     cy.visit('/contracts')
@@ -207,12 +207,12 @@ describe('Contracts Page', () => {
   })
 
   it('should add a movement', () => {
-    cy.intercept('POST', `${baseUrl}/contract/*/move`, { statusCode: 201 }).as('createMovement')
-    cy.intercept('GET', `${baseUrl}/contract/*`, {
+    cy.intercept('POST', `${baseUrl}/contracts/*/move`, { statusCode: 201 }).as('createMovement')
+    cy.intercept('GET', `${baseUrl}/contracts/*`, {
       statusCode: 200,
       fixture: 'contract.json',
     }).as('getContract')
-    cy.intercept('GET', `${baseUrl}/contract`, { fixture: 'contracts.json' }).as('getContracts')
+    cy.intercept('GET', `${baseUrl}/contracts`, { fixture: 'contracts.json' }).as('getContracts')
     cy.intercept('GET', `${baseUrl}/customers`, { fixture: 'customers.json' }).as('getCustomers')
 
     cy.visit('/contracts')
@@ -240,13 +240,13 @@ describe('Contracts Page', () => {
   })
 
   it('should add a customer', () => {
-    cy.intercept('GET', `${baseUrl}/contract/*`, {
+    cy.intercept('GET', `${baseUrl}/contracts/*`, {
       statusCode: 200,
       fixture: 'contract-with-access.json',
     }).as('getContract')
-    cy.intercept('GET', `${baseUrl}/contract`, { fixture: 'contracts.json' }).as('getContracts')
+    cy.intercept('GET', `${baseUrl}/contracts`, { fixture: 'contracts.json' }).as('getContracts')
     cy.intercept('GET', `${baseUrl}/customers`, { fixture: 'customers.json' }).as('getCustomers')
-    cy.intercept('PUT', `${baseUrl}/contract/*`, { statusCode: 200 }).as('editContract')
+    cy.intercept('PUT', `${baseUrl}/contracts/*`, { statusCode: 200 }).as('editContract')
 
     cy.visit('/contracts')
     cy.wait(['@getContracts'])
@@ -268,13 +268,13 @@ describe('Contracts Page', () => {
   })
 
   it('should add an access', () => {
-    cy.intercept('GET', `${baseUrl}/contract/*`, {
+    cy.intercept('GET', `${baseUrl}/contracts/*`, {
       statusCode: 200,
       fixture: 'contract-with-customer.json',
     }).as('getContract')
-    cy.intercept('GET', `${baseUrl}/contract`, { fixture: 'contracts.json' }).as('getContracts')
+    cy.intercept('GET', `${baseUrl}/contracts`, { fixture: 'contracts.json' }).as('getContracts')
     cy.intercept('GET', `${baseUrl}/customers`, { fixture: 'customers.json' }).as('getCustomers')
-    cy.intercept('PUT', `${baseUrl}/contract/*`, { statusCode: 200 }).as('editContract')
+    cy.intercept('PUT', `${baseUrl}/contracts/*`, { statusCode: 200 }).as('editContract')
 
     cy.visit('/contracts')
     cy.wait(['@getContracts'])
@@ -299,13 +299,13 @@ describe('Contracts Page', () => {
   })
 
   it('should edit a customer', () => {
-    cy.intercept('GET', `${baseUrl}/contract/*`, {
+    cy.intercept('GET', `${baseUrl}/contracts/*`, {
       statusCode: 200,
       fixture: 'contract.json',
     }).as('getContract')
-    cy.intercept('GET', `${baseUrl}/contract`, { fixture: 'contracts.json' }).as('getContracts')
+    cy.intercept('GET', `${baseUrl}/contracts`, { fixture: 'contracts.json' }).as('getContracts')
     cy.intercept('GET', `${baseUrl}/customers`, { fixture: 'customers.json' }).as('getCustomers')
-    cy.intercept('PUT', `${baseUrl}/contract/*`, { statusCode: 200 }).as('editContract')
+    cy.intercept('PUT', `${baseUrl}/contracts/*`, { statusCode: 200 }).as('editContract')
 
     cy.visit('/contracts')
     cy.wait(['@getContracts'])
@@ -327,13 +327,13 @@ describe('Contracts Page', () => {
   })
 
   it('should edit an access', () => {
-    cy.intercept('GET', `${baseUrl}/contract/*`, {
+    cy.intercept('GET', `${baseUrl}/contracts/*`, {
       statusCode: 200,
       fixture: 'contract.json',
     }).as('getContract')
-    cy.intercept('GET', `${baseUrl}/contract`, { fixture: 'contracts.json' }).as('getContracts')
+    cy.intercept('GET', `${baseUrl}/contracts`, { fixture: 'contracts.json' }).as('getContracts')
     cy.intercept('GET', `${baseUrl}/customers`, { fixture: 'customers.json' }).as('getCustomers')
-    cy.intercept('PUT', `${baseUrl}/contract/*`, { statusCode: 200 }).as('editContract')
+    cy.intercept('PUT', `${baseUrl}/contracts/*`, { statusCode: 200 }).as('editContract')
 
     cy.visit('/contracts')
     cy.wait(['@getContracts'])
@@ -358,13 +358,13 @@ describe('Contracts Page', () => {
   })
 
   it('should edit a contract', () => {
-    cy.intercept('GET', `${baseUrl}/contract/*`, {
+    cy.intercept('GET', `${baseUrl}/contracts/*`, {
       statusCode: 200,
       fixture: 'contract.json',
     }).as('getContract')
-    cy.intercept('GET', `${baseUrl}/contract`, { fixture: 'contracts.json' }).as('getContracts')
+    cy.intercept('GET', `${baseUrl}/contracts`, { fixture: 'contracts.json' }).as('getContracts')
     cy.intercept('GET', `${baseUrl}/customers`, { fixture: 'customers.json' }).as('getCustomers')
-    cy.intercept('PUT', `${baseUrl}/contract/*`, { statusCode: 200 }).as('editContract')
+    cy.intercept('PUT', `${baseUrl}/contracts/*`, { statusCode: 200 }).as('editContract')
     cy.visit('/contracts')
     cy.wait(['@getContracts'])
 
@@ -444,13 +444,13 @@ describe('Contracts Page', () => {
   })
 
   it('should delete an existing contract', () => {
-    cy.intercept('GET', `${baseUrl}/contract`, { fixture: 'contracts.json' }).as('getContracts')
+    cy.intercept('GET', `${baseUrl}/contracts`, { fixture: 'contracts.json' }).as('getContracts')
     cy.intercept('GET', `${baseUrl}/customers`, { fixture: 'customers.json' }).as('getCustomers')
-    cy.intercept('GET', `${baseUrl}/contract/*`, {
+    cy.intercept('GET', `${baseUrl}/contracts/*`, {
       statusCode: 200,
       fixture: 'contract.json',
     }).as('getContracts')
-    cy.intercept('DELETE', `${baseUrl}/contract/*`, { statusCode: 200 }).as('deleteContract')
+    cy.intercept('DELETE', `${baseUrl}/contracts/*`, { statusCode: 200 }).as('deleteContract')
 
     cy.visit('/contracts')
     cy.wait(['@getContracts'])
