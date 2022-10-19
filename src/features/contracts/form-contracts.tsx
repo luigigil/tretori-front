@@ -174,6 +174,7 @@ const FormContract = ({ contract, shouldCreateNew }: FormContractProps) => {
           total_contract_value: data.total_contract_value,
           first_invoice_date: data.first_invoice_date,
           customer: selectedCustomer,
+          product: selectedProduct,
         },
       })
       enqueueSnackbar(ContractMessages.newSuccess, { variant: 'success' })

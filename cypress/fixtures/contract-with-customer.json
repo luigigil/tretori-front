@@ -33,5 +33,6 @@
     "customer_type": "PHYSICAL_PERSON"
   },
   "total_contract_value": 12312,
-  "first_invoice_date": "2022-10-12"
+  "first_invoice_date": "2022-10-12",
+  "product": {}
 }
