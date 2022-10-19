@@ -1,10 +1,10 @@
 /* eslint-disable spaced-comment */
 /// <reference types="cypress" />
 
-import fixture from '../fixtures/contracts.json'
-import contractFixture from '../fixtures/contract.json'
-import useSessionInterceptor from '../helpers/useSessionInterceptor'
 import { DateTime } from 'luxon'
+import contractFixture from '../fixtures/contract.json'
+import fixture from '../fixtures/contracts.json'
+import useSessionInterceptor from '../helpers/useSessionInterceptor'
 
 describe('Contracts Page', () => {
   const baseUrl = Cypress.env('NEXT_PUBLIC_BASE_URL')
@@ -246,6 +246,7 @@ describe('Contracts Page', () => {
     }).as('getContract')
     cy.intercept('GET', `${baseUrl}/contracts`, { fixture: 'contracts.json' }).as('getContracts')
     cy.intercept('GET', `${baseUrl}/customers`, { fixture: 'customers.json' }).as('getCustomers')
+    cy.intercept('GET', `${baseUrl}/products`, { body: [] }).as('getProducts')
     cy.intercept('PUT', `${baseUrl}/contracts/*`, { statusCode: 200 }).as('editContract')
 
     cy.visit('/contracts')
@@ -253,7 +254,7 @@ describe('Contracts Page', () => {
 
     cy.get('#0-policy').click()
 
-    cy.wait(['@getContract', '@getCustomers'])
+    cy.wait(['@getContract', '@getCustomers', '@getProducts'])
 
     cy.get('#editBtn').click({ force: true })
 
@@ -274,6 +275,7 @@ describe('Contracts Page', () => {
     }).as('getContract')
     cy.intercept('GET', `${baseUrl}/contracts`, { fixture: 'contracts.json' }).as('getContracts')
     cy.intercept('GET', `${baseUrl}/customers`, { fixture: 'customers.json' }).as('getCustomers')
+    cy.intercept('GET', `${baseUrl}/products`, { body: [] }).as('getProducts')
     cy.intercept('PUT', `${baseUrl}/contracts/*`, { statusCode: 200 }).as('editContract')
 
     cy.visit('/contracts')
@@ -281,7 +283,7 @@ describe('Contracts Page', () => {
 
     cy.get('#0-policy').click()
 
-    cy.wait(['@getContract', '@getCustomers'])
+    cy.wait(['@getContract', '@getCustomers', '@getProducts'])
 
     cy.get('#editBtn').click({ force: true })
 
@@ -305,6 +307,7 @@ describe('Contracts Page', () => {
     }).as('getContract')
     cy.intercept('GET', `${baseUrl}/contracts`, { fixture: 'contracts.json' }).as('getContracts')
     cy.intercept('GET', `${baseUrl}/customers`, { fixture: 'customers.json' }).as('getCustomers')
+    cy.intercept('GET', `${baseUrl}/products`, { body: [] }).as('getProducts')
     cy.intercept('PUT', `${baseUrl}/contracts/*`, { statusCode: 200 }).as('editContract')
 
     cy.visit('/contracts')
@@ -312,7 +315,7 @@ describe('Contracts Page', () => {
 
     cy.get('#0-policy').click()
 
-    cy.wait(['@getContract', '@getCustomers'])
+    cy.wait(['@getContract', '@getCustomers', '@getProducts'])
 
     cy.get('#editBtn').click({ force: true })
 
@@ -446,6 +449,7 @@ describe('Contracts Page', () => {
   it('should delete an existing contract', () => {
     cy.intercept('GET', `${baseUrl}/contracts`, { fixture: 'contracts.json' }).as('getContracts')
     cy.intercept('GET', `${baseUrl}/customers`, { fixture: 'customers.json' }).as('getCustomers')
+    cy.intercept('GET', `${baseUrl}/products`, { body: [] }).as('getProducts')
     cy.intercept('GET', `${baseUrl}/contracts/*`, {
       statusCode: 200,
       fixture: 'contract.json',
@@ -457,7 +461,7 @@ describe('Contracts Page', () => {
 
     cy.get('#0-policy').click()
 
-    cy.wait(['@getContracts'])
+    cy.wait(['@getContracts', '@getCustomers', '@getProducts'])
 
     cy.get('#deleteBtn').click({ force: true })
 
