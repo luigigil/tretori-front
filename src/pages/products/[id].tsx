@@ -8,7 +8,7 @@ export default function DetailProducts() {
   const { id } = router.query
 
   const [data, error, isLoading] = useStandardFetcher({
-    url: `/product/${id}`,
+    url: `/products/${id}`,
   })
 
   if (error) {

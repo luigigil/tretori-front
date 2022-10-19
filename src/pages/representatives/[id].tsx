@@ -8,7 +8,7 @@ export default function DetailRepresentative() {
   const { id } = router.query
 
   const [data, error, isLoading] = useStandardFetcher({
-    url: `/representative/${id}`,
+    url: `/representatives/${id}`,
   })
 
   // ! what to do with error?

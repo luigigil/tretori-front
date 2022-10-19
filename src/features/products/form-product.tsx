@@ -10,11 +10,10 @@ import { useForm } from 'react-hook-form'
 import TitlePage from 'ui/data-display/title/title-page'
 import DialogConfirm from 'ui/feedback/dialog/dialog-confirm'
 import FormTextField from 'ui/inputs/text-field/text-field'
+import { ProductType } from 'utils/types'
 import { SERVER_ERROR } from '../../utils/messages/index'
 import { ProductMessages } from './product.messages'
 import { companySchema } from './products.joi.schema'
-
-type ProductType = any
 
 interface FormProductProps {
   product?: ProductType
@@ -43,7 +42,7 @@ const FormProduct = ({ product, shouldCreateNewProduct }: FormProductProps) => {
     try {
       await axios.request({
         method: 'DELETE',
-        url: `/product/${product?.id}`,
+        url: `/products/${product?.id}`,
         baseURL: process.env.NEXT_PUBLIC_BASE_URL,
         headers: {
           Authorization: `Bearer ${session?.accessToken}`,
@@ -70,7 +69,7 @@ const FormProduct = ({ product, shouldCreateNewProduct }: FormProductProps) => {
     try {
       await axios.request({
         method: 'PUT',
-        url: `product/${product?.id}`,
+        url: `products/${product?.id}`,
         baseURL: process.env.NEXT_PUBLIC_BASE_URL,
         headers: {
           Authorization: `Bearer ${session?.accessToken}`,
@@ -96,7 +95,7 @@ const FormProduct = ({ product, shouldCreateNewProduct }: FormProductProps) => {
     try {
       await axios.request({
         method: 'POST',
-        url: 'product',
+        url: '/products',
         baseURL: process.env.NEXT_PUBLIC_BASE_URL,
         headers: {
           Authorization: `Bearer ${session?.accessToken}`,

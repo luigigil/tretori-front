@@ -43,7 +43,7 @@ const FormLegalPerson = ({ customer, legalPerson, shouldCreateNew }: FormLegalPe
     try {
       await axios.request({
         method: 'DELETE',
-        url: `/legal-person/${legalPerson?.id}`,
+        url: `/legal-people/${legalPerson?.id}`,
         baseURL: process.env.NEXT_PUBLIC_BASE_URL,
         headers: {
           Authorization: `Bearer ${session?.accessToken}`,
@@ -69,7 +69,7 @@ const FormLegalPerson = ({ customer, legalPerson, shouldCreateNew }: FormLegalPe
     try {
       await axios.request({
         method: 'PUT',
-        url: `legal-person/${legalPerson?.id}`,
+        url: `legal-people/${legalPerson?.id}`,
         baseURL: process.env.NEXT_PUBLIC_BASE_URL,
         headers: {
           Authorization: `Bearer ${session?.accessToken}`,
@@ -95,7 +95,7 @@ const FormLegalPerson = ({ customer, legalPerson, shouldCreateNew }: FormLegalPe
     try {
       await axios.request({
         method: 'POST',
-        url: 'legal-person',
+        url: 'legal-people',
         baseURL: process.env.NEXT_PUBLIC_BASE_URL,
         headers: {
           Authorization: `Bearer ${session?.accessToken}`,

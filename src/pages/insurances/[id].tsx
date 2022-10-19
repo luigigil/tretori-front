@@ -8,7 +8,7 @@ export default function DetailInsurance() {
   const { id } = router.query
 
   const [data, error, isLoading] = useStandardFetcher({
-    url: `/insurance/${id}`,
+    url: `/insurances/${id}`,
   })
 
   // ! what to do with error?

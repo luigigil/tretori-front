@@ -8,7 +8,7 @@ export default function DetailPhysicalPerson() {
   const { id } = router.query
 
   const [data, error, isLoading] = useStandardFetcher({
-    url: `/physical-person/${id}`,
+    url: `/physical-people/${id}`,
   })
 
   // ! what to do with error?

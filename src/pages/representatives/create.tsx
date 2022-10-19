@@ -9,7 +9,7 @@ export default function CreateRepresentative() {
     <>
       <Button
         onClick={() => {
-          router.push('/representative')
+          router.push('/representatives')
         }}
       >
         Voltar

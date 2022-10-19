@@ -12,7 +12,7 @@ describe('Representative Page', () => {
   })
 
   it('should show a list of representatives', () => {
-    cy.intercept('GET', `${baseUrl}/representative`, { fixture: 'representatives.json' }).as(
+    cy.intercept('GET', `${baseUrl}/representatives`, { fixture: 'representatives.json' }).as(
       'getRepresentatives',
     )
     cy.visit('/representatives')
@@ -32,10 +32,10 @@ describe('Representative Page', () => {
   })
 
   it('should create a new representative', () => {
-    cy.intercept('GET', `${baseUrl}/representative`, { fixture: 'representatives.json' }).as(
+    cy.intercept('GET', `${baseUrl}/representatives`, { fixture: 'representatives.json' }).as(
       'getRepresentatives',
     )
-    cy.intercept('POST', `${baseUrl}/representative`, { statusCode: 201 }).as('saveRepresentative')
+    cy.intercept('POST', `${baseUrl}/representatives`, { statusCode: 201 }).as('saveRepresentative')
 
     cy.visit('/representatives')
     cy.wait(['@getRepresentatives'])
@@ -60,10 +60,10 @@ describe('Representative Page', () => {
   })
 
   it('should view an existing representative', () => {
-    cy.intercept('GET', `${baseUrl}/representative`, { fixture: 'representatives.json' }).as(
+    cy.intercept('GET', `${baseUrl}/representatives`, { fixture: 'representatives.json' }).as(
       'getRepresentativess',
     )
-    cy.intercept('GET', `${baseUrl}/representative/*`, {
+    cy.intercept('GET', `${baseUrl}/representatives/*`, {
       statusCode: 200,
       fixture: 'representative.json',
     }).as('getRepresentatives')
@@ -90,14 +90,14 @@ describe('Representative Page', () => {
   })
 
   it('should edit an existing representative', () => {
-    cy.intercept('GET', `${baseUrl}/representative`, { fixture: 'representatives.json' }).as(
+    cy.intercept('GET', `${baseUrl}/representatives`, { fixture: 'representatives.json' }).as(
       'getRepresentativess',
     )
-    cy.intercept('GET', `${baseUrl}/representative/*`, {
+    cy.intercept('GET', `${baseUrl}/representatives/*`, {
       statusCode: 200,
       fixture: 'representative.json',
     }).as('getRepresentatives')
-    cy.intercept('PATCH', `${baseUrl}/representative/*`, { statusCode: 200 }).as(
+    cy.intercept('PATCH', `${baseUrl}/representatives/*`, { statusCode: 200 }).as(
       'editRepresentative',
     )
 
@@ -127,14 +127,14 @@ describe('Representative Page', () => {
   })
 
   it('should delete an existing representative', () => {
-    cy.intercept('GET', `${baseUrl}/representative`, { fixture: 'representatives.json' }).as(
+    cy.intercept('GET', `${baseUrl}/representatives`, { fixture: 'representatives.json' }).as(
       'getRepresentatives',
     )
-    cy.intercept('GET', `${baseUrl}/representative/*`, {
+    cy.intercept('GET', `${baseUrl}/representatives/*`, {
       statusCode: 200,
       fixture: 'representative.json',
     }).as('getRepresentatives')
-    cy.intercept('DELETE', `${baseUrl}/representative/*`, { statusCode: 200 }).as(
+    cy.intercept('DELETE', `${baseUrl}/representatives/*`, { statusCode: 200 }).as(
       'deleteRepresentative',
     )
 

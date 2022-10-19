@@ -11,7 +11,7 @@ describe('Product Page', () => {
   })
 
   it('should show a list of products', () => {
-    cy.intercept('GET', `${baseUrl}/product`, { fixture: 'products.json' }).as('getProducts')
+    cy.intercept('GET', `${baseUrl}/products`, { fixture: 'products.json' }).as('getProducts')
     cy.visit('/products')
     cy.wait(['@getProducts'])
 
@@ -27,8 +27,8 @@ describe('Product Page', () => {
   })
 
   it('should create a new product', () => {
-    cy.intercept('GET', `${baseUrl}/product`, { fixture: 'products.json' }).as('getProducts')
-    cy.intercept('POST', `${baseUrl}/product`, { statusCode: 201 }).as('saveProduct')
+    cy.intercept('GET', `${baseUrl}/products`, { fixture: 'products.json' }).as('getProducts')
+    cy.intercept('POST', `${baseUrl}/products`, { statusCode: 201 }).as('saveProduct')
 
     cy.visit('/products')
     cy.wait(['@getProducts'])
@@ -48,8 +48,8 @@ describe('Product Page', () => {
   })
 
   it('should view an existing product', () => {
-    cy.intercept('GET', `${baseUrl}/product`, { fixture: 'products.json' }).as('getProducts')
-    cy.intercept('GET', `${baseUrl}/product/*`, { statusCode: 200, fixture: 'product.json' }).as(
+    cy.intercept('GET', `${baseUrl}/products`, { fixture: 'products.json' }).as('getProducts')
+    cy.intercept('GET', `${baseUrl}/products/*`, { statusCode: 200, fixture: 'product.json' }).as(
       'getProduct',
     )
 
@@ -66,11 +66,11 @@ describe('Product Page', () => {
   })
 
   it('should edit an existing product', () => {
-    cy.intercept('GET', `${baseUrl}/product`, { fixture: 'products.json' }).as('getProducts')
-    cy.intercept('GET', `${baseUrl}/product/*`, { statusCode: 200, fixture: 'product.json' }).as(
+    cy.intercept('GET', `${baseUrl}/products`, { fixture: 'products.json' }).as('getProducts')
+    cy.intercept('GET', `${baseUrl}/products/*`, { statusCode: 200, fixture: 'product.json' }).as(
       'getProduct',
     )
-    cy.intercept('PUT', `${baseUrl}/product/*`, { statusCode: 200 }).as('editProduct')
+    cy.intercept('PUT', `${baseUrl}/products/*`, { statusCode: 200 }).as('editProduct')
 
     cy.visit('/products')
     cy.wait(['@getProducts'])
@@ -93,11 +93,11 @@ describe('Product Page', () => {
   })
 
   it('should delete an existing product', () => {
-    cy.intercept('GET', `${baseUrl}/product`, { fixture: 'products.json' }).as('getProducts')
-    cy.intercept('GET', `${baseUrl}/product/*`, { statusCode: 200, fixture: 'product.json' }).as(
+    cy.intercept('GET', `${baseUrl}/products`, { fixture: 'products.json' }).as('getProducts')
+    cy.intercept('GET', `${baseUrl}/products/*`, { statusCode: 200, fixture: 'product.json' }).as(
       'getProduct',
     )
-    cy.intercept('DELETE', `${baseUrl}/product/*`, { statusCode: 200 }).as('deleteProduct')
+    cy.intercept('DELETE', `${baseUrl}/products/*`, { statusCode: 200 }).as('deleteProduct')
 
     cy.visit('/products')
     cy.wait(['@getProducts'])

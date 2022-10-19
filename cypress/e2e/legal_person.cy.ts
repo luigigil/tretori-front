@@ -11,7 +11,7 @@ describe('Customer - Legal person', () => {
   })
 
   it('should show a list of Legal people', () => {
-    cy.intercept('GET', `${baseUrl}/legal-person`, { fixture: 'legal-people.json' }).as(
+    cy.intercept('GET', `${baseUrl}/legal-people`, { fixture: 'legal-people.json' }).as(
       'getLegalPerson',
     )
     cy.visit('/legal-person')
@@ -29,10 +29,10 @@ describe('Customer - Legal person', () => {
   })
 
   it('Should create a new Legal Person', () => {
-    cy.intercept('GET', `${baseUrl}/legal-person`, { fixture: 'legal-people.json' }).as(
+    cy.intercept('GET', `${baseUrl}/legal-people`, { fixture: 'legal-people.json' }).as(
       'getLegalPerson',
     )
-    cy.intercept('POST', `${baseUrl}/legal-person`, { statusCode: 201 }).as('saveLegalPerson')
+    cy.intercept('POST', `${baseUrl}/legal-people`, { statusCode: 201 }).as('saveLegalPerson')
 
     cy.visit('/legal-person')
     cy.wait(['@getLegalPerson'])
@@ -53,10 +53,10 @@ describe('Customer - Legal person', () => {
   })
 
   it('should view an existing Legal person', () => {
-    cy.intercept('GET', `${baseUrl}/legal-person`, { fixture: 'legal-people.json' }).as(
+    cy.intercept('GET', `${baseUrl}/legal-people`, { fixture: 'legal-people.json' }).as(
       'getLegalPeople',
     )
-    cy.intercept('GET', `${baseUrl}/legal-person/*`, {
+    cy.intercept('GET', `${baseUrl}/legal-people/*`, {
       statusCode: 200,
       fixture: 'legal-person.json',
     }).as('getLegalPerson')
@@ -76,14 +76,14 @@ describe('Customer - Legal person', () => {
   })
 
   it('should edit an existing Legal person', () => {
-    cy.intercept('GET', `${baseUrl}/legal-person`, { fixture: 'legal-people.json' }).as(
+    cy.intercept('GET', `${baseUrl}/legal-people`, { fixture: 'legal-people.json' }).as(
       'getLegalPeople',
     )
-    cy.intercept('GET', `${baseUrl}/legal-person/*`, {
+    cy.intercept('GET', `${baseUrl}/legal-people/*`, {
       statusCode: 200,
       fixture: 'legal-person.json',
     }).as('getLegalPerson')
-    cy.intercept('PUT', `${baseUrl}/legal-person/*`, { statusCode: 200 }).as('editLegalPerson')
+    cy.intercept('PUT', `${baseUrl}/legal-people/*`, { statusCode: 200 }).as('editLegalPerson')
 
     cy.visit('/legal-person')
     cy.wait(['@getLegalPeople'])
@@ -107,14 +107,14 @@ describe('Customer - Legal person', () => {
   })
 
   it('should delete an existing legal person', () => {
-    cy.intercept('GET', `${baseUrl}/legal-person`, { fixture: 'legal-people.json' }).as(
+    cy.intercept('GET', `${baseUrl}/legal-people`, { fixture: 'legal-people.json' }).as(
       'getLegalPeople',
     )
-    cy.intercept('GET', `${baseUrl}/legal-person/*`, {
+    cy.intercept('GET', `${baseUrl}/legal-people/*`, {
       statusCode: 200,
       fixture: 'legal-person.json',
     }).as('getLegalPerson')
-    cy.intercept('DELETE', `${baseUrl}/legal-person/*`, { statusCode: 200 }).as('deleteLegalPerson')
+    cy.intercept('DELETE', `${baseUrl}/legal-people/*`, { statusCode: 200 }).as('deleteLegalPerson')
 
     cy.visit('/legal-person')
     cy.wait(['@getLegalPeople'])

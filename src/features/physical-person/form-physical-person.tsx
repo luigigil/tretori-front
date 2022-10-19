@@ -48,7 +48,7 @@ const FormPhysicalPerson = ({
     try {
       await axios.request({
         method: 'DELETE',
-        url: `/physical-person/${physicalPerson?.id}`,
+        url: `/physical-people/${physicalPerson?.id}`,
         baseURL: process.env.NEXT_PUBLIC_BASE_URL,
         headers: {
           Authorization: `Bearer ${session?.accessToken}`,
@@ -74,7 +74,7 @@ const FormPhysicalPerson = ({
     try {
       await axios.request({
         method: 'PUT',
-        url: `physical-person/${physicalPerson?.id}`,
+        url: `physical-people/${physicalPerson?.id}`,
         baseURL: process.env.NEXT_PUBLIC_BASE_URL,
         headers: {
           Authorization: `Bearer ${session?.accessToken}`,

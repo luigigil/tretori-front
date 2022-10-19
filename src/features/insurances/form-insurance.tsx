@@ -43,7 +43,7 @@ const FormInsurance = ({ insurance, shouldCreateNewInsurance }: FormInsurancePro
     try {
       await axios.request({
         method: 'DELETE',
-        url: `/insurance/${insurance?.id}`,
+        url: `/insurances/${insurance?.id}`,
         baseURL: process.env.NEXT_PUBLIC_BASE_URL,
         headers: {
           Authorization: `Bearer ${session?.accessToken}`,
@@ -69,7 +69,7 @@ const FormInsurance = ({ insurance, shouldCreateNewInsurance }: FormInsurancePro
     try {
       await axios.request({
         method: 'PUT',
-        url: `/insurance/${insurance?.id}`,
+        url: `/insurances/${insurance?.id}`,
         baseURL: process.env.NEXT_PUBLIC_BASE_URL,
         headers: {
           Authorization: `Bearer ${session?.accessToken}`,
@@ -95,7 +95,7 @@ const FormInsurance = ({ insurance, shouldCreateNewInsurance }: FormInsurancePro
     try {
       await axios.request({
         method: 'POST',
-        url: '/insurance',
+        url: '/insurances',
         baseURL: process.env.NEXT_PUBLIC_BASE_URL,
         headers: {
           Authorization: `Bearer ${session?.accessToken}`,

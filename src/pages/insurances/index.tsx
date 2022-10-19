@@ -8,7 +8,7 @@ export default function ListInsurances() {
   const router = useRouter()
   const [data, error, isLoading] = useStandardFetcher({
     method: 'GET',
-    url: '/insurance',
+    url: '/insurances',
   })
 
   // ! what to do with error?

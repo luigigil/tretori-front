@@ -184,6 +184,15 @@ export interface ContractType {
   move?: MovementType[]
   customer?: CustomerType
   access?: AccessType
+  product?: ProductType
+}
+
+export interface ProductType {
+  id?: number
+  name: string
+  plan: string
+  size: string
+  type: string
 }
 
 export interface AccessType {

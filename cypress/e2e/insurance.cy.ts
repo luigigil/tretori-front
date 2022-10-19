@@ -11,7 +11,7 @@ describe('Insurance Page', () => {
   })
 
   it('should show a list of insurances', () => {
-    cy.intercept('GET', `${baseUrl}/insurance`, { fixture: 'insurances.json' }).as('getInsurance')
+    cy.intercept('GET', `${baseUrl}/insurances`, { fixture: 'insurances.json' }).as('getInsurance')
     cy.visit('/insurances')
     cy.wait(['@getInsurance'])
 
@@ -29,8 +29,8 @@ describe('Insurance Page', () => {
   })
 
   it('should create a new insurance', () => {
-    cy.intercept('GET', `${baseUrl}/insurance`, { fixture: 'insurances.json' }).as('getInsurance')
-    cy.intercept('POST', `${baseUrl}/insurance`, { statusCode: 201 }).as('saveInsurance')
+    cy.intercept('GET', `${baseUrl}/insurances`, { fixture: 'insurances.json' }).as('getInsurance')
+    cy.intercept('POST', `${baseUrl}/insurances`, { statusCode: 201 }).as('saveInsurance')
 
     cy.visit('/insurances')
     cy.wait(['@getInsurance'])
@@ -59,8 +59,8 @@ describe('Insurance Page', () => {
   })
 
   it('should view an existing insurance', () => {
-    cy.intercept('GET', `${baseUrl}/insurance`, { fixture: 'insurances.json' }).as('getInsurances')
-    cy.intercept('GET', `${baseUrl}/insurance/*`, {
+    cy.intercept('GET', `${baseUrl}/insurances`, { fixture: 'insurances.json' }).as('getInsurances')
+    cy.intercept('GET', `${baseUrl}/insurances/*`, {
       statusCode: 200,
       fixture: 'insurance.json',
     }).as('getInsurance')
@@ -87,12 +87,12 @@ describe('Insurance Page', () => {
   })
 
   it('should edit an existing insurance', () => {
-    cy.intercept('GET', `${baseUrl}/insurance`, { fixture: 'insurances.json' }).as('getInsurances')
-    cy.intercept('GET', `${baseUrl}/insurance/*`, {
+    cy.intercept('GET', `${baseUrl}/insurances`, { fixture: 'insurances.json' }).as('getInsurances')
+    cy.intercept('GET', `${baseUrl}/insurances/*`, {
       statusCode: 200,
       fixture: 'insurance.json',
     }).as('getInsurance')
-    cy.intercept('PUT', `${baseUrl}/insurance/*`, { statusCode: 200 }).as('editInsurance')
+    cy.intercept('PUT', `${baseUrl}/insurances/*`, { statusCode: 200 }).as('editInsurance')
 
     cy.visit('/insurances')
     cy.wait(['@getInsurances'])
@@ -124,12 +124,12 @@ describe('Insurance Page', () => {
   })
 
   it('should delete an existing insurance', () => {
-    cy.intercept('GET', `${baseUrl}/insurance`, { fixture: 'insurances.json' }).as('getInsurances')
-    cy.intercept('GET', `${baseUrl}/insurance/*`, {
+    cy.intercept('GET', `${baseUrl}/insurances`, { fixture: 'insurances.json' }).as('getInsurances')
+    cy.intercept('GET', `${baseUrl}/insurances/*`, {
       statusCode: 200,
       fixture: 'insurance.json',
     }).as('getInsurance')
-    cy.intercept('DELETE', `${baseUrl}/insurance/*`, { statusCode: 200 }).as('deleteInsurance')
+    cy.intercept('DELETE', `${baseUrl}/insurances/*`, { statusCode: 200 }).as('deleteInsurance')
 
     cy.visit('/insurances')
     cy.wait(['@getInsurances'])

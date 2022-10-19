@@ -33,7 +33,7 @@ const SeguradorasMenu = () => {
             <ListItemIcon>
               <HealthAndSafety />
             </ListItemIcon>
-            <ListItemText primary='Seguradoras' />
+            <ListItemText primary='Empresas' />
           </ListItemButton>
           <ListItemButton sx={{ pl: 4 }} onClick={() => router.push('/products')}>
             <ListItemIcon>

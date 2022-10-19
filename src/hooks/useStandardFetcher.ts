@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react'
 import axios, { AxiosRequestConfig } from 'axios'
 import { getSession, useSession } from 'next-auth/react'
 import { useSnackbar } from 'notistack'
+import { useEffect, useState } from 'react'
 import { SERVER_ERROR } from 'utils/messages'
 
 export default function useStandardFetcher(params: AxiosRequestConfig<any>) {
@@ -12,7 +12,6 @@ export default function useStandardFetcher(params: AxiosRequestConfig<any>) {
   const [isLoading, setIsLoading] = useState<boolean>(true)
 
   const fetchData = async (): Promise<void> => {
-    console.log(session)
     try {
       let _session
 

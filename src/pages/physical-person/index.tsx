@@ -11,7 +11,7 @@ export default function ListProducts() {
   const router = useRouter()
   const [data, error, isLoading] = useStandardFetcher({
     method: 'GET',
-    url: '/physical-person',
+    url: '/physical-people',
   })
 
   // ! what to do with error?

@@ -84,7 +84,7 @@ describe('Customers Page', () => {
       fixture: 'customers.json',
     }).as('getCustomers')
     cy.intercept('POST', `${baseUrl}/customers`, { statusCode: 201 }).as('saveCustomer')
-    cy.intercept('POST', `${baseUrl}/legal-person`, { statusCode: 201 }).as('saveLegalPerson')
+    cy.intercept('POST', `${baseUrl}/legal-people`, { statusCode: 201 }).as('saveLegalPerson')
 
     cy.visit('/customers')
     cy.wait(['@getCustomers'])
@@ -213,7 +213,7 @@ describe('Customers Page', () => {
     cy.intercept('PUT', `${baseUrl}/customers/*`, {
       statusCode: 200,
     }).as('editCustomer')
-    cy.intercept('PUT', `${baseUrl}/physical-person/*`, {
+    cy.intercept('PUT', `${baseUrl}/physical-people/*`, {
       statusCode: 200,
     }).as('editPhysicalPerson')
 
@@ -269,7 +269,7 @@ describe('Customers Page', () => {
     cy.intercept('PUT', `${baseUrl}/customers/*`, {
       statusCode: 200,
     }).as('editCustomer')
-    cy.intercept('PUT', `${baseUrl}/legal-person/*`, {
+    cy.intercept('PUT', `${baseUrl}/legal-people/*`, {
       statusCode: 200,
     }).as('editLegalPerson')
 

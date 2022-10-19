@@ -1,9 +1,8 @@
 import { TextField } from '@mui/material'
 import { DatePicker as MuiDatePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import { DateTime } from 'luxon'
-import { Control, Controller } from 'react-hook-form'
 import dayjs from 'dayjs'
+import { Control, Controller } from 'react-hook-form'
 
 interface DatePickerProps {
   required?: boolean
@@ -43,7 +42,6 @@ const DatePicker = ({
             label={label}
             onChange={(newValue) => {
               if (dayjs(newValue).isValid()) {
-                console.log(newValue)
                 onChange(newValue?.toISOString())
               }
             }}

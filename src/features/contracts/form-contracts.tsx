@@ -15,7 +15,7 @@ import DialogConfirm from 'ui/feedback/dialog/dialog-confirm'
 import DatePicker from 'ui/inputs/date/date-picker'
 import FormTextField from 'ui/inputs/text-field/text-field'
 import { SERVER_ERROR } from 'utils/messages'
-import { ContractType, CustomerType } from 'utils/types'
+import { ContractType, CustomerType, ProductType } from 'utils/types'
 import { contractSchema } from './contract.joi.schema'
 import { ContractMessages } from './contract.messages'
 import { CONTRACT_MOVEMENT_TABLE_FIELDS, CONTRACT_RENEWAL_TABLE_FIELDS } from './info'
@@ -40,10 +40,16 @@ const FormContract = ({ contract, shouldCreateNew }: FormContractProps) => {
   const [selectedCustomer, setSelectedCustomer] = useState<CustomerType | undefined>(
     contract?.customer,
   )
+  const [selectedProduct, setSelectedProduct] = useState<ProductType | undefined>(contract?.product)
 
-  const [data, error, isLoading] = useStandardFetcher({
+  const [dataCustomers, errorCustomers, isLoadingCustomers] = useStandardFetcher({
     method: 'GET',
     url: '/customers',
+  })
+
+  const [dataProduct, errorProduct, isLoadingProduct] = useStandardFetcher({
+    method: 'GET',
+    url: '/products',
   })
 
   const handleOnCloseDeleteDialog = () => {
@@ -110,6 +116,7 @@ const FormContract = ({ contract, shouldCreateNew }: FormContractProps) => {
             total_contract_value: data.total_contract_value,
             first_invoice_date: data.first_invoice_date,
             customer: selectedCustomer,
+            product: selectedProduct,
           },
           access: {
             login_client: data.login_client,
@@ -392,22 +399,39 @@ const FormContract = ({ contract, shouldCreateNew }: FormContractProps) => {
         </Box>
         {!shouldCreateNew && (
           <>
-            {!isLoading && (
+            {!isLoadingProduct && !isLoadingCustomers && (
               <>
+                <Typography>Produto</Typography>
+                <Autocomplete
+                  disabled={!isEditing && !shouldCreateNew}
+                  defaultValue={dataProduct?.find(
+                    (item: ProductType) => item.id === contract?.product?.id,
+                  )}
+                  disablePortal
+                  id='combo-box-product'
+                  options={dataProduct}
+                  getOptionLabel={(option: any) => option.name}
+                  renderInput={(params) => <TextField {...params} />}
+                  onChange={(_, value) => {
+                    setSelectedProduct(
+                      dataProduct.find((item: ProductType) => item.id === value?.id),
+                    )
+                  }}
+                />
                 <Typography>Cliente</Typography>
                 <Autocomplete
                   disabled={!isEditing && !shouldCreateNew}
-                  defaultValue={data?.find(
+                  defaultValue={dataCustomers?.find(
                     (item: CustomerType) => item.code === contract?.customer?.code,
                   )}
                   disablePortal
                   id='combo-box-cliente'
-                  options={data}
+                  options={dataCustomers}
                   getOptionLabel={(option: any) => option.code}
                   renderInput={(params) => <TextField {...params} />}
                   onChange={(_, value) => {
                     setSelectedCustomer(
-                      data.find((item: CustomerType) => item.code === value?.code),
+                      dataCustomers.find((item: CustomerType) => item.code === value?.code),
                     )
                   }}
                 />

@@ -46,7 +46,7 @@ const FormRepresentative = ({
     try {
       await axios.request({
         method: 'DELETE',
-        url: `/representative/${representative?.id}`,
+        url: `/representatives/${representative?.id}`,
         baseURL: process.env.NEXT_PUBLIC_BASE_URL,
         headers: {
           Authorization: `Bearer ${session?.accessToken}`,
@@ -73,7 +73,7 @@ const FormRepresentative = ({
     try {
       await axios.request({
         method: 'PATCH',
-        url: `/representative/${representative?.id}`,
+        url: `/representatives/${representative?.id}`,
         baseURL: process.env.NEXT_PUBLIC_BASE_URL,
         headers: {
           Authorization: `Bearer ${session?.accessToken}`,
@@ -99,7 +99,7 @@ const FormRepresentative = ({
     try {
       await axios.request({
         method: 'POST',
-        url: '/representative',
+        url: '/representatives',
         baseURL: process.env.NEXT_PUBLIC_BASE_URL,
         headers: {
           Authorization: `Bearer ${session?.accessToken}`,
