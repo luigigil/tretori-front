@@ -1,7 +1,7 @@
 import { BreadcrumbType, Column } from 'utils/types'
 
 export const LEGAL_PERSON_TABLE_FIELDS: Column[] = [
-  { id: 'code', label: 'Código', minWidth: 170 },
+  { id: 'type', label: 'Tipo', minWidth: 170 },
   { id: 'cnpj', label: 'CNPJ', minWidth: 100 },
   { id: 'fantasy_name', label: 'Nome Fantasia', minWidth: 100 },
   { id: 'social_reason', label: 'Razão Social', minWidth: 100 },
