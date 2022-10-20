@@ -153,6 +153,7 @@ const FormLegalPerson = ({ customer, legalPerson, shouldCreateNew }: FormLegalPe
       >
         <Box display='flex'>
           <FormTextField
+            id='cnpj'
             label={'CNPJ'}
             name='cnpj'
             control={control}
@@ -161,6 +162,7 @@ const FormLegalPerson = ({ customer, legalPerson, shouldCreateNew }: FormLegalPe
             disabled={!isEditing && !shouldCreateNew}
           />
           <FormTextField
+            id='fantasy_name'
             label={'Nome Fantasia'}
             name='fantasy_name'
             control={control}
@@ -172,6 +174,7 @@ const FormLegalPerson = ({ customer, legalPerson, shouldCreateNew }: FormLegalPe
 
         <Box display='flex'>
           <FormTextField
+            id='social_reason'
             label={'Razão Social'}
             name='social_reason'
             control={control}
@@ -180,6 +183,7 @@ const FormLegalPerson = ({ customer, legalPerson, shouldCreateNew }: FormLegalPe
             disabled={!isEditing && !shouldCreateNew}
           />
           <FormTextField
+            id='type'
             label={'Tipo'}
             name='type'
             control={control}
@@ -188,6 +192,7 @@ const FormLegalPerson = ({ customer, legalPerson, shouldCreateNew }: FormLegalPe
             disabled={!isEditing && !shouldCreateNew}
           />
           <FormTextField
+            id='size'
             label={'Tamanho'}
             name='size'
             control={control}

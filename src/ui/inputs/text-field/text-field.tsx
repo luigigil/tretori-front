@@ -4,6 +4,7 @@ import { INVALID_INPUT } from 'utils/messages'
 
 interface FormTextFieldProps {
   // TODO check how to use generic types
+  id?: string
   label: string
   name: string
   control: Control<any, any>
@@ -14,6 +15,7 @@ interface FormTextFieldProps {
 }
 
 const FormTextField = ({
+  id,
   label,
   name,
   control,
@@ -26,6 +28,7 @@ const FormTextField = ({
     <Controller
       render={({ field }) => (
         <TextField
+          id={id}
           type={type}
           fullWidth
           {...field}
