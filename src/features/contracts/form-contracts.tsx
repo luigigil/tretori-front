@@ -12,6 +12,7 @@ import { useForm } from 'react-hook-form'
 import Table from 'ui/data-display/table'
 import TitlePage from 'ui/data-display/title/title-page'
 import DialogConfirm from 'ui/feedback/dialog/dialog-confirm'
+import FormCheckbox from 'ui/inputs/checkbox/checkbox'
 import DatePicker from 'ui/inputs/date/date-picker'
 import FormTextField from 'ui/inputs/text-field/text-field'
 import { SERVER_ERROR } from 'utils/messages'
@@ -324,20 +325,20 @@ const FormContract = ({ contract, shouldCreateNew }: FormContractProps) => {
           />
         </Box>
         <Box display='flex'>
-          <FormTextField
+          <FormCheckbox
             label={'Copay'}
             name='copay'
             control={control}
             errors={errors}
-            defaultValue={contract?.copay.toString()}
+            defaultValue={contract?.copay}
             disabled={!isEditing && !shouldCreateNew}
           />
-          <FormTextField
+          <FormCheckbox
             label={'Adesão'}
             name='adhesion'
             control={control}
             errors={errors}
-            defaultValue={contract?.adhesion.toString()}
+            defaultValue={contract?.adhesion}
             disabled={!isEditing && !shouldCreateNew}
           />
           <FormTextField
