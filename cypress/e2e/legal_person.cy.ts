@@ -52,6 +52,78 @@ describe('Customer - Legal person', () => {
     cy.get('#notistack-snackbar').should('have.text', 'Pessoa Jurídica adicionada com sucesso')
   })
 
+  it('Should present required message errors on create a new Legal Person', () => {
+    cy.intercept('GET', `${baseUrl}/legal-people`, { fixture: 'legal-people.json' }).as(
+      'getLegalPerson',
+    )
+
+    cy.visit('/legal-person')
+    cy.wait(['@getLegalPerson'])
+
+    cy.get('#newBtn').click()
+
+    cy.get('#saveBtn').click()
+    cy.contains('#cnpj-helper-text', '"cnpj" is not allowed to be empty')
+    cy.contains('#fantasy_name-helper-text', '"fantasy_name" is not allowed to be empty')
+    cy.contains('#social_reason-helper-text', '"social_reason" is not allowed to be empty')
+    cy.contains('#type-helper-text', '"type" is not allowed to be empty')
+    cy.contains('#size-helper-text', '"size" is not allowed to be empty')
+  })
+
+  it('Should present min characters message errors on create a new Legal Person', () => {
+    cy.intercept('GET', `${baseUrl}/legal-people`, { fixture: 'legal-people.json' }).as(
+      'getLegalPerson',
+    )
+
+    cy.visit('/legal-person')
+    cy.wait(['@getLegalPerson'])
+
+    cy.get('#newBtn').click()
+
+    cy.get('[name="cnpj"]').type('2')
+    cy.get('[name="fantasy_name"]').type('Akts')
+    cy.get('#saveBtn').click()
+    cy.contains('#cnpj-helper-text', '"cnpj" length must be at least 2 characters long')
+  })
+
+  it('Should present max characters message errors on create a new Legal Person', () => {
+    cy.intercept('GET', `${baseUrl}/legal-people`, { fixture: 'legal-people.json' }).as(
+      'getLegalPerson',
+    )
+
+    cy.visit('/legal-person')
+    cy.wait(['@getLegalPerson'])
+
+    cy.get('#newBtn').click()
+
+    cy.get('[name="cnpj"]').type('2'.padEnd(200 + 1, '2'))
+    cy.get('[name="fantasy_name"]').type('2'.padEnd(20 + 1, '2'))
+    cy.get('[name="social_reason"]').type('2'.padEnd(50 + 1, '2'))
+    cy.get('[name="type"]').type('2'.padEnd(20 + 1, '2'))
+    cy.get('[name="size"]').type('2'.padEnd(20 + 1, '2'))
+    cy.get('#saveBtn').click()
+    cy.contains(
+      '#cnpj-helper-text',
+      '"cnpj" length must be less than or equal to 200 characters long',
+    )
+    cy.contains(
+      '#fantasy_name-helper-text',
+      '"fantasy_name" length must be less than or equal to 20 characters long',
+    )
+    cy.contains(
+      '#social_reason-helper-text',
+      '"social_reason" length must be less than or equal to 50 characters long',
+    )
+    cy.contains(
+      '#type-helper-text',
+      '"type" length must be less than or equal to 20 characters long',
+    )
+    cy.contains(
+      '#size-helper-text',
+      '"size" length must be less than or equal to 20 characters long',
+    )
+  })
+
   it('should view an existing Legal person', () => {
     cy.intercept('GET', `${baseUrl}/legal-people`, { fixture: 'legal-people.json' }).as(
       'getLegalPeople',
