@@ -41,7 +41,7 @@ describe('Customers Page', () => {
       fixture: 'customers.json',
     }).as('getCustomers')
     cy.intercept('POST', `${baseUrl}/customers`, { statusCode: 201 }).as('saveCustomer')
-    cy.intercept('POST', `${baseUrl}/physical-person`, { statusCode: 201 }).as('savePhysicalPerson')
+    cy.intercept('POST', `${baseUrl}/physical-people`, { statusCode: 201 }).as('savePhysicalPerson')
 
     cy.visit('/customers')
     cy.wait(['@getCustomers'])
