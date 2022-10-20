@@ -12,4 +12,12 @@ describe('Login Page', () => {
     cy.get('#password').type(password)
     cy.get('#login-button').click()
   })
+
+  it('should show random image from public folder', () => {
+    cy.visit('/login')
+
+    cy.get('#login-image')
+      .should('have.css', 'backgroundImage')
+      .and('match', /\/images\/login\/login-/)
+  })
 })
