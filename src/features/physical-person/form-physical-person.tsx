@@ -100,7 +100,7 @@ const FormPhysicalPerson = ({
     try {
       await axios.request({
         method: 'POST',
-        url: 'physical-person',
+        url: 'physical-people',
         baseURL: process.env.NEXT_PUBLIC_BASE_URL,
         headers: {
           Authorization: `Bearer ${session?.accessToken}`,
