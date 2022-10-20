@@ -17,12 +17,12 @@ describe('Customer - Legal person', () => {
     cy.visit('/legal-person')
     cy.wait(['@getLegalPerson'])
 
-    cy.get('#0-code').should('be.empty')
+    cy.get('#0-type').should('have.text', fixture[0].type)
     cy.get('#0-cnpj').should('have.text', fixture[0].cnpj)
     cy.get('#0-fantasy_name').should('have.text', fixture[0].fantasy_name)
     cy.get('#0-social_reason').should('have.text', fixture[0].social_reason)
 
-    cy.get('#1-code').should('be.empty')
+    cy.get('#1-type').should('have.text', fixture[1].type)
     cy.get('#1-cnpj').should('have.text', fixture[1].cnpj)
     cy.get('#1-fantasy_name').should('have.text', fixture[1].fantasy_name)
     cy.get('#1-social_reason').should('have.text', fixture[1].social_reason)
